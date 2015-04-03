@@ -103,9 +103,9 @@ class WorldModel:
     def get_entities(self):
         return self.entities
 
-    def find_nearest(world, pt, type):
+    def find_nearest(self, pt, type):
         oftype = [(e, distance_sq(pt, e.get_position()))
-                  for e in world.entities if isinstance(e, type)]
+                  for e in self.entities if isinstance(e, type)]
 
         return nearest_entity(oftype)
 
