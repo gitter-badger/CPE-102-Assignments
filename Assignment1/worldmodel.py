@@ -86,7 +86,7 @@ class WorldModel:
 
     def get_background_image(self, pt):
        if self.within_bounds(pt):
-            return entities.get_image(occ_grid.get_cell(self.background, pt))
+            return occ_grid.get_cell(self.background, pt).get_image();
 
     def get_background(self, pt):
         if self.within_bounds(pt):
@@ -123,3 +123,4 @@ def nearest_entity(entity_dists):
 
 def distance_sq(p1, p2):
     return (p1.x - p2.x) ** 2 + (p1.y - p2.y) ** 2
+

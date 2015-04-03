@@ -211,7 +211,7 @@ def try_transform_miner_full(world, entity):
     new_entity = entities.MinerNotFull(
         entities.get_name(entity), entities.get_resource_limit(entity),
         entity.get_position(), entities.get_rate(entity),
-        entities.get_images(entity), entities.get_animation_rate(entity))
+        entity.get_images(), entities.get_animation_rate(entity))
 
     return new_entity
 
@@ -223,7 +223,7 @@ def try_transform_miner_not_full(world, entity):
         new_entity = entities.MinerFull(
             entities.get_name(entity), entities.get_resource_limit(entity),
             entity.get_position(), entities.get_rate(entity),
-            entities.get_images(entity), entities.get_animation_rate(entity))
+            entity.get_images(), entities.get_animation_rate(entity))
         return new_entity
 
 # combine with other try miner transforms

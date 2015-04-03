@@ -7,6 +7,11 @@ class Background:
         self.imgs = imgs
         self.current_img = 0
 
+    def get_images(self):
+        return self.imgs
+
+    def get_image(self):
+        return self.imgs[self.current_img]
 
 class MinerNotFull:
     def __init__(self, name, resource_limit, position, rate, imgs,
@@ -27,6 +32,12 @@ class MinerNotFull:
     def get_position(self):
         return self.position
 
+    def get_images(self):
+        return self.imgs
+
+    def get_image(self):
+        return self.imgs[self.current_img]
+
 class MinerFull:
     def __init__(self, name, resource_limit, position, rate, imgs,
                  animation_rate):
@@ -46,6 +57,12 @@ class MinerFull:
     def get_position(self):
         return self.position
 
+    def get_images(self):
+        return self.imgs
+
+    def get_image(self):
+        return self.imgs[self.current_img]
+
 class Vein:
     def __init__(self, name, rate, position, imgs, resource_distance=1):
         self.name = name
@@ -62,6 +79,12 @@ class Vein:
     def get_position(self):
         return self.position
 
+    def get_images(self):
+        return self.imgs
+
+    def get_image(self):
+        return self.imgs[self.current_img]
+
 class Ore:
     def __init__(self, name, position, imgs, rate=5000):
         self.name = name
@@ -76,6 +99,12 @@ class Ore:
 
     def get_position(self):
         return self.position
+
+    def get_images(self):
+        return self.imgs
+
+    def get_image(self):
+        return self.imgs[self.current_img]
 
 class Blacksmith:
     def __init__(self, name, position, imgs, resource_limit, rate,
@@ -96,6 +125,12 @@ class Blacksmith:
     def get_position(self):
         return self.position
 
+    def get_images(self):
+        return self.imgs
+
+    def get_image(self):
+        return self.imgs[self.current_img]
+
 class Obstacle:
     def __init__(self, name, position, imgs):
         self.name = name
@@ -108,6 +143,12 @@ class Obstacle:
 
     def get_position(self):
         return self.position
+
+    def get_images(self):
+        return self.imgs
+
+    def get_image(self):
+        return self.imgs[self.current_img]
 
 class OreBlob:
     def __init__(self, name, position, rate, imgs, animation_rate):
@@ -125,6 +166,12 @@ class OreBlob:
     def get_position(self):
         return self.position
 
+    def get_images(self):
+        return self.imgs
+
+    def get_image(self):
+        return self.imgs[self.current_img]
+
 class Quake:
     def __init__(self, name, position, imgs, animation_rate):
         self.name = name
@@ -140,14 +187,12 @@ class Quake:
     def get_position(self):
         return self.position
 
+    def get_images(self):
+        return self.imgs
 
-#Goes into all of them
-def get_images(entity):
-    return entity.imgs
+    def get_image(self):
+        return self.imgs[self.current_img]
 
-#Goes into all of them
-def get_image(entity):
-    return entity.imgs[entity.current_img]
 
 #Oreblob, Blacksmith, MinerFull, MinerNotFull, Ore, Vein
 def get_rate(entity):
