@@ -29,27 +29,27 @@ class WorldView:
         return point.Point(pt.x - self.viewport.left, pt.y - self.viewport.top)
 
     def create_shifted_viewport(self, delta, num_rows, num_cols):
-        new_x = clamp(self.left + delta[0], 0, num_cols - self.width)
-        new_y = clamp(self.top + delta[1], 0, num_rows - self.height)
+        new_x = clamp(self.viewport.left + delta[0], 0, num_cols - self.viewport.width)
+        new_y = clamp(self.viewport.top + delta[1], 0, num_rows - self.viewport.height)
 
-        return pygame.Rect(new_x, new_y, self.width, self.height)
+        return pygame.Rect(new_x, new_y, self.viewport.width, self.viewport.height)
 
     def draw_background(self):
         for y in range(0, self.viewport.height):
             for x in range(0, self.viewport.width):
-                w_pt = self.viewport.viewport_to_world(point.Point(x, y))
+                w_pt = self.viewport_to_world(point.Point(x, y))
                 img = self.world.get_background_image(w_pt)
                 self.screen.blit(img, (x * self.tile_width, y * self.tile_height))
 
     def draw_entities(self):
         for entity in self.world.entities:
             if self.viewport.collidepoint(entity.position.x, entity.position.y):
-                v_pt = self.viewport.world_to_viewport(entity.position)
+                v_pt = self.world_to_viewport(entity.position)
                 self.screen.blit(entity.get_image(),
                                  (v_pt.x * self.tile_width, v_pt.y * self.tile_height))
 
     def update_view(self, view_delta=(0, 0), mouse_img=None):
-        self.viewport = self.viewport.create_shifted_viewport(view_delta,
+        self.viewport = self.create_shifted_viewport(view_delta,
                                                 self.num_rows, self.num_cols)
         self.mouse_img = mouse_img
         self.draw_viewport()
