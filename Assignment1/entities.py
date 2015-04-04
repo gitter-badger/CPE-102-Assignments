@@ -31,6 +31,9 @@ class Background:
     def clear_pending_actions(self):
         pass
 
+    def entity_string(self):
+        return 'unknown'
+
 class MinerNotFull:
     def __init__(self, name, resource_limit, position, rate, imgs,
                  animation_rate):
@@ -88,6 +91,11 @@ class MinerNotFull:
 
     def clear_pending_actions(self):
         self.pending_actions = []
+
+    def entity_string(self):
+        return ' '.join(['miner', self.name, str(self.position.x),
+                         str(self.position.y), str(self.resource_limit),
+                         str(self.rate), str(self.animation_rate)])
 
 class MinerFull:
     def __init__(self, name, resource_limit, position, rate, imgs,
@@ -147,6 +155,9 @@ class MinerFull:
     def clear_pending_actions(self):
         self.pending_actions = []
 
+    def entity_string(self):
+        return 'unknown'
+
 class Vein:
     def __init__(self, name, rate, position, imgs, resource_distance=1):
         self.name = name
@@ -193,6 +204,11 @@ class Vein:
     def clear_pending_actions(self):
         self.pending_actions = []
 
+    def entity_string(self):
+        return ' '.join(['vein', self.name, str(self.position.x),
+                         str(self.position.y), str(self.rate),
+                         str(self.resource_distance)])
+
 class Ore:
     def __init__(self, name, position, imgs, rate=5000):
         self.name = name
@@ -234,6 +250,10 @@ class Ore:
 
     def clear_pending_actions(self):
         self.pending_actions = []
+
+    def entity_string(self):
+        return ' '.join(['ore', self.name, str(self.position.x),
+                         str(self.position.y), str(self.rate)])
 
 class Blacksmith:
     def __init__(self, name, position, imgs, resource_limit, rate,
@@ -293,6 +313,11 @@ class Blacksmith:
     def clear_pending_actions(self):
         self.pending_actions = []
 
+    def entity_string(self):
+        return ' '.join(['blacksmith', self.name, str(self.position.x),
+                         str(self.position.y), str(self.resource_limit),
+                         str(self.rate), str(self.resource_distance)])
+
 class Obstacle:
     def __init__(self, name, position, imgs):
         self.name = name
@@ -329,6 +354,10 @@ class Obstacle:
 
     def clear_pending_actions(self):
         pass
+
+    def entity_string(self):
+        return ' '.join(['obstacle', self.name, str(self.position.x),
+                         str(self.position.y)])
 
 class OreBlob:
     def __init__(self, name, position, rate, imgs, animation_rate):
@@ -376,6 +405,9 @@ class OreBlob:
     def clear_pending_actions(self):
         self.pending_actions = []
 
+    def entity_string(self):
+        return 'unknown'
+
 class Quake:
     def __init__(self, name, position, imgs, animation_rate):
         self.name = name
@@ -418,30 +450,6 @@ class Quake:
     def clear_pending_actions(self):
         self.pending_actions = []
 
-# This is a less than pleasant file format, but structured based on
-# material covered in course.  Something like JSON would be a
-# significant improvement.
-
-#Move into all objects.
-def entity_string(entity):
-    if isinstance(entity, MinerNotFull):
-        return ' '.join(['miner', entity.name, str(entity.position.x),
-                         str(entity.position.y), str(entity.resource_limit),
-                         str(entity.rate), str(entity.animation_rate)])
-    elif isinstance(entity, Vein):
-        return ' '.join(['vein', entity.name, str(entity.position.x),
-                         str(entity.position.y), str(entity.rate),
-                         str(entity.resource_distance)])
-    elif isinstance(entity, Ore):
-        return ' '.join(['ore', entity.name, str(entity.position.x),
-                         str(entity.position.y), str(entity.rate)])
-    elif isinstance(entity, Blacksmith):
-        return ' '.join(['blacksmith', entity.name, str(entity.position.x),
-                         str(entity.position.y), str(entity.resource_limit),
-                         str(entity.rate), str(entity.resource_distance)])
-    elif isinstance(entity, Obstacle):
-        return ' '.join(['obstacle', entity.name, str(entity.position.x),
-                         str(entity.position.y)])
-    else:
+    def entity_string(self):
         return 'unknown'
 
