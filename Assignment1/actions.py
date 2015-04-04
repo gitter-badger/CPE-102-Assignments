@@ -78,7 +78,7 @@ def miner_to_ore(world, entity, ore):
         return ([entity_pt], False)
     ore_pt = ore.get_position()
     if adjacent(entity_pt, ore_pt):
-        entity.set_resource_count(1 + entities.get_resource_count(entity))
+        entity.set_resource_count(1 + entity.get_resource_count())
         remove_entity(ore)
         return ([ore_pt], True)
     else:
@@ -92,8 +92,8 @@ def miner_to_smith(world, entity, smith):
         return ([entity_pt], False)
     smith_pt = smith.get_position()
     if adjacent(entity_pt, smith_pt):
-        smith.set_resource_count(entities.get_resource_count(smith) +
-                                    entities.get_resource_count(entity))
+        smith.set_resource_count(smith.get_resource_count() +
+				     entity.get_resource_count())
         entities.entity.set_resource_count(0)
         return ([], True)
     else:
@@ -187,7 +187,7 @@ def create_vein_action(world, entity, i_store):
         entities.remove_pending_action(entity, action)
 
         open_pt = world.find_open_around(entity.get_position(),
-                                   entities.get_resource_distance(entity))
+                                   entity.get_resource_distance())
         if open_pt:
             ore = create_ore(world,
                              "ore - " + entities.get_name(entity) + " - " + str(current_ticks),
@@ -207,7 +207,7 @@ def create_vein_action(world, entity, i_store):
 # Move to minerfull
 def try_transform_miner_full(world, entity):
     new_entity = entities.MinerNotFull(
-        entities.get_name(entity), entities.get_resource_limit(entity),
+        entities.get_name(entity), entity.get_resource_limit(),
         entity.get_position(), entity.get_rate(),
         entity.get_images(), entities.get_animation_rate(entity))
 
@@ -219,7 +219,7 @@ def try_transform_miner_not_full(world, entity):
         return entity
     else:
         new_entity = entities.MinerFull(
-            entities.get_name(entity), entities.get_resource_limit(entity),
+            entities.get_name(entity), entity.get_resource_limit(),
             entity.get_position(), entity.get_rate(),
             entity.get_images(), entities.get_animation_rate(entity))
         return new_entity
