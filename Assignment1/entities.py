@@ -16,6 +16,21 @@ class Background:
     def get_name(self):
         return self.name
 
+    def next_image(self):
+        self.current_img = (self.current_img + 1) % len(self.imgs)
+
+    def remove_pending_action(self, action):
+        pass
+
+    def add_pending_action(self, action):
+        pass
+
+    def get_pending_actions(self):
+        return []
+
+    def clear_pending_actions(self):
+        pass
+
 class MinerNotFull:
     def __init__(self, name, resource_limit, position, rate, imgs,
                  animation_rate):
@@ -58,6 +73,21 @@ class MinerNotFull:
 
     def get_animation_rate(self):
         return self.animation_rate
+
+    def next_image(self):
+        self.current_img = (self.current_img + 1) % len(self.imgs)
+
+    def remove_pending_action(self, action):
+        self.pending_actions.remove(action)
+
+    def add_pending_action(self, action):
+        self.pending_actions.append(action)
+
+    def get_pending_actions(self):
+        return self.pending_actions
+
+    def clear_pending_actions(self):
+        self.pending_actions = []
 
 class MinerFull:
     def __init__(self, name, resource_limit, position, rate, imgs,
@@ -102,6 +132,21 @@ class MinerFull:
     def get_animation_rate(self):
         return self.animation_rate
 
+    def next_image(self):
+        self.current_img = (self.current_img + 1) % len(self.imgs)
+
+    def remove_pending_action(self, action):
+        self.pending_actions.remove(action)
+
+    def add_pending_action(self, action):
+        self.pending_actions.append(action)
+
+    def get_pending_actions(self):
+        return self.pending_actions
+
+    def clear_pending_actions(self):
+        self.pending_actions = []
+
 class Vein:
     def __init__(self, name, rate, position, imgs, resource_distance=1):
         self.name = name
@@ -133,6 +178,21 @@ class Vein:
     def get_name(self):
         return self.name
 
+    def next_image(self):
+        self.current_img = (self.current_img + 1) % len(self.imgs)
+
+    def remove_pending_action(self, action):
+        self.pending_actions.remove(action)
+
+    def add_pending_action(self, action):
+        self.pending_actions.append(action)
+
+    def get_pending_actions(self):
+        return self.pending_actions
+
+    def clear_pending_actions(self):
+        self.pending_actions = []
+
 class Ore:
     def __init__(self, name, position, imgs, rate=5000):
         self.name = name
@@ -159,6 +219,21 @@ class Ore:
 
     def get_name(self):
         return self.name
+
+    def next_image(self):
+        self.current_img = (self.current_img + 1) % len(self.imgs)
+
+    def remove_pending_action(self, action):
+        self.pending_actions.remove(action)
+
+    def add_pending_action(self, action):
+        self.pending_actions.append(action)
+
+    def get_pending_actions(self):
+        return self.pending_actions
+
+    def clear_pending_actions(self):
+        self.pending_actions = []
 
 class Blacksmith:
     def __init__(self, name, position, imgs, resource_limit, rate,
@@ -203,6 +278,21 @@ class Blacksmith:
     def get_name(self):
         return self.name
 
+    def next_image(self):
+        self.current_img = (self.current_img + 1) % len(self.imgs)
+
+    def remove_pending_action(self, action):
+        self.pending_actions.remove(action)
+
+    def add_pending_action(self, action):
+        self.pending_actions.append(action)
+
+    def get_pending_actions(self):
+        return self.pending_actions
+
+    def clear_pending_actions(self):
+        self.pending_actions = []
+
 class Obstacle:
     def __init__(self, name, position, imgs):
         self.name = name
@@ -224,6 +314,21 @@ class Obstacle:
 
     def get_name(self):
         return self.name
+
+    def next_image(self):
+        self.current_img = (self.current_img + 1) % len(self.imgs)
+
+    def remove_pending_action(self, action):
+        pass
+
+    def add_pending_action(self, action):
+        pass
+
+    def get_pending_actions(self):
+        return []
+
+    def clear_pending_actions(self):
+        pass
 
 class OreBlob:
     def __init__(self, name, position, rate, imgs, animation_rate):
@@ -256,6 +361,21 @@ class OreBlob:
     def get_animation_rate(self):
         return self.animation_rate
 
+    def next_image(self):
+        self.current_img = (self.current_img + 1) % len(self.imgs)
+
+    def remove_pending_action(self, action):
+        self.pending_actions.remove(action)
+
+    def add_pending_action(self, action):
+        self.pending_actions.append(action)
+
+    def get_pending_actions(self):
+        return self.pending_actions
+
+    def clear_pending_actions(self):
+        self.pending_actions = []
+
 class Quake:
     def __init__(self, name, position, imgs, animation_rate):
         self.name = name
@@ -283,36 +403,20 @@ class Quake:
     def get_animation_rate(self):
         return self.animation_rate
 
+    def next_image(self):
+        self.current_img = (self.current_img + 1) % len(self.imgs)
 
+    def remove_pending_action(self, action):
+        self.pending_actions.remove(action)
 
-#Quake, Oreblob, MinerFull, MinerNotFull
+    def add_pending_action(self, action):
+        self.pending_actions.append(action)
 
-#All except Background and Obstacle
-def remove_pending_action(entity, action):
-    if hasattr(entity, "pending_actions"):
-        entity.pending_actions.remove(action)
+    def get_pending_actions(self):
+        return self.pending_actions
 
-#All except Background and Obstacle
-def add_pending_action(entity, action):
-    if hasattr(entity, "pending_actions"):
-        entity.pending_actions.append(action)
-
-#All except Background and Obstacle
-def get_pending_actions(entity):
-    if hasattr(entity, "pending_actions"):
-        return entity.pending_actions 
-    else:
-        return []
-
-#All except Background and Obstacle
-def clear_pending_actions(entity):
-    if hasattr(entity, "pending_actions"):
-        entity.pending_actions = []
-
-#All
-def next_image(entity):
-    entity.current_img = (entity.current_img + 1) % len(entity.imgs)
-
+    def clear_pending_actions(self):
+        self.pending_actions = []
 
 # This is a less than pleasant file format, but structured based on
 # material covered in course.  Something like JSON would be a

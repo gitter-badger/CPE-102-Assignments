@@ -40,7 +40,7 @@ class WorldModel:
         if self.within_bounds( pt):
             old_entity = occ_grid.get_cell(self.occupancy, pt)
             if old_entity != None:
-                entities.clear_pending_actions(old_entity)
+                old_entity.clear_pending_actions()
             occ_grid.set_cell(self.occupancy, pt, entity)
             self.entities.append(entity)
 
