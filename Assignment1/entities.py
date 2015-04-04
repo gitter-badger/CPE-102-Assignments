@@ -13,6 +13,9 @@ class Background:
     def get_image(self):
         return self.imgs[self.current_img]
 
+    def get_name(self):
+        return self.name
+
 class MinerNotFull:
     def __init__(self, name, resource_limit, position, rate, imgs,
                  animation_rate):
@@ -49,6 +52,12 @@ class MinerNotFull:
 
     def get_resource_limit(self):
         return self.resource_limit
+
+    def get_name(self):
+        return self.name
+
+    def get_animation_rate(self):
+        return self.animation_rate
 
 class MinerFull:
     def __init__(self, name, resource_limit, position, rate, imgs,
@@ -87,6 +96,12 @@ class MinerFull:
     def get_resource_limit(self):
         return self.resource_limit
 
+    def get_name(self):
+        return self.name
+
+    def get_animation_rate(self):
+        return self.animation_rate
+
 class Vein:
     def __init__(self, name, rate, position, imgs, resource_distance=1):
         self.name = name
@@ -115,6 +130,9 @@ class Vein:
     def get_resource_distance(self):
          return self.resource_distance
 
+    def get_name(self):
+        return self.name
+
 class Ore:
     def __init__(self, name, position, imgs, rate=5000):
         self.name = name
@@ -138,6 +156,9 @@ class Ore:
 
     def get_rate(self):
         return self.rate
+
+    def get_name(self):
+        return self.name
 
 class Blacksmith:
     def __init__(self, name, position, imgs, resource_limit, rate,
@@ -179,6 +200,9 @@ class Blacksmith:
     def get_resource_distance(self):
          return self.resource_distance
 
+    def get_name(self):
+        return self.name
+
 class Obstacle:
     def __init__(self, name, position, imgs):
         self.name = name
@@ -197,6 +221,9 @@ class Obstacle:
 
     def get_image(self):
         return self.imgs[self.current_img]
+
+    def get_name(self):
+        return self.name
 
 class OreBlob:
     def __init__(self, name, position, rate, imgs, animation_rate):
@@ -223,6 +250,12 @@ class OreBlob:
     def get_rate(self):
         return self.rate
 
+    def get_name(self):
+        return self.name
+
+    def get_animation_rate(self):
+        return self.animation_rate
+
 class Quake:
     def __init__(self, name, position, imgs, animation_rate):
         self.name = name
@@ -244,14 +277,15 @@ class Quake:
     def get_image(self):
         return self.imgs[self.current_img]
 
+    def get_name(self):
+        return self.name
 
-#All
-def get_name(entity):
-    return entity.name
+    def get_animation_rate(self):
+        return self.animation_rate
+
+
 
 #Quake, Oreblob, MinerFull, MinerNotFull
-def get_animation_rate(entity):
-    return entity.animation_rate
 
 #All except Background and Obstacle
 def remove_pending_action(entity, action):
