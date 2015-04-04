@@ -190,7 +190,7 @@ def create_vein_action(world, entity, i_store):
                                    entity.get_resource_distance())
         if open_pt:
             ore = create_ore(world,
-                             "ore - " + entities.get_name(entity) + " - " + str(current_ticks),
+                             "ore - " + entity.get_name() + " - " + str(current_ticks),
                              open_pt, current_ticks, i_store)
             world.add_entity(ore)
             tiles = [open_pt]
@@ -207,9 +207,9 @@ def create_vein_action(world, entity, i_store):
 # Move to minerfull
 def try_transform_miner_full(world, entity):
     new_entity = entities.MinerNotFull(
-        entities.get_name(entity), entity.get_resource_limit(),
+        entity.get_name(), entity.get_resource_limit(),
         entity.get_position(), entity.get_rate(),
-        entity.get_images(), entities.get_animation_rate(entity))
+        entity.get_images(), entity.get_animation_rate())
 
     return new_entity
 
@@ -219,9 +219,9 @@ def try_transform_miner_not_full(world, entity):
         return entity
     else:
         new_entity = entities.MinerFull(
-            entities.get_name(entity), entity.get_resource_limit(),
+            entity.get_name(), entity.get_resource_limit(),
             entity.get_position(), entity.get_rate(),
-            entity.get_images(), entities.get_animation_rate(entity))
+            entity.get_images(), entity.get_animation_rate())
         return new_entity
 
 # combine with other try miner transforms
@@ -247,12 +247,12 @@ def create_animation_action(world, entity, repeat_count):
     def action(current_ticks):
         entities.remove_pending_action(entity, action)
 
-        entities.next_image(entity)
+        entity.next_image()
 
         if repeat_count != 1:
             schedule_action(world, entity,
                             create_animation_action(world, entity, max(repeat_count - 1, 0)),
-                            current_ticks + entities.get_animation_rate(entity))
+                            current_ticks + entity.get_animation_rate())
 
         return [entity.get_position()]
 
@@ -272,7 +272,7 @@ def create_entity_death_action(world, entity):
 def create_ore_transform_action(world, entity, i_store):
     def action(current_ticks):
         entities.remove_pending_action(entity, action)
-        blob = create_blob(world, entities.get_name(entity) + " -- blob",
+        blob = create_blob(world, entity.get_name() + " -- blob",
                            entity.get_position(),
                            entity.get_rate() // BLOB_RATE_SCALE,
                            current_ticks, i_store)
@@ -360,7 +360,7 @@ def schedule_action(world, entity, action, time):
 def schedule_animation(world, entity, repeat_count=0):
     schedule_action(world, entity,
                     create_animation_action(world, entity, repeat_count),
-                    entities.get_animation_rate(entity))
+                    entity.get_animation_rate())
 
 # world model
 def clear_pending_actions(world, entity):
