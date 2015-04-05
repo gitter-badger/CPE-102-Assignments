@@ -65,13 +65,28 @@ class WorldModel:
         return tiles
     
     def remove_entity(self, entity):
+        for action in entity.get_pending_actions():
+            self.unschedule_action(action)
+        entity.clear_pending_actions()
         self.remove_entity_at(entity.get_position())
-
-    def schedule_action(self, action, time):
-        self.action_queue.insert(action, time)
 
     def unschedule_action(self, action):
         self.action_queue.remove(action)
+
+    def schedule_action(self, entity, action, time):
+        entity.add_pending_action(action)
+        self.schedule_action(action, time)
+        self.action_queue.insert(action, time)
+
+    def schedule_animation(self, entity, repeat_count=0):
+        self.schedule_action(entity,
+                        entity.create_animation_action(self, repeat_count),
+                        entity.get_animation_rate())
+
+    def clear_pending_actions(self, entity):
+        for action in entity.get_pending_actions():
+            self.unschedule_action(action)
+        entity.clear_pending_actions()
 
     def update_on_time(self, ticks):
         tiles = []
