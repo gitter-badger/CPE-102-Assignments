@@ -86,15 +86,15 @@ class WorldModel:
 
     def get_background_image(self, pt):
        if self.within_bounds(pt):
-            return self.occupancy.get_cell(pt).get_image();
+            return self.background.get_cell(pt).get_image();
 
     def get_background(self, pt):
         if self.within_bounds(pt):
-            return self.occupancy.get_cell(pt)
+            return self.background.get_cell(pt)
 
     def set_background(self, pt, bgnd):
         if self.within_bounds(pt):
-            self.occupancy.set_cell(pt, bgnd)
+            self.background.set_cell(pt, bgnd)
 
     def get_tile_occupant(self, pt):
         if self.within_bounds(pt):
