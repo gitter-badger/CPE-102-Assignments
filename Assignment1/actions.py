@@ -97,7 +97,7 @@ def miner_to_smith(world, entity, smith):
         return ([], True)
     else:
         new_pt = next_position(world, entity_pt, smith_pt)
-        return (world.move_entity(world, entity, new_pt), False)
+        return (world.move_entity(entity, new_pt), False)
 
 def blob_to_vein(world, entity, vein):
     entity_pt = entity.get_position()
@@ -105,7 +105,7 @@ def blob_to_vein(world, entity, vein):
         return ([entity_pt], False)
     vein_pt = vein.get_position()
     if adjacent(entity_pt, vein_pt):
-        world.remove_entity(world, vein)
+        world.remove_entity(vein)
         return ([vein_pt], True)
     else:
         new_pt = blob_next_position(world, entity_pt, vein_pt)
@@ -119,7 +119,7 @@ def blob_to_vein(world, entity, vein):
 
 # combine with other try miner transforms
 def try_transform_miner(world, entity, transform):
-    new_entity = transform(world, entity)
+    new_entity = transform()
     if entity != new_entity:
         world.clear_pending_actions(entity)
         world.remove_entity_at(entity.get_position())
@@ -167,15 +167,15 @@ def create_blob(world, name, pt, rate, ticks, i_store):
 
 
 def schedule_blob(world, blob, ticks, i_store):
-    schedule_action(world, blob, create_ore_blob_action(world, blob, i_store),
+    world.schedule_action(blob, blob.create_action(world, i_store),
                     ticks + blob.get_rate())
-    schedule_animation(world, blob)
+    world.schedule_animation(blob)
 
 
 def schedule_miner(world, miner, ticks, i_store):
-    schedule_action(world, miner, create_miner_action(world, miner, i_store),
+    world.schedule_action(miner, miner.create_action(world, i_store),
                     ticks + miner.get_rate())
-    schedule_animation(world, miner)
+    world.schedule_animation(miner)
 
 
 def create_ore(world, name, pt, ticks, i_store):
@@ -187,7 +187,7 @@ def create_ore(world, name, pt, ticks, i_store):
 
 
 def schedule_ore(world, ore, ticks, i_store):
-    schedule_action(world, ore,
+    world.schedule_action(ore,
                     create_ore_transform_action(world, ore, i_store),
                     ticks + ore.get_rate())
 
@@ -200,8 +200,8 @@ def create_quake(world, pt, ticks, i_store):
 
 
 def schedule_quake(world, quake, ticks):
-    schedule_animation(world, quake, QUAKE_STEPS)
-    schedule_action(world, quake, create_entity_death_action(world, quake),
+    world.schedule_animation(quake, QUAKE_STEPS)
+    world.schedule_action(quake, create_entity_death_action(world, quake),
                     ticks + QUAKE_DURATION)
 
 
@@ -213,5 +213,5 @@ def create_vein(world, name, pt, ticks, i_store):
 
 
 def schedule_vein(world, vein, ticks, i_store):
-    schedule_action(world, vein, vein.create_action(world, i_store),
+    world.schedule_action(vein, vein.create_action(world, i_store),
                     ticks + vein.get_rate())

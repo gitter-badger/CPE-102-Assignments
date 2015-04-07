@@ -75,7 +75,7 @@ class WorldModel:
 
     def schedule_action(self, entity, action, time):
         entity.add_pending_action(action)
-        self.schedule_action(action, time)
+        #self.schedule_action(action, time)
         self.action_queue.insert(action, time)
 
     def schedule_animation(self, entity, repeat_count=0):

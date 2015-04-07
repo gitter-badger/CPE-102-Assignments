@@ -107,7 +107,7 @@ class MinerNotFull:
 
             new_entity = self
             if found:
-                new_entity = actions.try_transform(world, self,
+                new_entity = actions.try_transform_miner(world, self,
                                                    self.try_transform)
 
             world.schedule_action(new_entity,
@@ -312,7 +312,7 @@ class Vein:
             else:
                 tiles = []
 
-            world.schedule_action(world, self,
+            world.schedule_action(self,
                             self.create_action(world, i_store),
                             current_ticks + self.get_rate())
             return tiles
@@ -518,7 +518,7 @@ class OreBlob:
     def entity_string(self):
         return 'unknown'
 
-    def create_ore_blob_action(self, world, i_store):
+    def create_action(self, world, i_store):
         def action(current_ticks):
             self.remove_pending_action(action)
 
@@ -533,7 +533,7 @@ class OreBlob:
                 next_time = current_ticks + self.get_rate() * 2
 
             world.schedule_action(self,
-                            self.create_ore_blob_action(world, i_store),
+                            self.create_action(world, i_store),
                             next_time)
 
             return tiles

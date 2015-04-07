@@ -5,10 +5,10 @@ import worldmodel
 import point
 
 
-KEY_DELAY = 400
-KEY_INTERVAL = 100
+KEY_DELAY = 400/10
+KEY_INTERVAL = 100/10
 
-TIMER_FREQUENCY = 100
+TIMER_FREQUENCY = 100/10
 
 
 def on_keydown(event):
