@@ -143,15 +143,15 @@ class MinerNotFull:
         return action
 
     def next_position(self, world, dest_pt):
-        horiz = sign(dest_pt.x - self.position.x)
+        horiz = actions.sign(dest_pt.x - self.position.x)
         new_pt = point.Point(self.position.x + horiz, self.position.y)
 
         if horiz == 0 or world.is_occupied(new_pt):
-           vert = sign(dest_pt.y - self.position.y)
-           new_pt = point.Point(self.position.x, self.position.y + vert)
+            vert = actions.sign(dest_pt.y - self.position.y)
+            new_pt = point.Point(self.position.x, self.position.y + vert)
 
             if vert == 0 or world.is_occupied(new_pt):
-               new_pt = point.Point(self.position.x, self.position.y)
+                new_pt = point.Point(self.position.x, self.position.y)
 
         return new_pt
 
@@ -272,12 +272,12 @@ class MinerFull:
         return action
 
     def next_position(self, world, dest_pt):
-        horiz = sign(dest_pt.x - self.position.x)
+        horiz = actions.sign(dest_pt.x - self.position.x)
         new_pt = point.Point(self.position.x + horiz, self.position.y)
 
         if horiz == 0 or world.is_occupied(new_pt):
-           vert = sign(dest_pt.y - self.position.y)
-           new_pt = point.Point(self.position.x, self.position.y + vert)
+            vert = actions.sign(dest_pt.y - self.position.y)
+            new_pt = point.Point(self.position.x, self.position.y + vert)
 
             if vert == 0 or world.is_occupied(new_pt):
                new_pt = point.Point(self.position.x, self.position.y)
@@ -607,21 +607,21 @@ class OreBlob:
         return action
 
     def next_position(self, world, dest_pt):
-        horiz = sign(dest_pt.x - self.position.x)
+        horiz = actions.sign(dest_pt.x - self.position.x)
         new_pt = point.Point(self.position.x + horiz, self.position.y)
 
         if horiz == 0 or (world.is_occupied(new_pt) and
                           not isinstance(world.get_tile_occupant(new_pt),
-                                         entities.Ore)):
-            vert = sign(dest_pt.y - self.position.y)
+                                         Ore)):
+            vert = actions.sign(dest_pt.y - self.position.y)
             new_pt = point.Point(self.position.x, self.position.y + vert)
 
             if vert == 0 or (world.is_occupied(new_pt) and
                              not isinstance(world.get_tile_occupant(new_pt),
-                                            entities.Ore)):
+                                            Ore)):
                 new_pt = point.Point(self.position.x, self.position.y)
 
-         return new_pt
+        return new_pt
 
     def to_vein(self, world,  vein):
         if not vein:
