@@ -39,50 +39,6 @@ def adjacent(pt1, pt2):
             (pt1.y == pt2.y and abs(pt1.x - pt2.x) == 1))
 
 
-def miner_to_ore(world, entity, ore):
-    entity_pt = entity.get_position()
-    if not ore:
-        return ([entity_pt], False)
-    ore_pt = ore.get_position()
-    if adjacent(entity_pt, ore_pt):
-        entity.set_resource_count(1 + entity.get_resource_count())
-        world.remove_entity(ore)
-        return ([ore_pt], True)
-    else:
-        new_pt = entity.next_position(world, ore_pt)
-        return (world.move_entity(entity, new_pt), False)
-
-
-def miner_to_smith(world, entity, smith):
-    entity_pt = entity.get_position()
-    if not smith:
-        return ([entity_pt], False)
-    smith_pt = smith.get_position()
-    if adjacent(entity_pt, smith_pt):
-        smith.set_resource_count(smith.get_resource_count() +
-				     entity.get_resource_count())
-        entity.set_resource_count(0)
-        return ([], True)
-    else:
-        new_pt = entity.next_position(world, smith_pt)
-        return (world.move_entity(entity, new_pt), False)
-
-def blob_to_vein(world, entity, vein):
-    entity_pt = entity.get_position()
-    if not vein:
-        return ([entity_pt], False)
-    vein_pt = vein.get_position()
-    if adjacent(entity_pt, vein_pt):
-        world.remove_entity(vein)
-        return ([vein_pt], True)
-    else:
-        new_pt = entity.next_position(world, vein_pt)
-        old_entity = world.get_tile_occupant(new_pt)
-        if isinstance(old_entity, entities.Ore):
-            world.remove_entity(old_entity)
-        return (world.move_entity(entity, new_pt), False)
-
-
 
 
 # combine with other try miner transforms

@@ -103,7 +103,7 @@ class MinerNotFull:
 
             entity_pt = self.get_position()
             ore = world.find_nearest(entity_pt, Ore)
-            (tiles, found) = actions.miner_to_ore(world, self, ore)
+            (tiles, found) = self.to_ore(world, ore)
 
             new_entity = self
             if found:
@@ -154,6 +154,18 @@ class MinerNotFull:
                new_pt = point.Point(self.position.x, self.position.y)
 
         return new_pt
+
+    def to_ore(self, world,  ore):
+        if not ore:
+            return ([self.position], False)
+        ore_pt = ore.get_position()
+        if actions.adjacent(self.position, ore_pt):
+            self.set_resource_count(1 + self.get_resource_count())
+            world.remove_entity(ore)
+            return ([ore_pt], True)
+        else:
+            new_pt = self.next_position(world, ore_pt)
+            return (world.move_entity(self, new_pt), False)
 
 class MinerFull:
     def __init__(self, name, resource_limit, position, rate, imgs,
@@ -222,7 +234,7 @@ class MinerFull:
 
             entity_pt = self.get_position()
             smith = world.find_nearest(entity_pt, Blacksmith)
-            (tiles, found) = actions.miner_to_smith(world, self, smith)
+            (tiles, found) = self.to_smith(world, smith)
 
             new_entity = self
             if found:
@@ -271,6 +283,19 @@ class MinerFull:
                new_pt = point.Point(self.position.x, self.position.y)
 
         return new_pt
+
+    def to_smith(self, world, smith):
+        if not smith:
+            return ([self.position], False)
+        smith_pt = smith.get_position()
+        if actions.adjacent(self.position, smith_pt):
+            smith.set_resource_count(smith.get_resource_count() +
+                         self.get_resource_count())
+            self.set_resource_count(0)
+            return ([], True)
+        else:
+            new_pt = self.next_position(world, smith_pt)
+            return (world.move_entity(self, new_pt), False)
 
 class Vein:
     def __init__(self, name, rate, position, imgs, resource_distance=1):
@@ -550,7 +575,7 @@ class OreBlob:
 
             entity_pt = self.get_position()
             vein = world.find_nearest(entity_pt, Vein)
-            (tiles, found) = actions.blob_to_vein(world, self, vein)
+            (tiles, found) = self.to_vein(world, vein)
 
             next_time = current_ticks + self.get_rate()
             if found:
@@ -597,6 +622,20 @@ class OreBlob:
                 new_pt = point.Point(self.position.x, self.position.y)
 
          return new_pt
+
+    def to_vein(self, world,  vein):
+        if not vein:
+            return ([self.position], False)
+        vein_pt = vein.get_position()
+        if actions.adjacent(self.position, vein_pt):
+            world.remove_entity(vein)
+            return ([vein_pt], True)
+        else:
+            new_pt = self.next_position(world, vein_pt)
+            old_entity = world.get_tile_occupant(new_pt)
+            if isinstance(old_entity, Ore):
+                world.remove_entity(old_entity)
+            return (world.move_entity(self, new_pt), False)
 
 class Quake:
     def __init__(self, name, position, imgs, animation_rate):
