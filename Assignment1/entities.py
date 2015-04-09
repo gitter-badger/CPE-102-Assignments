@@ -167,6 +167,11 @@ class MinerNotFull:
             new_pt = self.next_position(world, ore_pt)
             return (world.move_entity(self, new_pt), False)
 
+    def schedule(self, world, ticks, i_store):
+        world.schedule_action(self, self.create_action(world, i_store),
+                        ticks + self.get_rate())
+        world.schedule_animation(self)
+
 class MinerFull:
     def __init__(self, name, resource_limit, position, rate, imgs,
                  animation_rate):
@@ -297,6 +302,11 @@ class MinerFull:
             new_pt = self.next_position(world, smith_pt)
             return (world.move_entity(self, new_pt), False)
 
+    def schedule(self, world, ticks, i_store):
+        world.schedule_action(self, self.create_action(world, i_store),
+                        ticks + self.get_rate())
+        world.schedule_animation(self)
+
 class Vein:
     def __init__(self, name, rate, position, imgs, resource_distance=1):
         self.name = name
@@ -370,6 +380,10 @@ class Vein:
 
         return action
 
+    def schedule(self, world, ticks, i_store):
+        world.schedule_action(self, self.create_action(world, i_store),
+                        ticks + self.get_rate())
+
 class Ore:
     def __init__(self, name, position, imgs, rate=5000):
         self.name = name
@@ -415,6 +429,26 @@ class Ore:
     def entity_string(self):
         return ' '.join(['ore', self.name, str(self.position.x),
                          str(self.position.y), str(self.rate)])
+
+    def schedule(self, world, ticks, i_store):
+        world.schedule_action(self,
+                        self.create_transform_action(world, i_store),
+                        ticks + self.get_rate())
+
+    def create_transform_action(self, world, i_store):
+        def action(current_ticks):
+            self.remove_pending_action(action)
+            blob = actions.create_blob(world, self.get_name() + " -- blob",
+                               self.get_position(),
+                               self.get_rate() // actions.BLOB_RATE_SCALE,
+                               current_ticks, i_store)
+
+            world.remove_entity(self)
+            world.add_entity(blob)
+
+            return [blob.get_position()]
+
+        return action
 
 class Blacksmith:
     def __init__(self, name, position, imgs, resource_limit, rate,
@@ -637,6 +671,11 @@ class OreBlob:
                 world.remove_entity(old_entity)
             return (world.move_entity(self, new_pt), False)
 
+    def schedule(self, world, ticks, i_store):
+        world.schedule_action(self, self.create_action(world, i_store),
+                        ticks + self.get_rate())
+        world.schedule_animation(self)
+
 class Quake:
     def __init__(self, name, position, imgs, animation_rate):
         self.name = name
@@ -696,3 +735,8 @@ class Quake:
             return [self.get_position()]
 
         return action
+
+    def schedule(self, world, ticks):
+        world.schedule_animation(self, actions.QUAKE_STEPS)
+        world.schedule_action(self, actions.create_entity_death_action(world, self),
+                        ticks + actions.QUAKE_DURATION)

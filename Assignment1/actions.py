@@ -65,68 +65,29 @@ def create_entity_death_action(world, entity):
 
     return action
 
-# ore
-def create_ore_transform_action(world, entity, i_store):
-    def action(current_ticks):
-        entity.remove_pending_action(action)
-        blob = create_blob(world, entity.get_name() + " -- blob",
-                           entity.get_position(),
-                           entity.get_rate() // BLOB_RATE_SCALE,
-                           current_ticks, i_store)
-
-        world.remove_entity(entity)
-        world.add_entity(blob)
-
-        return [blob.get_position()]
-
-    return action
-
 def create_blob(world, name, pt, rate, ticks, i_store):
     blob = entities.OreBlob(name, pt, rate,
                             image_store.get_images(i_store, 'blob'),
                             random.randint(BLOB_ANIMATION_MIN, BLOB_ANIMATION_MAX)
                             * BLOB_ANIMATION_RATE_SCALE)
-    schedule_blob(world, blob, ticks, i_store)
+    blob.schedule(world, ticks, i_store)
     return blob
-
-
-def schedule_blob(world, blob, ticks, i_store):
-    world.schedule_action(blob, blob.create_action(world, i_store),
-                    ticks + blob.get_rate())
-    world.schedule_animation(blob)
-
-
-def schedule_miner(world, miner, ticks, i_store):
-    world.schedule_action(miner, miner.create_action(world, i_store),
-                    ticks + miner.get_rate())
-    world.schedule_animation(miner)
 
 
 def create_ore(world, name, pt, ticks, i_store):
     ore = entities.Ore(name, pt, image_store.get_images(i_store, 'ore'),
                        random.randint(ORE_CORRUPT_MIN, ORE_CORRUPT_MAX))
-    schedule_ore(world, ore, ticks, i_store)
+    ore.schedule(world, ticks, i_store)
 
     return ore
-
-
-def schedule_ore(world, ore, ticks, i_store):
-    world.schedule_action(ore,
-                    create_ore_transform_action(world, ore, i_store),
-                    ticks + ore.get_rate())
 
 
 def create_quake(world, pt, ticks, i_store):
     quake = entities.Quake("quake", pt,
                            image_store.get_images(i_store, 'quake'), QUAKE_ANIMATION_RATE)
-    schedule_quake(world, quake, ticks)
+    quake.schedule(world, ticks)
     return quake
 
-
-def schedule_quake(world, quake, ticks):
-    world.schedule_animation(quake, QUAKE_STEPS)
-    world.schedule_action(quake, create_entity_death_action(world, quake),
-                    ticks + QUAKE_DURATION)
 
 
 def create_vein(world, name, pt, ticks, i_store):
@@ -134,8 +95,3 @@ def create_vein(world, name, pt, ticks, i_store):
                          random.randint(VEIN_RATE_MIN, VEIN_RATE_MAX),
                          pt, image_store.get_images(i_store, 'vein'))
     return vein
-
-
-def schedule_vein(world, vein, ticks, i_store):
-    world.schedule_action(vein, vein.create_action(world, i_store),
-                    ticks + vein.get_rate())
