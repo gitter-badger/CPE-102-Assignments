@@ -107,8 +107,7 @@ class MinerNotFull:
 
             new_entity = self
             if found:
-                new_entity = actions.try_transform_miner(world, self,
-                                                   self.try_transform)
+                new_entity = self.transform(world)
 
             world.schedule_action(new_entity,
                             new_entity.create_action(world, i_store),
@@ -117,7 +116,7 @@ class MinerNotFull:
 
         return action
 
-    def try_transform(self):
+    def transform(self, world):
         if self.resource_count < self.resource_limit:
             return self
         else:
@@ -125,6 +124,11 @@ class MinerNotFull:
                 self.get_name(), self.get_resource_limit(),
                 self.get_position(), self.get_rate(),
                 self.get_images(), self.get_animation_rate())
+
+            world.clear_pending_actions(self)
+            world.remove_entity_at(self.get_position())
+            world.add_entity(new_entity)
+            world.schedule_animation(new_entity)
             return new_entity
 
     def create_animation_action(self, world, repeat_count):
@@ -243,8 +247,7 @@ class MinerFull:
 
             new_entity = self
             if found:
-                new_entity = actions.try_transform_miner(world, self,
-                                                 self.try_transform)
+                new_entity = self.transform(world)
 
             world.schedule_action(new_entity,
                             new_entity.create_action(world, i_store),
@@ -253,12 +256,16 @@ class MinerFull:
 
         return action
 
-    def try_transform(self):
+    def transform(self, world):
         new_entity = MinerNotFull(
             self.get_name(), self.get_resource_limit(),
             self.get_position(), self.get_rate(),
             self.get_images(), self.get_animation_rate())
 
+        world.clear_pending_actions(self)
+        world.remove_entity_at(self.get_position())
+        world.add_entity(new_entity)
+        world.schedule_animation(new_entity)
         return new_entity
 
     def create_animation_action(self, world, repeat_count):
@@ -738,5 +745,14 @@ class Quake:
 
     def schedule(self, world, ticks):
         world.schedule_animation(self, actions.QUAKE_STEPS)
-        world.schedule_action(self, actions.create_entity_death_action(world, self),
+        world.schedule_action(self, self.create_death_action(world),
                         ticks + actions.QUAKE_DURATION)
+
+    def create_death_action(self, world):
+        def action(current_ticks):
+            self.remove_pending_action(action)
+            pt = self.get_position()
+            world.remove_entity(self)
+            return [pt]
+
+        return action
