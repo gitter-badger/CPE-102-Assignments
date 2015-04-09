@@ -4,7 +4,7 @@ import image_store
 import point
 import worldmodel
 
-RATE_MULTIPLIER = 10
+RATE_MULTIPLIER = 30
 
 PROPERTY_KEY = 0
 
@@ -94,8 +94,8 @@ def add_entity(world, properties, i_store, run):
     new_entity = create_from_properties(properties, i_store)
     if new_entity:
         world.add_entity(new_entity)
-        if run:
-            schedule_entity(world, new_entity, i_store)
+        if run and hasattr(new_entity, 'schedule'):
+            new_entity.schedule(world, 0, i_store)
 
 
 def create_from_properties(properties, i_store):
@@ -168,12 +168,3 @@ def create_obstacle(properties, i_store):
                                  image_store.get_images(i_store, properties[PROPERTY_KEY]))
     else:
         return None
-
-
-def schedule_entity(world, entity, i_store):
-    if isinstance(entity, entities.MinerNotFull):
-        entity.schedule_miner(world, 0, i_store)
-    elif isinstance(entity, entities.Vein):
-        entity.schedule(world, 0, i_store)
-    elif isinstance(entity, entities.Ore):
-        entity.schedule_ore(world, 0, i_store)
