@@ -5,7 +5,16 @@ import ordered_list
 import actions
 import occ_grid
 import point
+import save_load
+import image_store
 
+PROPERTY_KEY = 0
+
+BGND_KEY = 'background'
+BGND_NUM_PROPERTIES = 4
+BGND_NAME = 1
+BGND_COL = 2
+BGND_ROW = 3
 
 class WorldModel:
     def __init__(self, num_rows, num_cols, background):
@@ -123,6 +132,44 @@ class WorldModel:
                   for e in self.entities if isinstance(e, type)]
 
         return nearest_entity(oftype)
+
+    def save_world(self, file):
+        self.save_entities(file)
+        self.save_background(file)
+
+    def save_entities(self, file):
+        for entity in self.get_entities():
+            file.write(entity.entity_string() + '\n')
+
+    def save_background(self, file):
+        for row in range(0, self.num_rows):
+            for col in range(0, self.num_cols):
+                file.write('background' +
+                           self.get_background(point.Point(col, row)).get_name() +
+                           ' ' + str(col) + ' ' + str(row) + '\n')
+
+    def load_world(self, images, file, run=False):
+        for line in file:
+            properties = line.split()
+            if properties:
+                if properties[PROPERTY_KEY] == BGND_KEY:
+                    self.add_background(properties, images)
+                else:
+                    self.create_add_entity(properties, images, run)
+
+    def add_background(self, properties, i_store):
+        if len(properties) >= BGND_NUM_PROPERTIES:
+            pt = point.Point(int(properties[BGND_COL]), int(properties[BGND_ROW]))
+            name = properties[BGND_NAME]
+            self.set_background(pt, entities.Background(name,
+                                  image_store.get_images(i_store, name)))
+
+    def create_add_entity(self, properties, i_store, run):
+        new_entity = save_load.create_from_properties(properties, i_store)
+        if new_entity:
+            self.add_entity(new_entity)
+            if run and hasattr(new_entity, 'schedule'):
+                new_entity.schedule(self, 0, i_store)
 
 def nearest_entity(entity_dists):
     if len(entity_dists) > 0:
