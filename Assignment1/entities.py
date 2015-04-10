@@ -147,11 +147,11 @@ class MinerNotFull:
         return action
 
     def next_position(self, world, dest_pt):
-        horiz = actions.sign(dest_pt.x - self.position.x)
+        horiz = sign(dest_pt.x - self.position.x)
         new_pt = point.Point(self.position.x + horiz, self.position.y)
 
         if horiz == 0 or world.is_occupied(new_pt):
-            vert = actions.sign(dest_pt.y - self.position.y)
+            vert = sign(dest_pt.y - self.position.y)
             new_pt = point.Point(self.position.x, self.position.y + vert)
 
             if vert == 0 or world.is_occupied(new_pt):
@@ -163,7 +163,7 @@ class MinerNotFull:
         if not ore:
             return ([self.position], False)
         ore_pt = ore.get_position()
-        if actions.adjacent(self.position, ore_pt):
+        if adjacent(self.position, ore_pt):
             self.set_resource_count(1 + self.get_resource_count())
             world.remove_entity(ore)
             return ([ore_pt], True)
@@ -284,11 +284,11 @@ class MinerFull:
         return action
 
     def next_position(self, world, dest_pt):
-        horiz = actions.sign(dest_pt.x - self.position.x)
+        horiz = sign(dest_pt.x - self.position.x)
         new_pt = point.Point(self.position.x + horiz, self.position.y)
 
         if horiz == 0 or world.is_occupied(new_pt):
-            vert = actions.sign(dest_pt.y - self.position.y)
+            vert = sign(dest_pt.y - self.position.y)
             new_pt = point.Point(self.position.x, self.position.y + vert)
 
             if vert == 0 or world.is_occupied(new_pt):
@@ -300,7 +300,7 @@ class MinerFull:
         if not smith:
             return ([self.position], False)
         smith_pt = smith.get_position()
-        if actions.adjacent(self.position, smith_pt):
+        if adjacent(self.position, smith_pt):
             smith.set_resource_count(smith.get_resource_count() +
                          self.get_resource_count())
             self.set_resource_count(0)
@@ -648,13 +648,13 @@ class OreBlob:
         return action
 
     def next_position(self, world, dest_pt):
-        horiz = actions.sign(dest_pt.x - self.position.x)
+        horiz = sign(dest_pt.x - self.position.x)
         new_pt = point.Point(self.position.x + horiz, self.position.y)
 
         if horiz == 0 or (world.is_occupied(new_pt) and
                           not isinstance(world.get_tile_occupant(new_pt),
                                          Ore)):
-            vert = actions.sign(dest_pt.y - self.position.y)
+            vert = sign(dest_pt.y - self.position.y)
             new_pt = point.Point(self.position.x, self.position.y + vert)
 
             if vert == 0 or (world.is_occupied(new_pt) and
@@ -668,7 +668,7 @@ class OreBlob:
         if not vein:
             return ([self.position], False)
         vein_pt = vein.get_position()
-        if actions.adjacent(self.position, vein_pt):
+        if adjacent(self.position, vein_pt):
             world.remove_entity(vein)
             return ([vein_pt], True)
         else:
@@ -736,8 +736,8 @@ class Quake:
 
             if repeat_count != 1:
                 world.schedule_action(self,
-                                self.create_animation_action(world, max(repeat_count - 1, 0)),
-                                current_ticks + self.get_animation_rate())
+                 self.create_animation_action(world, max(repeat_count - 1, 0)),
+                 current_ticks + self.get_animation_rate())
 
             return [self.get_position()]
 
@@ -756,3 +756,15 @@ class Quake:
             return [pt]
 
         return action
+
+def sign(x):
+    if x < 0:
+        return -1
+    elif x > 0:
+        return 1
+    else:
+        return 0
+
+def adjacent(pt1, pt2):
+    return ((pt1.x == pt2.x and abs(pt1.y - pt2.y) == 1) or
+            (pt1.y == pt2.y and abs(pt1.x - pt2.x) == 1))
