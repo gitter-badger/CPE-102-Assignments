@@ -5,7 +5,6 @@ import pygame
 import controller
 import entities
 import image_store
-import save_load
 import worldmodel
 import worldview
 

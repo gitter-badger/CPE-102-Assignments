@@ -1,11 +1,6 @@
-import math
 import random
 
-import pygame
-
 import entities
-import worldmodel
-import point
 import image_store
 
 BLOB_RATE_SCALE = 4
@@ -24,9 +19,6 @@ VEIN_SPAWN_DELAY = 500
 VEIN_RATE_MIN = 8000
 VEIN_RATE_MAX = 17000
 
-
-# for all create_*
-#   they all look basically like constructors...
 
 def create_blob(world, name, pt, rate, ticks, i_store):
     blob = entities.OreBlob(name, pt, rate,

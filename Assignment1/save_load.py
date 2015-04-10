@@ -1,8 +1,6 @@
-import actions
 import entities
 import image_store
 import point
-import worldmodel
 
 RATE_MULTIPLIER = 30
 

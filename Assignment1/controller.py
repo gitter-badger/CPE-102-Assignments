@@ -1,7 +1,5 @@
 import pygame
 
-import worldview
-import worldmodel
 import point
 
 

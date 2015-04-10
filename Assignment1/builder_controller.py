@@ -7,8 +7,6 @@ import image_store
 import keys
 import mouse_buttons
 import point
-import save_load
-import worldview
 import world
 
 
