@@ -165,3 +165,90 @@ methods:
    create_animation_action
    schedule
    create_death_action
+
+class: WorldModel
+methods:
+   find_open_around
+   within_bounds
+   is_occupied
+   add_entity
+   remove_entity_at
+   move_entity
+   remove_entity
+   unschedule_action
+   schedule_action
+   schedule_animation
+   clear_pending_actions
+   update_on_time
+   get_background_image
+   get_background
+   set_background
+   get_tile_occupant
+   get_entities
+   find_nearest
+   save_world
+   save_entities
+   save_background
+   load_world
+   add_background
+   create_add_entity
+
+class: WorldView
+methods:
+   viewport_to_world
+   world_to_viewport
+   create_shifted_viewport
+   draw_background
+   draw_entities
+   update_view
+   draw_viewport
+   update_view_tiles
+   update_tile
+   get_tile_image
+   create_mouse_surface
+   update_mouse_cursor
+   mouse_move
+
+class: Grid
+methods:
+   get_cell
+   set_cell
+
+entities.sign:
+
+entities.adjacent:
+
+save_load.create_from_properties:
+
+save_load.create_miner:
+
+save_load.create_vein:
+
+save_load.create_ore:
+
+save_load.create_blacksmith:
+
+save_load.create_obstacle:
+
+worldview.clamp:
+
+image_store.create_default_image:
+
+image_store.load_images:
+
+image_store.process_image_line:
+
+image_store.get_images_internal:
+
+image_store.get_images:
+
+main.create_default_background:
+
+main.load_world:
+
+main.main:
+
+worldmodel.nearest_entity:
+
+worldmodel.distance_sq:
+
