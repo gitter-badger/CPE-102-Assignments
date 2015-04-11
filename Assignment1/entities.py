@@ -2,6 +2,51 @@ import point
 import actions
 import save_load
 
+RATE_MULTIPLIER = 30
+
+PROPERTY_KEY = 0
+
+MINER_NUM_PROPERTIES = 7
+MINER_NAME = 1
+MINER_LIMIT = 4
+MINER_COL = 2
+MINER_ROW = 3
+MINER_RATE = 5
+MINER_ANIMATION_RATE = 6
+
+OBSTACLE_NUM_PROPERTIES = 4
+OBSTACLE_NAME = 1
+OBSTACLE_COL = 2
+OBSTACLE_ROW = 3
+
+ORE_NUM_PROPERTIES = 5
+ORE_NAME = 1
+ORE_COL = 2
+ORE_ROW = 3
+ORE_RATE = 4
+
+SMITH_NUM_PROPERTIES = 7
+SMITH_NAME = 1
+SMITH_COL = 2
+SMITH_ROW = 3
+SMITH_LIMIT = 4
+SMITH_RATE = 5
+SMITH_REACH = 6
+
+VEIN_NUM_PROPERTIES = 6
+VEIN_NAME = 1
+VEIN_RATE = 4
+VEIN_COL = 2
+VEIN_ROW = 3
+VEIN_REACH = 5
+
+PROPERTY_KEY = 0
+MINER_KEY = 'miner'
+OBSTACLE_KEY = 'obstacle'
+ORE_KEY = 'ore'
+SMITH_KEY = 'blacksmith'
+VEIN_KEY = 'vein'
+
 class Background:
     def __init__(self, name, imgs):
         self.name = name
@@ -176,6 +221,21 @@ class MinerNotFull:
         world.schedule_action(self, self.create_action(world, i_store),
                         ticks + self.get_rate())
         world.schedule_animation(self)
+    
+    @staticmethod
+    def create_from_properties(properties, i_store):
+        if len(properties) == MINER_NUM_PROPERTIES:
+            miner = MinerNotFull(properties[MINER_NAME],
+                     int(properties[MINER_LIMIT]),
+                     point.Point(int(properties[MINER_COL]), int(properties[MINER_ROW])),
+                     int(properties[MINER_RATE]) // RATE_MULTIPLIER,
+                     i_store.get_images(properties[PROPERTY_KEY]),
+                     int(properties[MINER_ANIMATION_RATE]))
+
+            return miner
+
+        else:
+            return None
 
 class MinerFull:
     def __init__(self, name, resource_limit, position, rate, imgs,
@@ -392,6 +452,20 @@ class Vein:
         world.schedule_action(self, self.create_action(world, i_store),
                         ticks + self.get_rate())
 
+    @staticmethod
+    def create_from_properties(properties, i_store):
+        if len(properties) == VEIN_NUM_PROPERTIES:
+            vein = Vein(properties[VEIN_NAME],
+                    int(properties[VEIN_RATE])//RATE_MULTIPLIER,
+                    point.Point(int(properties[VEIN_COL]), int(properties[VEIN_ROW])),
+                    i_store.get_images(properties[PROPERTY_KEY]),
+                    int(properties[VEIN_REACH]))
+
+            return vein
+
+        else:
+            return None
+
 class Ore:
     def __init__(self, name, position, imgs, rate=5000):
         self.name = name
@@ -448,7 +522,7 @@ class Ore:
             self.remove_pending_action(action)
             blob = actions.create_blob(world, self.get_name() + " -- blob",
                                self.get_position(),
-                               self.get_rate() // actions.BLOB_RATE_SCALE // save_load.RATE_MULTIPLIER,
+                               self.get_rate() // actions.BLOB_RATE_SCALE // RATE_MULTIPLIER,
                                current_ticks, i_store)
 
             world.remove_entity(self)
@@ -457,6 +531,19 @@ class Ore:
             return [blob.get_position()]
 
         return action
+
+    @staticmethod
+    def create_from_properties(properties, i_store):
+        if len(properties) == ORE_NUM_PROPERTIES:
+            ore = Ore(properties[ORE_NAME],
+                   point.Point(int(properties[ORE_COL]), int(properties[ORE_ROW])),
+                   i_store.get_images(properties[PROPERTY_KEY]),
+                   int(properties[ORE_RATE])//RATE_MULTIPLIER)
+
+            return ore
+
+        else:
+            return None
 
 class Blacksmith:
     def __init__(self, name, position, imgs, resource_limit, rate,
@@ -521,6 +608,21 @@ class Blacksmith:
                          str(self.position.y), str(self.resource_limit),
                          str(self.rate), str(self.resource_distance)])
 
+    @staticmethod
+    def create_from_properties(properties, i_store):
+        if len(properties) == SMITH_NUM_PROPERTIES:
+            return Blacksmith(properties[SMITH_NAME],
+                    point.Point(int(properties[SMITH_COL]), int(properties[SMITH_ROW])),
+                    i_store.get_images(properties[PROPERTY_KEY]),
+                    int(properties[SMITH_LIMIT]),
+                    int(properties[SMITH_RATE])//RATE_MULTIPLIER,
+                    int(properties[SMITH_REACH]))
+
+            return smith
+
+        else:
+            return None
+
 class Obstacle:
     def __init__(self, name, position, imgs):
         self.name = name
@@ -561,6 +663,15 @@ class Obstacle:
     def entity_string(self):
         return ' '.join(['obstacle', self.name, str(self.position.x),
                          str(self.position.y)])
+    @staticmethod
+    def create_from_properties(properties, i_store):
+        if len(properties) == OBSTACLE_NUM_PROPERTIES:
+            return Obstacle(properties[OBSTACLE_NAME],
+                    point.Point(int(properties[OBSTACLE_COL]), int(properties[OBSTACLE_ROW])),
+                    i_store.get_images(properties[PROPERTY_KEY]))
+
+        else:
+            return None
 
 class OreBlob:
     def __init__(self, name, position, rate, imgs, animation_rate):
@@ -769,3 +880,19 @@ def sign(x):
 def adjacent(pt1, pt2):
     return ((pt1.x == pt2.x and abs(pt1.y - pt2.y) == 1) or
             (pt1.y == pt2.y and abs(pt1.x - pt2.x) == 1))
+
+def create_from_properties(properties, i_store):
+    key = properties[PROPERTY_KEY]
+    if properties:
+        if key == MINER_KEY:
+            return MinerNotFull.create_from_properties(properties, i_store)
+        elif key == VEIN_KEY:
+            return Vein.create_from_properties(properties, i_store)
+        elif key == ORE_KEY:
+            return Ore.create_from_properties(properties, i_store)
+        elif key == SMITH_KEY:
+            return Blacksmith.create_from_properties(properties, i_store)
+        elif key == OBSTACLE_KEY:
+            return Obstacle.create_from_properties(properties, i_store)
+
+    return None

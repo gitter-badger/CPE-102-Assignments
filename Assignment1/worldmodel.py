@@ -165,7 +165,7 @@ class WorldModel:
                                   i_store.get_images(name)))
 
     def create_add_entity(self, properties, i_store, run):
-        new_entity = save_load.create_from_properties(properties, i_store)
+        new_entity = entities.create_from_properties(properties, i_store)
         if new_entity:
             self.add_entity(new_entity)
             if run and hasattr(new_entity, 'schedule'):
