@@ -227,28 +227,25 @@ methods:
     create_default_image
 
 actions.create_blob:
-
 actions.create_ore:
-
 actions.create_quake:
-
 actions.create_vein:
+  Already have create methods inside of entity classes, also these did not necessarily
+  fit inside of the classes as they are more of a constructor vs method.
 
 entities.sign:
-
 entities.adjacent:
-
-entities.create_from_properties
-
 worldview.clamp:
+worldmodel.nearest_entity:
+worldmodel.distance_sq:
+  Just some helper functions that aren't tied to any classes.
+
+entities.create_from_properties:
+  Helper function to aid in the creation of entities.
 
 main.create_default_background:
-
 main.load_world:
-
 main.main:
+  Setup or pygame setup functions.
 
-worldmodel.nearest_entity:
-
-worldmodel.distance_sq:
 

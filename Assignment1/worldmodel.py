@@ -5,7 +5,6 @@ import ordered_list
 import actions
 import occ_grid
 import point
-import save_load
 import image_store
 
 PROPERTY_KEY = 0
