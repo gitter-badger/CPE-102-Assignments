@@ -214,6 +214,21 @@ methods:
    get_cell
    set_cell
 
+class: ImageStore
+methods:
+    process_image_line
+    get_images_internal
+    get_images
+    create_default_image
+
+actions.create_blob:
+
+actions.create_ore:
+
+actions.create_quake:
+
+actions.create_vein:
+
 entities.sign:
 
 entities.adjacent:
@@ -231,16 +246,6 @@ save_load.create_blacksmith:
 save_load.create_obstacle:
 
 worldview.clamp:
-
-image_store.create_default_image:
-
-image_store.load_images:
-
-image_store.process_image_line:
-
-image_store.get_images_internal:
-
-image_store.get_images:
 
 main.create_default_background:
 
