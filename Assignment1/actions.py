@@ -22,14 +22,14 @@ VEIN_RATE_MAX = 17000
 
 def create_blob(world, name, pt, rate, ticks, i_store):
     blob = entities.OreBlob(name, pt, rate,
-                            image_store.get_images(i_store, 'blob'),
+                            i_store.get_images('blob'),
                             random.randint(BLOB_ANIMATION_MIN, BLOB_ANIMATION_MAX)
                             * BLOB_ANIMATION_RATE_SCALE)
     blob.schedule(world, ticks, i_store)
     return blob
 
 def create_ore(world, name, pt, ticks, i_store):
-    ore = entities.Ore(name, pt, image_store.get_images(i_store, 'ore'),
+    ore = entities.Ore(name, pt, i_store.get_images('ore'),
                        random.randint(ORE_CORRUPT_MIN, ORE_CORRUPT_MAX))
     ore.schedule(world, ticks, i_store)
 
@@ -37,12 +37,12 @@ def create_ore(world, name, pt, ticks, i_store):
 
 def create_quake(world, pt, ticks, i_store):
     quake = entities.Quake("quake", pt,
-                           image_store.get_images(i_store, 'quake'), QUAKE_ANIMATION_RATE)
+                           i_store.get_images('quake'), QUAKE_ANIMATION_RATE)
     quake.schedule(world, ticks)
     return quake
 
 def create_vein(world, name, pt, ticks, i_store):
     vein = entities.Vein("vein" + name,
                          random.randint(VEIN_RATE_MIN, VEIN_RATE_MAX),
-                         pt, image_store.get_images(i_store, 'vein'))
+                         pt, i_store.get_images('vein'))
     return vein

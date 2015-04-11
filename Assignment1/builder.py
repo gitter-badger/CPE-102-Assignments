@@ -29,14 +29,14 @@ def main():
     random.seed()
     pygame.init()
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-    i_store = image_store.load_images(IMAGE_LIST_FILE_NAME,
+    i_store = image_store.ImageStore(IMAGE_LIST_FILE_NAME,
                                       TILE_WIDTH, TILE_HEIGHT)
 
     num_cols = SCREEN_WIDTH // TILE_WIDTH * WORLD_WIDTH_SCALE
     num_rows = SCREEN_HEIGHT // TILE_HEIGHT * WORLD_HEIGHT_SCALE
 
     default_background = create_default_background(
-        image_store.get_images(i_store, image_store.DEFAULT_IMAGE_NAME))
+        i_store.get_images(image_store.DEFAULT_IMAGE_NAME))
 
     world = worldmodel.WorldModel(num_rows, num_cols, default_background)
     view = worldview.WorldView(SCREEN_WIDTH // TILE_WIDTH,
@@ -44,7 +44,7 @@ def main():
 
     view.update_view()
 
-    builder_controller.activity_loop(view, world, i_store)
+    builder_controller.activity_loop(view, world, i_store.images)
 
 
 if __name__ == '__main__':

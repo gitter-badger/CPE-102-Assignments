@@ -68,7 +68,7 @@ def create_miner(properties, i_store):
                  int(properties[MINER_LIMIT]),
                  point.Point(int(properties[MINER_COL]), int(properties[MINER_ROW])),
                  int(properties[MINER_RATE]) // RATE_MULTIPLIER,
-                 image_store.get_images(i_store, properties[PROPERTY_KEY]),
+                 i_store.get_images(properties[PROPERTY_KEY]),
                  int(properties[MINER_ANIMATION_RATE]))
 
         return miner
@@ -82,7 +82,7 @@ def create_vein(properties, i_store):
         vein = entities.Vein(properties[VEIN_NAME],
                 int(properties[VEIN_RATE])//RATE_MULTIPLIER,
                 point.Point(int(properties[VEIN_COL]), int(properties[VEIN_ROW])),
-                image_store.get_images(i_store, properties[PROPERTY_KEY]),
+                i_store.get_images(properties[PROPERTY_KEY]),
                 int(properties[VEIN_REACH]))
 
         return vein
@@ -95,7 +95,7 @@ def create_ore(properties, i_store):
     if len(properties) == ORE_NUM_PROPERTIES:
         ore = entities.Ore(properties[ORE_NAME],
                point.Point(int(properties[ORE_COL]), int(properties[ORE_ROW])),
-               image_store.get_images(i_store, properties[PROPERTY_KEY]),
+               i_store.get_images(properties[PROPERTY_KEY]),
                int(properties[ORE_RATE])//RATE_MULTIPLIER)
 
         return ore
@@ -108,7 +108,7 @@ def create_blacksmith(properties, i_store):
     if len(properties) == SMITH_NUM_PROPERTIES:
         return entities.Blacksmith(properties[SMITH_NAME],
                 point.Point(int(properties[SMITH_COL]), int(properties[SMITH_ROW])),
-                image_store.get_images(i_store, properties[PROPERTY_KEY]),
+                i_store.get_images(properties[PROPERTY_KEY]),
                 int(properties[SMITH_LIMIT]),
                 int(properties[SMITH_RATE])//RATE_MULTIPLIER,
                 int(properties[SMITH_REACH]))
@@ -123,7 +123,7 @@ def create_obstacle(properties, i_store):
     if len(properties) == OBSTACLE_NUM_PROPERTIES:
         return entities.Obstacle(properties[OBSTACLE_NAME],
                 point.Point(int(properties[OBSTACLE_COL]), int(properties[OBSTACLE_ROW])),
-                image_store.get_images(i_store, properties[PROPERTY_KEY]))
+                i_store.get_images(properties[PROPERTY_KEY]))
 
     else:
         return None
