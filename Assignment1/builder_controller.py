@@ -7,7 +7,7 @@ import image_store
 import keys
 import mouse_buttons
 import point
-import world
+import worldmodel
 
 
 WORLD_FILE_NAME = 'gaia.sav'
