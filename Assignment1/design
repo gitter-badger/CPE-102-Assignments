@@ -33,6 +33,7 @@ methods:
    next_position
    to_ore
    schedule
+   create_from_properties
 
 class: MinerFull
 methods:
@@ -75,6 +76,7 @@ methods:
    entity_string
    create_action
    schedule
+   create_from_properties
 
 class: Ore
 methods:
@@ -92,6 +94,7 @@ methods:
    entity_string
    create_action
    create_transform_action
+   create_from_properties
 
 class: Blacksmith
 methods:
@@ -112,6 +115,7 @@ methods:
    clear_pending_actions
    entity_string
    create_action
+   create_from_properties
 
 class: Obstacle
 methods:
@@ -126,6 +130,7 @@ methods:
    get_pending_actions
    clear_pending_actions
    entity_string
+   create_from_properties
 
 class: OreBlob
 methods:
@@ -233,17 +238,7 @@ entities.sign:
 
 entities.adjacent:
 
-save_load.create_from_properties:
-
-save_load.create_miner:
-
-save_load.create_vein:
-
-save_load.create_ore:
-
-save_load.create_blacksmith:
-
-save_load.create_obstacle:
+entities.create_from_properties
 
 worldview.clamp:
 
