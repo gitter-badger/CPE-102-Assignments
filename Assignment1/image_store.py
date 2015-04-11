@@ -39,14 +39,14 @@ class ImageStore():
         else:
             return []
 
+    def get_images(self, key):
+        if key in self.images:
+            return self.images[key]
+        else:
+            return self.images[DEFAULT_IMAGE_NAME]
+
 def create_default_image(tile_width, tile_height):
     surf = pygame.Surface((tile_width, tile_height))
     surf.fill(DEFAULT_IMAGE_COLOR)
     return surf
 
-
-def get_images(images, key):
-    if key in images:
-        return images[key]
-    else:
-        return images[DEFAULT_IMAGE_NAME]

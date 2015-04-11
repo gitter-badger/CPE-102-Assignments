@@ -162,7 +162,7 @@ class WorldModel:
             pt = point.Point(int(properties[BGND_COL]), int(properties[BGND_ROW]))
             name = properties[BGND_NAME]
             self.set_background(pt, entities.Background(name,
-                                  image_store.get_images(i_store, name)))
+                                  i_store.get_images(name)))
 
     def create_add_entity(self, properties, i_store, run):
         new_entity = save_load.create_from_properties(properties, i_store)
