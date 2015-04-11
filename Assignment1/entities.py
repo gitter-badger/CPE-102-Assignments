@@ -1,5 +1,6 @@
 import point
 import actions
+import save_load
 
 class Background:
     def __init__(self, name, imgs):
@@ -447,7 +448,7 @@ class Ore:
             self.remove_pending_action(action)
             blob = actions.create_blob(world, self.get_name() + " -- blob",
                                self.get_position(),
-                               self.get_rate() // actions.BLOB_RATE_SCALE,
+                               self.get_rate() // actions.BLOB_RATE_SCALE // save_load.RATE_MULTIPLIER,
                                current_ticks, i_store)
 
             world.remove_entity(self)
