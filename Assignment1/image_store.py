@@ -12,8 +12,7 @@ class ImageStore():
                 self.process_image_line(line)
 
         if DEFAULT_IMAGE_NAME not in self.images:
-            default_image = create_default_image(tile_width, tile_height)
-            self.images[DEFAULT_IMAGE_NAME] = [default_image]
+            self.create_default_image(tile_width, tile_height)
 
     def process_image_line(self, line):
         attrs = line.split()
@@ -45,8 +44,8 @@ class ImageStore():
         else:
             return self.images[DEFAULT_IMAGE_NAME]
 
-def create_default_image(tile_width, tile_height):
-    surf = pygame.Surface((tile_width, tile_height))
-    surf.fill(DEFAULT_IMAGE_COLOR)
-    return surf
+    def create_default_image(self, tile_width, tile_height):
+        surf = pygame.Surface((tile_width, tile_height))
+        surf.fill(DEFAULT_IMAGE_COLOR)
+        self.images[DEFAULT_IMAGE_NAME] = surf
 
