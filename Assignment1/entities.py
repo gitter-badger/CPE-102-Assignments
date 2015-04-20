@@ -98,6 +98,73 @@ class Obstacle(Positionable):
         else:
             return None
 
+class Actor(Positionable):
+
+    def __init__(self, name, position, imgs):
+        self.pending_actions = []
+        super(Actor, self).__init__(name, position, imgs)
+
+    def remove_pending_action(self, action):
+        self.pending_actions.remove(action)
+
+    def add_pending_action(self, action):
+        self.pending_actions.append(action)
+
+    def get_pending_actions(self):
+        return self.pending_actions
+
+    def clear_pending_actions(self):
+        self.pending_actions = []
+
+    def schedule_action(self, world, ticks, i_store, schedule_rate):
+        world.schedule_action(self,
+                        self.create_action(world, i_store),
+                        ticks + schedule_rate)
+
+class Ore(Actor):
+
+    def __init__(self, name, position, imgs, rate=5000):
+        self.rate = rate
+        super(Ore, self).__init__(name, position, imgs)
+
+    def get_rate(self):
+        return self.rate
+
+    def entity_string(self):
+        return ' '.join(['ore', self.name, str(self.position.x),
+                         str(self.position.y), str(self.rate)])
+
+    def schedule(self, world, ticks, i_store):
+        self.schedule_action(world, ticks, i_store, self.rate)
+
+    def create_action(self, world, i_store):
+        def action(current_ticks):
+            self.remove_pending_action(action)
+            blob = actions.create_blob(world, self.get_name() + " -- blob",
+                               self.get_position(),
+                               self.get_rate() // actions.BLOB_RATE_SCALE // RATE_MULTIPLIER,
+                               current_ticks, i_store)
+
+            world.remove_entity(self)
+            world.add_entity(blob)
+
+            return [blob.get_position()]
+
+        return action
+
+    @staticmethod
+    def create_from_properties(properties, i_store):
+        if len(properties) == ORE_NUM_PROPERTIES:
+            ore = Ore(properties[ORE_NAME],
+                   point.Point(int(properties[ORE_COL]), int(properties[ORE_ROW])),
+                   i_store.get_images(properties[PROPERTY_KEY]),
+                   int(properties[ORE_RATE])//RATE_MULTIPLIER)
+
+            return ore
+
+        else:
+            return None
+
 class MinerNotFull:
     def __init__(self, name, resource_limit, position, rate, imgs,
                  animation_rate):
@@ -480,85 +547,6 @@ class Vein:
                     int(properties[VEIN_REACH]))
 
             return vein
-
-        else:
-            return None
-
-class Ore:
-    def __init__(self, name, position, imgs, rate=5000):
-        self.name = name
-        self.position = position
-        self.imgs = imgs
-        self.current_img = 0
-        self.rate = rate
-        self.pending_actions = []
-
-    def set_position(self, point):
-        self.position = point
-
-    def get_position(self):
-        return self.position
-
-    def get_images(self):
-        return self.imgs
-
-    def get_image(self):
-        return self.imgs[self.current_img]
-
-    def get_rate(self):
-        return self.rate
-
-    def get_name(self):
-        return self.name
-
-    def next_image(self):
-        self.current_img = (self.current_img + 1) % len(self.imgs)
-
-    def remove_pending_action(self, action):
-        self.pending_actions.remove(action)
-
-    def add_pending_action(self, action):
-        self.pending_actions.append(action)
-
-    def get_pending_actions(self):
-        return self.pending_actions
-
-    def clear_pending_actions(self):
-        self.pending_actions = []
-
-    def entity_string(self):
-        return ' '.join(['ore', self.name, str(self.position.x),
-                         str(self.position.y), str(self.rate)])
-
-    def schedule(self, world, ticks, i_store):
-        world.schedule_action(self,
-                        self.create_transform_action(world, i_store),
-                        ticks + self.get_rate())
-
-    def create_transform_action(self, world, i_store):
-        def action(current_ticks):
-            self.remove_pending_action(action)
-            blob = actions.create_blob(world, self.get_name() + " -- blob",
-                               self.get_position(),
-                               self.get_rate() // actions.BLOB_RATE_SCALE // RATE_MULTIPLIER,
-                               current_ticks, i_store)
-
-            world.remove_entity(self)
-            world.add_entity(blob)
-
-            return [blob.get_position()]
-
-        return action
-
-    @staticmethod
-    def create_from_properties(properties, i_store):
-        if len(properties) == ORE_NUM_PROPERTIES:
-            ore = Ore(properties[ORE_NAME],
-                   point.Point(int(properties[ORE_COL]), int(properties[ORE_ROW])),
-                   i_store.get_images(properties[PROPERTY_KEY]),
-                   int(properties[ORE_RATE])//RATE_MULTIPLIER)
-
-            return ore
 
         else:
             return None
