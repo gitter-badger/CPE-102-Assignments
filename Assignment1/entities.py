@@ -127,9 +127,6 @@ class Ore(Actor):
         self.rate = rate
         super(Ore, self).__init__(name, position, imgs)
 
-    def get_rate(self):
-        return self.rate
-
     def entity_string(self):
         return ' '.join(['ore', self.name, str(self.position.x),
                          str(self.position.y), str(self.rate)])
@@ -140,9 +137,9 @@ class Ore(Actor):
     def create_action(self, world, i_store):
         def action(current_ticks):
             self.remove_pending_action(action)
-            blob = actions.create_blob(world, self.get_name() + " -- blob",
-                               self.get_position(),
-                               self.get_rate() // actions.BLOB_RATE_SCALE // RATE_MULTIPLIER,
+            blob = actions.create_blob(world, self.name + " -- blob",
+                               self.position,
+                               self.rate // actions.BLOB_RATE_SCALE // RATE_MULTIPLIER,
                                current_ticks, i_store)
 
             world.remove_entity(self)
@@ -161,6 +158,56 @@ class Ore(Actor):
                    int(properties[ORE_RATE])//RATE_MULTIPLIER)
 
             return ore
+
+        else:
+            return None
+
+class Vein(Actor):
+    def __init__(self, name, rate, position, imgs, resource_distance=1):
+        self.rate = rate
+        self.resource_distance = resource_distance
+        super(Vein, self).__init__(name, position, imgs)
+
+
+    def entity_string(self):
+        return ' '.join(['vein', self.name, str(self.position.x),
+                         str(self.position.y), str(self.rate),
+                         str(self.resource_distance)])
+
+    def create_action(self, world, i_store):
+        def action(current_ticks):
+            self.remove_pending_action(action)
+
+            open_pt = world.find_open_around(self.position,
+                                       self.resource_distance)
+            if open_pt:
+                ore = actions.create_ore(world,
+                                 "ore - " + self.name + " - " + str(current_ticks),
+                                 open_pt, current_ticks, i_store)
+                world.add_entity(ore)
+                tiles = [open_pt]
+            else:
+                tiles = []
+
+            self.schedule_action(world, current_ticks, i_store, self.rate)
+
+            return tiles
+
+        return action
+
+    def schedule(self, world, ticks, i_store):
+        self.schedule_action(world, ticks, i_store, self.rate)
+
+    @staticmethod
+    def create_from_properties(properties, i_store):
+        if len(properties) == VEIN_NUM_PROPERTIES:
+            vein = Vein(properties[VEIN_NAME],
+                    int(properties[VEIN_RATE])//RATE_MULTIPLIER,
+                    point.Point(int(properties[VEIN_COL]), int(properties[VEIN_ROW])),
+                    i_store.get_images(properties[PROPERTY_KEY]),
+                    int(properties[VEIN_REACH]))
+
+            return vein
 
         else:
             return None
@@ -460,96 +507,6 @@ class MinerFull:
                         ticks + self.get_rate())
         world.schedule_animation(self)
 
-class Vein:
-    def __init__(self, name, rate, position, imgs, resource_distance=1):
-        self.name = name
-        self.position = position
-        self.rate = rate
-        self.imgs = imgs
-        self.current_img = 0
-        self.resource_distance = resource_distance
-        self.pending_actions = []
-
-    def set_position(self, point):
-        self.position = point
-
-    def get_position(self):
-        return self.position
-
-    def get_images(self):
-        return self.imgs
-
-    def get_image(self):
-        return self.imgs[self.current_img]
-
-    def get_rate(self):
-        return self.rate
-
-    def get_resource_distance(self):
-         return self.resource_distance
-
-    def get_name(self):
-        return self.name
-
-    def next_image(self):
-        self.current_img = (self.current_img + 1) % len(self.imgs)
-
-    def remove_pending_action(self, action):
-        self.pending_actions.remove(action)
-
-    def add_pending_action(self, action):
-        self.pending_actions.append(action)
-
-    def get_pending_actions(self):
-        return self.pending_actions
-
-    def clear_pending_actions(self):
-        self.pending_actions = []
-
-    def entity_string(self):
-        return ' '.join(['vein', self.name, str(self.position.x),
-                         str(self.position.y), str(self.rate),
-                         str(self.resource_distance)])
-
-    def create_action(self, world, i_store):
-        def action(current_ticks):
-            self.remove_pending_action(action)
-
-            open_pt = world.find_open_around(self.get_position(),
-                                       self.get_resource_distance())
-            if open_pt:
-                ore = actions.create_ore(world,
-                                 "ore - " + self.get_name() + " - " + str(current_ticks),
-                                 open_pt, current_ticks, i_store)
-                world.add_entity(ore)
-                tiles = [open_pt]
-            else:
-                tiles = []
-
-            world.schedule_action(self,
-                            self.create_action(world, i_store),
-                            current_ticks + self.get_rate())
-            return tiles
-
-        return action
-
-    def schedule(self, world, ticks, i_store):
-        world.schedule_action(self, self.create_action(world, i_store),
-                        ticks + self.get_rate())
-
-    @staticmethod
-    def create_from_properties(properties, i_store):
-        if len(properties) == VEIN_NUM_PROPERTIES:
-            vein = Vein(properties[VEIN_NAME],
-                    int(properties[VEIN_RATE])//RATE_MULTIPLIER,
-                    point.Point(int(properties[VEIN_COL]), int(properties[VEIN_ROW])),
-                    i_store.get_images(properties[PROPERTY_KEY]),
-                    int(properties[VEIN_REACH]))
-
-            return vein
-
-        else:
-            return None
 
 class Blacksmith:
     def __init__(self, name, position, imgs, resource_limit, rate,
