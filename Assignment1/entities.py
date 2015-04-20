@@ -46,7 +46,8 @@ ORE_KEY = 'ore'
 SMITH_KEY = 'blacksmith'
 VEIN_KEY = 'vein'
 
-class Background:
+class Entity:
+
     def __init__(self, name, imgs):
         self.name = name
         self.imgs = imgs
@@ -64,20 +65,11 @@ class Background:
     def next_image(self):
         self.current_img = (self.current_img + 1) % len(self.imgs)
 
-    def remove_pending_action(self, action):
-        pass
-
-    def add_pending_action(self, action):
-        pass
-
-    def get_pending_actions(self):
-        return []
-
-    def clear_pending_actions(self):
-        pass
-
     def entity_string(self):
         return 'unknown'
+
+class Background(Entity):
+      pass
 
 class MinerNotFull:
     def __init__(self, name, resource_limit, position, rate, imgs,
