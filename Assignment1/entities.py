@@ -46,7 +46,7 @@ ORE_KEY = 'ore'
 SMITH_KEY = 'blacksmith'
 VEIN_KEY = 'vein'
 
-class Entity:
+class Entity(object):
 
     def __init__(self, name, imgs):
         self.name = name
@@ -70,6 +70,33 @@ class Entity:
 
 class Background(Entity):
       pass
+
+class Positionable(Entity):
+
+    def __init__(self, name, position, imgs):
+        self.position = position
+        super(Positionable, self).__init__(name, imgs)
+
+    def set_position(self, point):
+        self.position = point
+
+    def get_position(self):
+        return self.position
+
+class Obstacle(Positionable):
+
+    def entity_string(self):
+        return ' '.join(['obstacle', self.name, str(self.position.x),
+                         str(self.position.y)])
+    @staticmethod
+    def create_from_properties(properties, i_store):
+        if len(properties) == OBSTACLE_NUM_PROPERTIES:
+            return Obstacle(properties[OBSTACLE_NAME],
+                    point.Point(int(properties[OBSTACLE_COL]), int(properties[OBSTACLE_ROW])),
+                    i_store.get_images(properties[PROPERTY_KEY]))
+
+        else:
+            return None
 
 class MinerNotFull:
     def __init__(self, name, resource_limit, position, rate, imgs,
@@ -614,55 +641,6 @@ class Blacksmith:
         else:
             return None
 
-class Obstacle:
-    def __init__(self, name, position, imgs):
-        self.name = name
-        self.position = position
-        self.imgs = imgs
-        self.current_img = 0
-
-    def set_position(self, point):
-        self.position = point
-
-    def get_position(self):
-        return self.position
-
-    def get_images(self):
-        return self.imgs
-
-    def get_image(self):
-        return self.imgs[self.current_img]
-
-    def get_name(self):
-        return self.name
-
-    def next_image(self):
-        self.current_img = (self.current_img + 1) % len(self.imgs)
-
-    def remove_pending_action(self, action):
-        pass
-
-    def add_pending_action(self, action):
-        pass
-
-    def get_pending_actions(self):
-        return []
-
-    def clear_pending_actions(self):
-        pass
-
-    def entity_string(self):
-        return ' '.join(['obstacle', self.name, str(self.position.x),
-                         str(self.position.y)])
-    @staticmethod
-    def create_from_properties(properties, i_store):
-        if len(properties) == OBSTACLE_NUM_PROPERTIES:
-            return Obstacle(properties[OBSTACLE_NAME],
-                    point.Point(int(properties[OBSTACLE_COL]), int(properties[OBSTACLE_ROW])),
-                    i_store.get_images(properties[PROPERTY_KEY]))
-
-        else:
-            return None
 
 class OreBlob:
     def __init__(self, name, position, rate, imgs, animation_rate):
