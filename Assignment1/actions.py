@@ -38,7 +38,7 @@ def create_ore(world, name, pt, ticks, i_store):
 def create_quake(world, pt, ticks, i_store):
     quake = entities.Quake("quake", pt,
                            i_store.get_images('quake'), QUAKE_ANIMATION_RATE)
-    quake.schedule(world, ticks)
+    quake.schedule(world, ticks, i_store)
     return quake
 
 def create_vein(world, name, pt, ticks, i_store):

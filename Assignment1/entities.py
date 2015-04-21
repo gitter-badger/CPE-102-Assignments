@@ -163,6 +163,7 @@ class Ore(Actor):
             return None
 
 class Vein(Actor):
+
     def __init__(self, name, rate, position, imgs, resource_distance=1):
         self.rate = rate
         self.resource_distance = resource_distance
@@ -211,6 +212,43 @@ class Vein(Actor):
 
         else:
             return None
+
+class Quake(Actor):
+
+    def __init__(self, name, position, imgs, animation_rate):
+        self.animation_rate = animation_rate
+        super(Quake, self).__init__(name, position, imgs)
+
+    def get_animation_rate(self):
+        return self.animation_rate
+
+    def create_animation_action(self, world, repeat_count):
+        def action(current_ticks):
+            self.remove_pending_action(action)
+
+            self.next_image()
+
+            if repeat_count != 1:
+                world.schedule_action(self,
+                 self.create_animation_action(world, max(repeat_count - 1, 0)),
+                 current_ticks + self.animation_rate)
+
+            return [self.position]
+
+        return action
+
+    def create_action(self, world, i_store):
+        def action(current_ticks):
+            self.remove_pending_action(action)
+            pt = self.get_position()
+            world.remove_entity(self)
+            return [pt]
+
+        return action
+
+    def schedule(self, world, ticks, i_store):
+        world.schedule_animation(self, actions.QUAKE_STEPS)
+        self.schedule_action(world, ticks, i_store, actions.QUAKE_DURATION)
 
 class MinerNotFull:
     def __init__(self, name, resource_limit, position, rate, imgs,
@@ -708,80 +746,6 @@ class OreBlob:
         world.schedule_action(self, self.create_action(world, i_store),
                         ticks + self.get_rate())
         world.schedule_animation(self)
-
-class Quake:
-    def __init__(self, name, position, imgs, animation_rate):
-        self.name = name
-        self.position = position
-        self.imgs = imgs
-        self.current_img = 0
-        self.animation_rate = animation_rate
-        self.pending_actions = []
-
-    def set_position(self, point):
-        self.position = point
-
-    def get_position(self):
-        return self.position
-
-    def get_images(self):
-        return self.imgs
-
-    def get_image(self):
-        return self.imgs[self.current_img]
-
-    def get_name(self):
-        return self.name
-
-    def get_animation_rate(self):
-        return self.animation_rate
-
-    def next_image(self):
-        self.current_img = (self.current_img + 1) % len(self.imgs)
-
-    def remove_pending_action(self, action):
-        self.pending_actions.remove(action)
-
-    def add_pending_action(self, action):
-        self.pending_actions.append(action)
-
-    def get_pending_actions(self):
-        return self.pending_actions
-
-    def clear_pending_actions(self):
-        self.pending_actions = []
-
-    def entity_string(self):
-        return 'unknown'
-
-    def create_animation_action(self, world, repeat_count):
-        def action(current_ticks):
-            self.remove_pending_action(action)
-
-            self.next_image()
-
-            if repeat_count != 1:
-                world.schedule_action(self,
-                 self.create_animation_action(world, max(repeat_count - 1, 0)),
-                 current_ticks + self.get_animation_rate())
-
-            return [self.get_position()]
-
-        return action
-
-    def schedule(self, world, ticks):
-        world.schedule_animation(self, actions.QUAKE_STEPS)
-        world.schedule_action(self, self.create_death_action(world),
-                        ticks + actions.QUAKE_DURATION)
-
-    def create_death_action(self, world):
-        def action(current_ticks):
-            self.remove_pending_action(action)
-            pt = self.get_position()
-            world.remove_entity(self)
-            return [pt]
-
-        return action
 
 def sign(x):
     if x < 0:
