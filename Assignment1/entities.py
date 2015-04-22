@@ -452,18 +452,16 @@ def adjacent(pt1, pt2):
     return ((pt1.x == pt2.x and abs(pt1.y - pt2.y) == 1) or
             (pt1.y == pt2.y and abs(pt1.x - pt2.x) == 1))
 
+keys = {MINER_KEY: Miner,
+    VEIN_KEY: Vein,
+    ORE_KEY: Ore,
+    SMITH_KEY: Blacksmith,
+    OBSTACLE_KEY: Obstacle
+}
+
 def create_from_properties(properties, i_store):
     key = properties[PROPERTY_KEY]
     if properties:
-        if key == MINER_KEY:
-            return Miner.create_from_properties(properties, i_store)
-        elif key == VEIN_KEY:
-            return Vein.create_from_properties(properties, i_store)
-        elif key == ORE_KEY:
-            return Ore.create_from_properties(properties, i_store)
-        elif key == SMITH_KEY:
-            return Blacksmith.create_from_properties(properties, i_store)
-        elif key == OBSTACLE_KEY:
-            return Obstacle.create_from_properties(properties, i_store)
+            return keys[key].create_from_properties(properties, i_store)
 
     return None
