@@ -220,6 +220,48 @@ class Vein(Actor):
             return None
 
 
+class Blacksmith(Actor):
+    def __init__(self, name, position, imgs, resource_limit, rate,
+                 resource_distance=1):
+        self.rate = rate
+        self.resource_limit = resource_limit
+        self.resource_count = 0
+        self.resource_distance = resource_distance
+        super(Blacksmith, self).__init__(name, position, imgs)
+
+    def set_resource_count(self, n):
+        self.resource_count = n
+
+    def get_resource_count(self):
+        return self.resource_count
+
+    def get_resource_limit(self):
+        return self.resource_limit
+
+    def get_resource_distance(self):
+         return self.resource_distance
+
+    def entity_string(self):
+        return ' '.join(['blacksmith', self.name, str(self.position.x),
+                         str(self.position.y), str(self.resource_limit),
+                         str(self.rate), str(self.resource_distance)])
+
+    @staticmethod
+    def create_from_properties(properties, i_store):
+        if len(properties) == SMITH_NUM_PROPERTIES:
+            return Blacksmith(properties[SMITH_NAME],
+                    point.Point(int(properties[SMITH_COL]), int(properties[SMITH_ROW])),
+                    i_store.get_images(properties[PROPERTY_KEY]),
+                    int(properties[SMITH_LIMIT]),
+                    int(properties[SMITH_RATE])//RATE_MULTIPLIER,
+                    int(properties[SMITH_REACH]))
+
+            return smith
+
+        else:
+            return None
+
+
 class Quake(Actor):
 
     def __init__(self, name, position, imgs, animation_rate):
@@ -340,15 +382,6 @@ class Miner(Mover):
         self.resource_count = 0
         super(Miner, self).__init__(name, position, rate, imgs, animation_rate)
 
-    def set_resource_count(self, n):
-        self.resource_count = n
-
-    def get_resource_count(self):
-        return self.resource_count
-
-    def get_resource_limit(self):
-        return self.resource_limit
-
     def entity_string(self):
         return ' '.join(['miner', self.name, str(self.position.x),
                          str(self.position.y), str(self.resource_limit),
@@ -384,7 +417,7 @@ class Miner(Mover):
 
         else:
             target.set_resource_count(target.get_resource_count() +
-                 self.get_resource_count())
+                 self.resource_count)
             self.resource_count = 0
 
     def can_move(self, world, pt):
@@ -401,48 +434,6 @@ class Miner(Mover):
                      int(properties[MINER_ANIMATION_RATE]))
 
             return miner
-
-        else:
-            return None
-
-
-class Blacksmith(Actor):
-    def __init__(self, name, position, imgs, resource_limit, rate,
-                 resource_distance=1):
-        self.rate = rate
-        self.resource_limit = resource_limit
-        self.resource_count = 0
-        self.resource_distance = resource_distance
-        super(Blacksmith, self).__init__(name, position, imgs)
-
-    def set_resource_count(self, n):
-        self.resource_count = n
-
-    def get_resource_count(self):
-        return self.resource_count
-
-    def get_resource_limit(self):
-        return self.resource_limit
-
-    def get_resource_distance(self):
-         return self.resource_distance
-
-    def entity_string(self):
-        return ' '.join(['blacksmith', self.name, str(self.position.x),
-                         str(self.position.y), str(self.resource_limit),
-                         str(self.rate), str(self.resource_distance)])
-
-    @staticmethod
-    def create_from_properties(properties, i_store):
-        if len(properties) == SMITH_NUM_PROPERTIES:
-            return Blacksmith(properties[SMITH_NAME],
-                    point.Point(int(properties[SMITH_COL]), int(properties[SMITH_ROW])),
-                    i_store.get_images(properties[PROPERTY_KEY]),
-                    int(properties[SMITH_LIMIT]),
-                    int(properties[SMITH_RATE])//RATE_MULTIPLIER,
-                    int(properties[SMITH_REACH]))
-
-            return smith
 
         else:
             return None
