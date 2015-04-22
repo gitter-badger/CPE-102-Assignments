@@ -46,7 +46,7 @@ ORE_KEY = 'ore'
 SMITH_KEY = 'blacksmith'
 VEIN_KEY = 'vein'
 
-class Entity(object):
+class Background(object):
 
     def __init__(self, name, imgs):
         self.name = name
@@ -69,11 +69,7 @@ class Entity(object):
         return 'unknown'
 
 
-class Background(Entity):
-      pass
-
-
-class Positionable(Entity):
+class Positionable(Background):
 
     def __init__(self, name, position, imgs):
         self.position = position
@@ -362,14 +358,14 @@ class OreBlob(Mover):
         return action
 
     def to_vein(self, world, vein):
-        (new_pt, adjacent) = self.to_target(world, vein)
+        (tiles, found) = self.to_target(world, vein)
 
-        if new_pt and vein and not adjacent:
-            old_entity = world.get_tile_occupant(new_pt[0])
+        if tiles and vein and not found:
+            old_entity = world.get_tile_occupant(tiles[0])
             if isinstance(old_entity, Ore):
                 world.remove_entity(old_entity)
 
-        return (new_pt, adjacent)
+        return (tiles, found)
 
     def can_move(self, world, pt):
         return not world.is_occupied(pt) or isinstance(world.get_tile_occupant(pt), Ore)
