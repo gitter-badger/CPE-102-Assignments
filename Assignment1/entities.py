@@ -629,33 +629,14 @@ class MinerFull:
         world.schedule_animation(self)
 
 
-class Blacksmith:
+class Blacksmith(Actor):
     def __init__(self, name, position, imgs, resource_limit, rate,
                  resource_distance=1):
-        self.name = name
-        self.position = position
-        self.imgs = imgs
-        self.current_img = 0
+        self.rate = rate
         self.resource_limit = resource_limit
         self.resource_count = 0
-        self.rate = rate
         self.resource_distance = resource_distance
-        self.pending_actions = []
-
-    def set_position(self, point):
-        self.position = point
-
-    def get_position(self):
-        return self.position
-
-    def get_images(self):
-        return self.imgs
-
-    def get_image(self):
-        return self.imgs[self.current_img]
-
-    def get_rate(self):
-        return self.rate
+        super(Blacksmith, self).__init__(name, position, imgs)
 
     def set_resource_count(self, n):
         self.resource_count = n
@@ -667,25 +648,7 @@ class Blacksmith:
         return self.resource_limit
 
     def get_resource_distance(self):
-         return self.resource_distance
-
-    def get_name(self):
-        return self.name
-
-    def next_image(self):
-        self.current_img = (self.current_img + 1) % len(self.imgs)
-
-    def remove_pending_action(self, action):
-        self.pending_actions.remove(action)
-
-    def add_pending_action(self, action):
-        self.pending_actions.append(action)
-
-    def get_pending_actions(self):
-        return self.pending_actions
-
-    def clear_pending_actions(self):
-        self.pending_actions = []
+         return self.resource_distan
 
     def entity_string(self):
         return ' '.join(['blacksmith', self.name, str(self.position.x),
