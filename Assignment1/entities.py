@@ -648,7 +648,7 @@ class Blacksmith(Actor):
         return self.resource_limit
 
     def get_resource_distance(self):
-         return self.resource_distan
+         return self.resource_distance
 
     def entity_string(self):
         return ' '.join(['blacksmith', self.name, str(self.position.x),
