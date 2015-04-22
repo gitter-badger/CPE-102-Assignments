@@ -333,33 +333,12 @@ class OreBlob(Mover):
         return not world.is_occupied(pt) or isinstance(world.get_tile_occupant(pt), Ore)
 
 
-class Miner:
+class Miner(Mover):
     def __init__(self, name, resource_limit, position, rate, imgs,
                  animation_rate):
-        self.name = name
-        self.position = position
-        self.rate = rate
-        self.imgs = imgs
-        self.current_img = 0
         self.resource_limit = resource_limit
         self.resource_count = 0
-        self.animation_rate = animation_rate
-        self.pending_actions = []
-
-    def set_position(self, point):
-        self.position = point
-
-    def get_position(self):
-        return self.position
-
-    def get_images(self):
-        return self.imgs
-
-    def get_image(self):
-        return self.imgs[self.current_img]
-
-    def get_rate(self):
-        return self.rate
+        super(Miner, self).__init__(name, position, rate, imgs, animation_rate)
 
     def set_resource_count(self, n):
         self.resource_count = n
@@ -370,27 +349,6 @@ class Miner:
     def get_resource_limit(self):
         return self.resource_limit
 
-    def get_name(self):
-        return self.name
-
-    def get_animation_rate(self):
-        return self.animation_rate
-
-    def next_image(self):
-        self.current_img = (self.current_img + 1) % len(self.imgs)
-
-    def remove_pending_action(self, action):
-        self.pending_actions.remove(action)
-
-    def add_pending_action(self, action):
-        self.pending_actions.append(action)
-
-    def get_pending_actions(self):
-        return self.pending_actions
-
-    def clear_pending_actions(self):
-        self.pending_actions = []
-
     def entity_string(self):
         return ' '.join(['miner', self.name, str(self.position.x),
                          str(self.position.y), str(self.resource_limit),
@@ -400,78 +358,38 @@ class Miner:
         def action(current_ticks):
             self.remove_pending_action(action)
 
-            entity_pt = self.get_position()
+            entity_pt = self.position
 
-            tiles = found = None
+            target = None
             if self.resource_count < self.resource_limit:
-                ore = world.find_nearest(entity_pt, Ore)
-                (tiles, found) = self.to_ore(world, ore)
+                target = world.find_nearest(entity_pt, Ore)
 
             else:
-                smith = world.find_nearest(entity_pt, Blacksmith)
-                (tiles, found) = self.to_smith(world, smith)
+                target = world.find_nearest(entity_pt, Blacksmith)
 
+            (tiles, found) = self.to_target(world, target)
             if found:
-                self.update_resource_count()
+                self.update_resource_count(world, target)
 
-            world.schedule_action(self,
-                            self.create_action(world, i_store),
-                            current_ticks + self.get_rate())
+            self.schedule_action(world, current_ticks, i_store, self.rate)
+
             return tiles
 
         return action
 
-    def update_resource_count(self):
+    def update_resource_count(self, world, target):
         if self.resource_count < self.resource_limit:
+            world.remove_entity(target)
             self.resource_count += 1
+
         else:
+            target.set_resource_count(target.get_resource_count() +
+                 self.get_resource_count())
             self.resource_count = 0
 
-    def create_animation_action(self, world, repeat_count):
-        def action(current_ticks):
-            self.remove_pending_action(action)
+    def can_move(self, world, pt):
+        return not world.is_occupied(pt)
 
-            self.next_image()
-
-            if repeat_count != 1:
-                world.schedule_action(self,
-                                self.create_animation_action(world, max(repeat_count - 1, 0)),
-                                current_ticks + self.get_animation_rate())
-
-            return [self.get_position()]
-
-        return action
-
-    def next_position(self, world, dest_pt):
-        horiz = sign(dest_pt.x - self.position.x)
-        new_pt = point.Point(self.position.x + horiz, self.position.y)
-
-        if horiz == 0 or world.is_occupied(new_pt):
-            vert = sign(dest_pt.y - self.position.y)
-            new_pt = point.Point(self.position.x, self.position.y + vert)
-
-            if vert == 0 or world.is_occupied(new_pt):
-                new_pt = point.Point(self.position.x, self.position.y)
-
-        return new_pt
-
-    def to_ore(self, world,  ore):
-        if not ore:
-            return ([self.position], False)
-        ore_pt = ore.get_position()
-        if adjacent(self.position, ore_pt):
-            self.set_resource_count(1 + self.get_resource_count())
-            world.remove_entity(ore)
-            return ([ore_pt], True)
-        else:
-            new_pt = self.next_position(world, ore_pt)
-            return (world.move_entity(self, new_pt), False)
-
-    def schedule(self, world, ticks, i_store):
-        world.schedule_action(self, self.create_action(world, i_store),
-                        ticks + self.get_rate())
-        world.schedule_animation(self)
-    
     @staticmethod
     def create_from_properties(properties, i_store):
         if len(properties) == MINER_NUM_PROPERTIES:
@@ -486,19 +404,6 @@ class Miner:
 
         else:
             return None
-
-    def to_smith(self, world, smith):
-        if not smith:
-            return ([self.position], False)
-        smith_pt = smith.get_position()
-        if adjacent(self.position, smith_pt):
-            smith.set_resource_count(smith.get_resource_count() +
-                         self.get_resource_count())
-            self.set_resource_count(0)
-            return ([], True)
-        else:
-            new_pt = self.next_position(world, smith_pt)
-            return (world.move_entity(self, new_pt), False)
 
 
 class Blacksmith(Actor):

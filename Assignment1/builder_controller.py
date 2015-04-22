@@ -82,7 +82,7 @@ def create_new_entity(pt, entity_select, i_store):
     if entity_select == 'obstacle':
         return entities.Obstacle(name, pt, images)
     elif entity_select == 'miner':
-        return entities.MinerNotFull(name, MINER_LIMIT, pt,
+        return entities.Miner(name, MINER_LIMIT, pt,
                                      random.randint(MINER_RATE_MIN, MINER_RATE_MAX),
                                      images, MINER_ANIMATION_RATE)
     elif entity_select == 'vein':
