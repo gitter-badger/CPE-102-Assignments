@@ -68,8 +68,10 @@ class Entity(object):
     def entity_string(self):
         return 'unknown'
 
+
 class Background(Entity):
       pass
+
 
 class Positionable(Entity):
 
@@ -82,6 +84,7 @@ class Positionable(Entity):
 
     def get_position(self):
         return self.position
+
 
 class Obstacle(Positionable):
 
@@ -97,6 +100,7 @@ class Obstacle(Positionable):
 
         else:
             return None
+
 
 class Actor(Positionable):
 
@@ -120,6 +124,7 @@ class Actor(Positionable):
         world.schedule_action(self,
                         self.create_action(world, i_store),
                         ticks + schedule_rate)
+
 
 class Ore(Actor):
 
@@ -161,6 +166,7 @@ class Ore(Actor):
 
         else:
             return None
+
 
 class Vein(Actor):
 
@@ -213,6 +219,7 @@ class Vein(Actor):
         else:
             return None
 
+
 class Quake(Actor):
 
     def __init__(self, name, position, imgs, animation_rate):
@@ -249,6 +256,82 @@ class Quake(Actor):
     def schedule(self, world, ticks, i_store):
         world.schedule_animation(self, actions.QUAKE_STEPS)
         self.schedule_action(world, ticks, i_store, actions.QUAKE_DURATION)
+
+
+class Mover(Quake):
+
+    def __init__(self, name, position, rate, imgs, animation_rate):
+        self.rate = rate
+        super(Mover, self).__init__(name, position, imgs, animation_rate)
+
+    def get_rate(self):
+        return self.rate
+
+    def next_position(self, world, dest_pt):
+        horiz = sign(dest_pt.x - self.position.x)
+        new_pt = point.Point(self.position.x + horiz, self.position.y)
+
+        if horiz == 0 or not self.can_move(world, new_pt):
+
+            vert = sign(dest_pt.y - self.position.y)
+            new_pt = point.Point(self.position.x, self.position.y + vert)
+
+            if vert == 0 or not self.can_move(world, new_pt):
+                new_pt = point.Point(self.position.x, self.position.y)
+
+        return new_pt
+
+    def to_target(self, world,  target):
+        if not target:
+            return ([self.position], False)
+        target_pt = target.get_position()
+        if adjacent(self.position, target_pt):
+            return ([target_pt], True)
+        else:
+            new_pt = self.next_position(world, target_pt)
+            return (world.move_entity(self, new_pt), False)
+
+    def schedule(self, world, ticks, i_store):
+        self.schedule_action(world, ticks, i_store, self.rate)
+        world.schedule_animation(self)
+
+
+class OreBlob(Mover):
+
+    def create_action(self, world, i_store):
+        def action(current_ticks):
+            self.remove_pending_action(action)
+
+            entity_pt = self.position
+            vein = world.find_nearest(entity_pt, Vein)
+            (tiles, found) = self.to_vein(world, vein)
+
+            delay_time = self.rate
+            if found:
+                world.remove_entity(vein)
+                quake = actions.create_quake(world, tiles[0], current_ticks, i_store)
+                world.add_entity(quake)
+                delay_time = self.rate * 2
+
+            self.schedule_action(world, current_ticks, i_store, delay_time)
+
+            return tiles
+
+        return action
+
+    def to_vein(self, world, vein):
+        (new_pt, adjacent) = self.to_target(world, vein)
+
+        if new_pt and vein and not adjacent:
+            old_entity = world.get_tile_occupant(new_pt[0])
+            if isinstance(old_entity, Ore):
+                world.remove_entity(old_entity)
+
+        return (new_pt, adjacent)
+
+    def can_move(self, world, pt):
+        return not world.is_occupied(pt) or isinstance(world.get_tile_occupant(pt), Ore)
+
 
 class MinerNotFull:
     def __init__(self, name, resource_limit, position, rate, imgs,
@@ -625,127 +708,6 @@ class Blacksmith:
             return None
 
 
-class OreBlob:
-    def __init__(self, name, position, rate, imgs, animation_rate):
-        self.name = name
-        self.position = position
-        self.rate = rate
-        self.imgs = imgs
-        self.current_img = 0
-        self.animation_rate = animation_rate
-        self.pending_actions = []
-
-    def set_position(self, point):
-        self.position = point
-
-    def get_position(self):
-        return self.position
-
-    def get_images(self):
-        return self.imgs
-
-    def get_image(self):
-        return self.imgs[self.current_img]
-
-    def get_rate(self):
-        return self.rate
-
-    def get_name(self):
-        return self.name
-
-    def get_animation_rate(self):
-        return self.animation_rate
-
-    def next_image(self):
-        self.current_img = (self.current_img + 1) % len(self.imgs)
-
-    def remove_pending_action(self, action):
-        self.pending_actions.remove(action)
-
-    def add_pending_action(self, action):
-        self.pending_actions.append(action)
-
-    def get_pending_actions(self):
-        return self.pending_actions
-
-    def clear_pending_actions(self):
-        self.pending_actions = []
-
-    def entity_string(self):
-        return 'unknown'
-
-    def create_action(self, world, i_store):
-        def action(current_ticks):
-            self.remove_pending_action(action)
-
-            entity_pt = self.get_position()
-            vein = world.find_nearest(entity_pt, Vein)
-            (tiles, found) = self.to_vein(world, vein)
-
-            next_time = current_ticks + self.get_rate()
-            if found:
-                quake = actions.create_quake(world, tiles[0], current_ticks, i_store)
-                world.add_entity(quake)
-                next_time = current_ticks + self.get_rate() * 2
-
-            world.schedule_action(self,
-                            self.create_action(world, i_store),
-                            next_time)
-
-            return tiles
-
-        return action
-
-    def create_animation_action(self, world, repeat_count):
-        def action(current_ticks):
-            self.remove_pending_action(action)
-
-            self.next_image()
-
-            if repeat_count != 1:
-                world.schedule_action(self,
-                                self.create_animation_action(world, max(repeat_count - 1, 0)),
-                                current_ticks + self.get_animation_rate())
-
-            return [self.get_position()]
-
-        return action
-
-    def next_position(self, world, dest_pt):
-        horiz = sign(dest_pt.x - self.position.x)
-        new_pt = point.Point(self.position.x + horiz, self.position.y)
-
-        if horiz == 0 or (world.is_occupied(new_pt) and
-                          not isinstance(world.get_tile_occupant(new_pt),
-                                         Ore)):
-            vert = sign(dest_pt.y - self.position.y)
-            new_pt = point.Point(self.position.x, self.position.y + vert)
-
-            if vert == 0 or (world.is_occupied(new_pt) and
-                             not isinstance(world.get_tile_occupant(new_pt),
-                                            Ore)):
-                new_pt = point.Point(self.position.x, self.position.y)
-
-        return new_pt
-
-    def to_vein(self, world,  vein):
-        if not vein:
-            return ([self.position], False)
-        vein_pt = vein.get_position()
-        if adjacent(self.position, vein_pt):
-            world.remove_entity(vein)
-            return ([vein_pt], True)
-        else:
-            new_pt = self.next_position(world, vein_pt)
-            old_entity = world.get_tile_occupant(new_pt)
-            if isinstance(old_entity, Ore):
-                world.remove_entity(old_entity)
-            return (world.move_entity(self, new_pt), False)
-
-    def schedule(self, world, ticks, i_store):
-        world.schedule_action(self, self.create_action(world, i_store),
-                        ticks + self.get_rate())
-        world.schedule_animation(self)
 
 def sign(x):
     if x < 0:
