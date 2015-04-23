@@ -40,9 +40,3 @@ def create_quake(world, pt, ticks, i_store):
                            i_store.get_images('quake'), QUAKE_ANIMATION_RATE)
     quake.schedule(world, ticks, i_store)
     return quake
-
-def create_vein(world, name, pt, ticks, i_store):
-    vein = entities.Vein("vein" + name,
-                         random.randint(VEIN_RATE_MIN, VEIN_RATE_MAX),
-                         pt, i_store.get_images('vein'))
-    return vein
