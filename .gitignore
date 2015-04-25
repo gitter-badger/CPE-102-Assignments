@@ -1,4 +1,6 @@
 *.pyc
 *.swp
 Assignment1/.idea/
-.class
+Java/.idea/
+*.class
+Assignment3.iml
