@@ -10,4 +10,8 @@ public class Obstacle
     public String entityString(){
         return String.format("obstacle %2$ %3$", super.getName(), super.getPosition().toString());
     }
+
+    public static void createFromProperties(){
+        // lolololol what goes here
+    }
 }
