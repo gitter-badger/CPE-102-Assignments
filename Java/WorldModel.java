@@ -22,8 +22,9 @@ public class WorldModel {
 
    public Background getBackground(Point pt) {
       if (withinBounds(pt)) {
-         return background.getCell(pt);
+         return (Background)background.getCell(pt);
       } 
+      else return null;
    }
 
    public void setBackground(Point pt, Background background) {
@@ -36,6 +37,7 @@ public class WorldModel {
       if (withinBounds(pt)) {
          return occupancy.getCell(pt);
       }
+      return null;
    }
 
    public List<Entity> getEntities() {
@@ -49,13 +51,14 @@ public class WorldModel {
    public Point findOpenNear(Point pt, int distance) {
       for(int dy = 0 - distance; dy <= distance; dy++) {
          for(int dx = 0 -distance; dx <= distance; dx++) {
-            Point newPt = new Point(pt.getX() + dx, pt.getY() + dy)
+            Point newPt = new Point(pt.getX() + dx, pt.getY() + dy);
 
             if(withinBounds(newPt) && !(isOccupied(newPt))) {
                return newPt;
             }
          }
       }
+      return null;
    }
 
    public void addEntity(Positionable entity) {
@@ -63,7 +66,7 @@ public class WorldModel {
 
       if (withinBounds(pt)) {
          occupancy.setCell(pt, entity);
-         entities.append(entity);
+         entities.add(entity);
       }
    }
 
@@ -73,7 +76,7 @@ public class WorldModel {
 
    public void removeEntityAt(Point pt) {
       if (isOccupied(pt)) {
-         Positionable entity = getTileOccupant(pt);
+         Positionable entity = (Positionable)getTileOccupant(pt);
          entity.setPosition(new Point(-1, -1)); // WAT Let's change this at some point.
          entities.remove(entity);
          occupancy.setCell(pt, null);
@@ -84,21 +87,21 @@ public class WorldModel {
       List<Point> tiles = new ArrayList<Point>();
 
       if (withinBounds(pt)) {
-         oldPt = entity.getPosition();
+         Point oldPt = entity.getPosition();
          
          occupancy.setCell(oldPt, null);
          occupancy.setCell(pt, entity);
          entity.setPosition(pt);
          
-         tiles.append(oldPt);
-         tiles.append(pt);
+         tiles.add(oldPt);
+         tiles.add(pt);
       }
    
       return tiles;
    }
 
    public Positionable findNearestVein(Point pt) {
-      for(Vein vein : candidates) {
+      for(Vein vein : entities) {
          candidates.add(vein);
       }
 
