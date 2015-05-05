@@ -4,3 +4,6 @@ Assignment1/.idea/
 Java/.idea/
 *.class
 Assignment3.iml
+.classpath
+.metadata/
+.project
