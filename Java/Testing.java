@@ -33,11 +33,31 @@ public class Testing {
 		assertEquals(m.getRate(), 4);
 		assertEquals(m.getAnimationRate(), 3, .001);
 		
-		//TODO canMove(WorldModel world, Point pt)		
+		Background b = new Background("Default");
+	    WorldModel world = new WorldModel(10, 10, b);
+		
+	      Point testPoint = new Point(1, 1);
+	     Positionable testEntity = new Obstacle(testPoint, "Obsty");
+	     world.addEntity(testEntity);
+		 List<Positionable> entityList;
+		 
+		 assertFalse(m.canMove(world,  new Point(1,1)));
+		 assertTrue(m.canMove(world,  new Point(3,3)));	
 		
 		//TODO ToTarget
-		
+		 assertEquals(m.toTarget(world, null), false);
+		 assertTrue(m.toTarget(world, testEntity));
+		 testEntity.setPosition(new Point(4, 4));
+		 assertFalse(m.toTarget(world, testEntity));
+		 
+		m = new Miner(new Point(1,2), "name", 3,4,5,6);
 		//TODO nextPosition
+		 Point result = m.nextPosition(world, new Point(1, 5));
+		 assertEquals(result, new Point(1, 3));
+		 result = m.nextPosition(world, new Point(-4, 2));
+		 assertEquals(result, new Point(0, 2));
+		 result = m.nextPosition(world, new Point(1, 0));
+		 assertEquals(result, new Point(1, 2));
 	}
 
 	@Test
@@ -58,9 +78,18 @@ public class Testing {
 	public void testOreBlob() {
 		OreBlob ob = new OreBlob(new Point(1, 2), "name", 1, 2);
 		
-		//TODO toVein(WorldModel world, Vein vein)
+		Background b = new Background("Default");
+	    WorldModel world = new WorldModel(10, 10, b);
 		
-		//TODO canMove(WorldModel world, Point pt)
+	      Point testPoint = new Point(1, 1);
+	     Ore testEntity = new Ore(testPoint, "name", 3);
+	     Positionable pos = new Obstacle(new Point(3,3), "name");
+	     world.addEntity(testEntity);
+	     world.addEntity(pos);
+	     
+	     assertTrue(ob.canMove(world, testPoint));
+	     assertFalse(ob.canMove(world, new Point(3,3)));
+	     assertTrue(ob.canMove(world, new Point(0,0)));
 	}
 	
 	@Test
