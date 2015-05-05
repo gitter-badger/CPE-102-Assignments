@@ -31,7 +31,7 @@ public class Blacksmith
     }
 
     public String entityString(){
-        return String.format("blacksmith %1$ %2$ %3$ %4$", super.getName(),
+        return String.format("blacksmith %1$s %2$s %3$s %4$s %5$s", super.getName(),
                 super.getPosition().toString(),
                 this.resourceLimit,
                 this.rate,

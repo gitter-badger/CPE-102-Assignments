@@ -11,12 +11,23 @@ public class Testing {
 
 	@Test
 	public void testBackground() {
-		fail("Not yet implemented");
+		Background b = new Background("A name");
+		
+		assertTrue(b.entitiyString().equals("Background"));
+		assertTrue(b.getName().equals("A name"));
 	}
 	
 	@Test
 	public void testBlacksmith() {
-		fail("Not yet implemented");
+		Blacksmith bm = new Blacksmith(new Point(1,2), "name", 3, 4, 5);
+		
+		assertEquals(bm.entityString(), "blacksmith name Point{x=1, y=2} 4 3 5");
+		assertEquals(bm.getResourceCount(), 0);
+		assertEquals(bm.getResourceLimit(), 4);
+		assertEquals(bm.getResourceDistance(), 5);
+		
+		bm.setResourceCount(6);
+		assertEquals(bm.getResourceCount(), 6);
 	}
 	
 	@Test
