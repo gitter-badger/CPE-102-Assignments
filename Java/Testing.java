@@ -44,14 +44,12 @@ public class Testing {
 		assertFalse(m.canMove(world, new Point(1, 1)));
 		assertTrue(m.canMove(world, new Point(3, 3)));
 
-		// TODO ToTarget
 		assertEquals(m.toTarget(world, null), false);
 		assertTrue(m.toTarget(world, testEntity));
 		testEntity.setPosition(new Point(4, 4));
 		assertFalse(m.toTarget(world, testEntity));
 
 		m = new Miner(new Point(1, 2), "name", 3, 4, 5, 6);
-		// TODO nextPosition
 		Point result = m.nextPosition(world, new Point(1, 5));
 		assertEquals(result, new Point(1, 3));
 		result = m.nextPosition(world, new Point(-4, 2));
