@@ -121,7 +121,7 @@ public class WorldModel {
       return minEntity;
    }
 
-   private static distanceSq(Point pt1, Point pt2) {
+   private static int distanceSq(Point pt1, Point pt2) {
       int deltaX = pt1.getX() - pt2.getX();
       int deltaY = pt1.getY() - pt2.getY();
 
