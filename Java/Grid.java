@@ -2,26 +2,25 @@ public class Grid {
 
    private int width;
    private int height;
-   private List<Entity> cells;
+   private Entity[][] cells;
 
    public Grid(int width, int height, Entity occupants) {
       this.width = width;
       this.height = height;
-      this.cells = new ArrayList<List<Entity>>();
+      this.cells = new Entity[height][width];
 
-      for (int row = 0; row<height, row++) {
-         this.cells.append(new ArrayList<Entity>());
+      for (int row = 0; row<height; row++) {
          for (int col = 0; col<width; col++) {
-            this.cells.get(row).append(occupants);
+            this.cells[row][col] = (occupants);
          }
       }
    }
 
    public Entity getCell(Point pt) {
-      return cells.get(pt.getY()).get(pt.getX());
+      return cells[pt.getY()][pt.getX()];
    }
 
    public void setCell(Point pt, Entity occupant) {
-      cells.get(pt.getY()).get(pt.getX()) = occupant;
+	   cells[pt.getY()][pt.getX()] = occupant;
    }
 }
