@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class WorldModel {
+
    private int rows;
    private int columns;
    private Grid background;
@@ -40,6 +41,18 @@ public class WorldModel {
 
    public boolean isOccupied(Point pt) {
       return withinBounds(pt) && getTileOccupant(pt) != null;
+   }
+
+   public Point findOpenNear(Point pt, int distance) {
+      for(int dy = 0 - distance; dy <= distance; dy++) {
+         for(int dx = 0 -distance; dx <= distance; dx++) {
+            Point newPt = new Point(pt.getX() + dx, pt.getY() + dy)
+
+            if(withinBounds(newPt) && !(isOccupied(newPt))) {
+               return newPt;
+            }
+         }
+      }
    }
 
    public void addEntity(Positionable entity) {
@@ -81,8 +94,40 @@ public class WorldModel {
       return tiles;
    }
 
+   public Positionable findNearest(Point pt, Positionable entity) {
+      Class desiredType = entity.getClass();
+      List<Positionable> = new ArrayList<Positionable> candidates;
+
+      for(desiredType e : entities) {
+         candidates.append(e);
+      }
+
+      return nearest(pt, candidates);
+   }
+
    private boolean withinBounds(Point pt) {
       return (pt.xCoord() >= 0 && pt.xCoord() < columns) &&
              (pt.yCoord() >= 0 && pt.yCoord() < rows);
+   }
+
+   private static Positionable nearest(Point pt, List<Positionable> candidates) {
+      Positionable minEntity = candidates.get(0);
+      int minDistance = distanceSq(pt, minEntity.getPosition());
+
+      for(Positionable e : candidates) {
+         int newDistance = distanceSq(pt, e.getPosition());
+         if (newDistance < minDistance) {
+            minDistance = newDistance;
+            minEntity = e;
+         }
+      }
+      return minEntity;
+   }
+
+   private static distanceSq(Point pt1, Point pt2) {
+      int deltaX = pt1.getX() - pt2.getX();
+      int deltaY = pt1.getY() - pt2.getY();
+
+      return deltaX * deltaX + deltaY * deltaY
    }
 }
