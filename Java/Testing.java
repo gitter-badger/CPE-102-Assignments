@@ -1,9 +1,5 @@
 import static org.junit.Assert.*;
 
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 
@@ -38,6 +34,10 @@ public class Testing {
 		assertEquals(m.getAnimationRate(), 3, .001);
 		
 		//TODO canMove(WorldModel world, Point pt)		
+		
+		//TODO ToTarget
+		
+		//TODO nextPosition
 	}
 
 	@Test
