@@ -97,13 +97,25 @@ public class WorldModel {
       return tiles;
    }
 
-   public Positionable findNearest(Point pt, Positionable entity) {
-      Class<? extends Positionable> desiredType = entity.getClass();
-      List<Positionable> candidates = new ArrayList<Positionable>();
-      
-      for(Positionable e : candidates) {
+   public Positionable findNearestVein(Point pt) {
+      for(Vein vein : candidates) {
+         candidates.add(vein);
+      }
 
-         candidates.add(e);
+      return nearest(pt, candidates);
+   }
+
+   public Positionable findNearestOre(Point pt) {
+      for(Ore ore : candidates) {
+         candidates.add(ore);
+      }
+
+      return nearest(pt, candidates);
+   }
+
+   public Positionable findNearestBlacksmith(Point pt) {
+      for(Blacsmith smith : candidates) {
+         candidates.add(smith);
       }
 
       return nearest(pt, candidates);
