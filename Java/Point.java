@@ -31,20 +31,10 @@ public class Point {
 
         Point point = (Point) o;
 
-        if (Double.compare(point.x, x) != 0) return false;
-        if (Double.compare(point.y, y) != 0) return false;
+        if (point.x != x) return false;
+        if (point.y != y) return false;
 
         return true;
-    }
-
-    public int hashCode() {
-        int result;
-        long temp;
-        temp = Double.doubleToLongBits(x);
-        result = (int) (temp ^ (temp >>> 32));
-        temp = Double.doubleToLongBits(y);
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
-        return result;
     }
 
     public String toString() {

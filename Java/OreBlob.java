@@ -16,11 +16,5 @@ public class OreBlob
 	public boolean canMove(WorldModel world, Point pt) {
 		return (!world.isOccupied(pt) || world.getTileOccupant(pt) instanceof Ore);
 	}
-	
-	public boolean canMove(int world, Point pt) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-	
 
 }

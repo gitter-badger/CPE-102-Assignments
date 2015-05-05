@@ -11,7 +11,7 @@ public class Vein
     }
 
     public String entityString(){
-        return String.format("vein %1$ %2$ %3$", super.getName(),
+        return String.format("vein %1$s %2$s %3$s", super.getName(),
                 super.getPosition().toString(),
                 this.rate);
     }

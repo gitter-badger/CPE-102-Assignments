@@ -6,6 +6,6 @@ public class Obstacle
     }
 
     public String entityString(){
-        return String.format("obstacle %1$ %2$", super.getName(), super.getPosition().toString());
+        return String.format("obstacle %1$s %2$s", super.getName(), super.getPosition().toString());
     }
 }

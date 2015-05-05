@@ -1,6 +1,6 @@
 
 public abstract class Positionable
-    extends Background{
+    extends Entity{
 
     Point position;
 
