@@ -1,5 +1,7 @@
 public class AnimatedActor extends Actor
 {
+   private double animationRate;
+
    public AnimatedActor(Point position, String name, double animationRate)
    {
       super(position, name);
@@ -10,6 +12,4 @@ public class AnimatedActor extends Actor
    {
       return animationRate;
    }
-
-   private double animationRate;
 }
