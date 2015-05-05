@@ -98,24 +98,33 @@ public class WorldModel {
    }
 
    public Positionable findNearestVein(Point pt) {
-      for(Vein vein : candidates) {
-         candidates.add(vein);
+      List<Positionable> candidates;
+      for(Positionable e : entities) {
+         if(e isinstance Vein) {
+            candidates.add(e);
+         }
       }
 
       return nearest(pt, candidates);
    }
 
    public Positionable findNearestOre(Point pt) {
-      for(Ore ore : candidates) {
-         candidates.add(ore);
+      List<Positionable> candidates;
+      for(Positionable e : entities) {
+         if(e isinstance Ore) {
+            candidates.add(e);
+         }
       }
 
       return nearest(pt, candidates);
    }
 
    public Positionable findNearestBlacksmith(Point pt) {
-      for(Blacsmith smith : candidates) {
-         candidates.add(smith);
+      List<Positionable> candidates;
+      for(Positionable e : entities) {
+         if(e isinstance BlackSmith) {
+            candidates.add(e);
+         }
       }
 
       return nearest(pt, candidates);
@@ -127,6 +136,9 @@ public class WorldModel {
    }
 
    private static Positionable nearest(Point pt, List<Positionable> candidates) {
+      if(candidates.size() == 0) {
+         return null;
+      }
       Positionable minEntity = candidates.get(0);
       int minDistance = distanceSq(pt, minEntity.getPosition());
 
