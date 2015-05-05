@@ -85,8 +85,11 @@ public class WorldModel {
 
       if (withinBounds(pt)) {
          Point oldPt = entity.getPosition();
-         
-         occupancy.setCell(oldPt, null);
+
+         if(withinBounds(oldPt)) {
+            occupancy.setCell(oldPt, null);
+         }
+
          occupancy.setCell(pt, entity);
          entity.setPosition(pt);
          
