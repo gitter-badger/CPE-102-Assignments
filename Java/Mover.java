@@ -16,11 +16,11 @@ public abstract class Mover
         int horizontal = Mover.sign(destination.getX() - this.getPosition().getX());
         Point newPt = new Point(this.getPosition().getX() + horizontal, this.getPosition().getY());
         
-        if (horizontal == 0 || !this.canMove(4, newPt)){
+        if (horizontal == 0 || !this.canMove(world, newPt)){
         	int vertical = Mover.sign(destination.getY() - this.getPosition().getY());
         	newPt = new Point(this.getPosition().getX(), this.getPosition().getY() + vertical);
         	
-        	if (vertical == 0 || !this.canMove(4, newPt)){
+        	if (vertical == 0 || !this.canMove(world, newPt)){
         		newPt = new Point(this.getPosition().getX(), this.getPosition().getY());
         	}
         }
@@ -39,7 +39,7 @@ public abstract class Mover
     	}
     }
     
-    public abstract boolean canMove(int world, Point pt);
+    public abstract boolean canMove(WorldModel world, Point pt);
 
     private static int sign(int x){
         if (x < 0)

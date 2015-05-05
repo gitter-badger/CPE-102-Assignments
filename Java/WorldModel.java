@@ -1,5 +1,8 @@
 import java.util.ArrayList;
+
 import java.util.List;
+
+import javax.lang.model.type.DeclaredType;
 
 public class WorldModel {
 
@@ -95,19 +98,20 @@ public class WorldModel {
    }
 
    public Positionable findNearest(Point pt, Positionable entity) {
-      Class desiredType = entity.getClass();
-      List<Positionable> = new ArrayList<Positionable> candidates;
+      Class<? extends Positionable> desiredType = entity.getClass();
+      List<Positionable> candidates = new ArrayList<Positionable>();
+      
+      for(Positionable e : candidates) {
 
-      for(desiredType e : entities) {
-         candidates.append(e);
+         candidates.add(e);
       }
 
       return nearest(pt, candidates);
    }
 
    private boolean withinBounds(Point pt) {
-      return (pt.xCoord() >= 0 && pt.xCoord() < columns) &&
-             (pt.yCoord() >= 0 && pt.yCoord() < rows);
+      return (pt.getX() >= 0 && pt.getX() < columns) &&
+             (pt.getY() >= 0 && pt.getY() < rows);
    }
 
    private static Positionable nearest(Point pt, List<Positionable> candidates) {
@@ -124,7 +128,7 @@ public class WorldModel {
       return minEntity;
    }
 
-   private static distanceSq(Point pt1, Point pt2) {
+   private static int distanceSq(Point pt1, Point pt2) {
       int deltaX = pt1.getX() - pt2.getX();
       int deltaY = pt1.getY() - pt2.getY();
 

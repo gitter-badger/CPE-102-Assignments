@@ -11,7 +11,7 @@ public class Miner extends Mover {
 		this.resource = resource;
 	}
 
-	public boolean canMove(int world, Point pt) {
+	public boolean canMove(WorldModel world, Point pt) {
 		
 		return !world.isOccupied(pt);
 	}
