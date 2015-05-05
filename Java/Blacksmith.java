@@ -1,40 +1,38 @@
-public class Blacksmith
-    extends Actor{
+public class Blacksmith extends Actor {
 
-    private int rate;
-    private int resourceLimit;
-    private int resourceCount;
-    private int resourceDistance;
+	private int rate;
+	private int resourceLimit;
+	private int resourceCount;
+	private int resourceDistance;
 
-    public Blacksmith(Point position, String name, int rate, int resourceLimit, int resourceDistance) {
-        super(position, name);
-        this.rate = rate;
-        this.resourceLimit = resourceLimit;
-        this.resourceCount = 0;
-        this.resourceDistance = resourceDistance;
-    }
+	public Blacksmith(Point position, String name, int rate, int resourceLimit,
+			int resourceDistance) {
+		super(position, name);
+		this.rate = rate;
+		this.resourceLimit = resourceLimit;
+		this.resourceCount = 0;
+		this.resourceDistance = resourceDistance;
+	}
 
-    public void setResourceCount(int resourceCount) {
-        this.resourceCount = resourceCount;
-    }
+	public void setResourceCount(int resourceCount) {
+		this.resourceCount = resourceCount;
+	}
 
-    public int getResourceLimit() {
-        return resourceLimit;
-    }
+	public int getResourceLimit() {
+		return resourceLimit;
+	}
 
-    public int getResourceCount() {
-        return resourceCount;
-    }
+	public int getResourceCount() {
+		return resourceCount;
+	}
 
-    public int getResourceDistance() {
-        return resourceDistance;
-    }
+	public int getResourceDistance() {
+		return resourceDistance;
+	}
 
-    public String entityString(){
-        return String.format("blacksmith %1$s %2$s %3$s %4$s %5$s", super.getName(),
-                super.getPosition().toString(),
-                this.resourceLimit,
-                this.rate,
-                this.resourceDistance);
-    }
+	public String entityString() {
+		return String.format("blacksmith %1$s %2$s %3$s %4$s %5$s",
+				super.getName(), super.getPosition().toString(),
+				this.resourceLimit, this.rate, this.resourceDistance);
+	}
 }
