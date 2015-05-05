@@ -1,18 +1,10 @@
 // Background class
 
-public class Background {
+public class Background 
+	extends Entity {
 
-    private String name;
+	public Background(String name) {
+		super(name);
+	}
 
-    public Background(String name) {
-        this.name = name;
-    }
-
-    public String getName() {
-        return this.name;
-    }
-
-    public String entityString() {
-        return "unknown";
-    }
 }
