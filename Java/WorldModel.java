@@ -1,8 +1,5 @@
 import java.util.ArrayList;
-
 import java.util.List;
-
-import javax.lang.model.type.DeclaredType;
 
 public class WorldModel {
 
@@ -10,14 +7,14 @@ public class WorldModel {
    private int columns;
    private Grid background;
    private Grid occupancy;
-   private List<Entity> entities;
+   private List<Positionable> entities;
 
    public WorldModel(int rows, int columns, Background background) {
       this.rows = rows;
       this.columns = columns;
       this.background = new Grid(rows, columns, background);
       this.occupancy = new Grid(rows, columns, null);
-      this.entities = new ArrayList<Entity>();
+      this.entities = new ArrayList<Positionable>();
    }
 
    public Background getBackground(Point pt) {
@@ -29,7 +26,7 @@ public class WorldModel {
 
    public void setBackground(Point pt, Background background) {
       if (withinBounds(pt)) {
-         backgrosund.setCell(pt, background);
+         this.background.setCell(pt, background);
       }
    }
 
@@ -40,7 +37,7 @@ public class WorldModel {
       return null;
    }
 
-   public List<Entity> getEntities() {
+   public List<Positionable> getEntities() {
       return entities;
    }
 
@@ -101,9 +98,9 @@ public class WorldModel {
    }
 
    public Positionable findNearestVein(Point pt) {
-      List<Positionable> candidates;
+      List<Positionable> candidates = new ArrayList<Positionable>();
       for(Positionable e : entities) {
-         if(e isinstance Vein) {
+         if(e instanceof Vein) {
             candidates.add(e);
          }
       }
@@ -112,9 +109,9 @@ public class WorldModel {
    }
 
    public Positionable findNearestOre(Point pt) {
-      List<Positionable> candidates;
+      List<Positionable> candidates = new ArrayList<Positionable>();;
       for(Positionable e : entities) {
-         if(e isinstance Ore) {
+         if(e instanceof Ore) {
             candidates.add(e);
          }
       }
@@ -123,9 +120,9 @@ public class WorldModel {
    }
 
    public Positionable findNearestBlacksmith(Point pt) {
-      List<Positionable> candidates;
+      List<Positionable> candidates = new ArrayList<Positionable>();;
       for(Positionable e : entities) {
-         if(e isinstance BlackSmith) {
+         if(e instanceof Blacksmith) {
             candidates.add(e);
          }
       }
@@ -159,6 +156,6 @@ public class WorldModel {
       int deltaX = pt1.getX() - pt2.getX();
       int deltaY = pt1.getY() - pt2.getY();
 
-      return deltaX * deltaX + deltaY * deltaY
+      return deltaX * deltaX + deltaY * deltaY;
    }
 }
