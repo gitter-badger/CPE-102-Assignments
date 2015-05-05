@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public class WorldModel {
 
    private int rows;
@@ -22,7 +25,7 @@ public class WorldModel {
 
    public void setBackground(Point pt, Background background) {
       if (withinBounds(pt)) {
-         background.setCell(pt, background);
+         backgrosund.setCell(pt, background);
       }
    }
 

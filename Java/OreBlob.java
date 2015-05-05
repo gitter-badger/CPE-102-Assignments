@@ -6,11 +6,20 @@ public class OreBlob
 		super(position, name, animationRate, rate);
 	}
 
-	public boolean toVein(World world, Vein vein){
-		boolean toReturn = this.toTarget(world, vein)
+	public boolean toVein(WorldModel world, Vein vein){
+		boolean found = this.toTarget(world, vein);
+		
+		//TODO check and remove any ores in the surrounding area
+		
+		return found;
 	}
-	public boolean canMove(int world, Point pt) {
+	public boolean canMove(WorldModel world, Point pt) {
 		return (!world.isOccupied(pt) || world.getTileOccupant(pt) instanceof Ore);
+	}
+	
+	public boolean canMove(int world, Point pt) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 	
 

@@ -1,5 +1,3 @@
-import java.lang.Override;
-
 public class Obstacle
     extends Positionable{
 
@@ -9,9 +7,5 @@ public class Obstacle
 
     public String entityString(){
         return String.format("obstacle %1$ %2$", super.getName(), super.getPosition().toString());
-    }
-
-    public static void createFromProperties(){
-        // lolololol what goes here
     }
 }

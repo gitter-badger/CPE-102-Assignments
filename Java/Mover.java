@@ -12,7 +12,7 @@ public abstract class Mover
         return rate;
     }
 
-    public Point nextPosition(int world, Point destination){
+    public Point nextPosition(WorldModel world, Point destination){
         int horizontal = Mover.sign(destination.getX() - this.getPosition().getX());
         Point newPt = new Point(this.getPosition().getX() + horizontal, this.getPosition().getY());
         
@@ -26,7 +26,7 @@ public abstract class Mover
         }
         return newPt;
     }
-    public boolean toTarget(World world, Positionable destination){
+    public boolean toTarget(WorldModel world, Positionable destination){
     	if (destination == null){
     		return false;
     	}
