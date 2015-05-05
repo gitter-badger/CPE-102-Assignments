@@ -60,7 +60,7 @@ public class Testing {
 		
 		//TODO toVein(WorldModel world, Vein vein)
 		
-		//TODO canMove(WorldModel world, Pointpt)
+		//TODO canMove(WorldModel world, Point pt)
 	}
 	
 	@Test
@@ -83,18 +83,19 @@ public class Testing {
 	}
 	
 	@Test
-	public void testPositionable() {
-		fail("Not yet implemented");
-	}
-	
-	@Test
 	public void testQuake() {
-		fail("Not yet implemented");
+		Quake q = new Quake(new Point(1,2), "name", 3);
+		
+		assertEquals(q.getPosition(), new Point(1, 2));
+		q.setPosition(new Point(3, 4));
+		assertEquals(q.getPosition(), new Point(3, 4));
 	}
 	
 	@Test
 	public void testVein() {
-		fail("Not yet implemented");
+		Vein v = new Vein(new Point(1,2), "name", 3, 4);
+		
+		assertEquals(v.entityString(), "vein name Point{x=1, y=2} 3");
 	}
 	
 	@Test
