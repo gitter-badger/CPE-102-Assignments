@@ -6,7 +6,6 @@ public class Blacksmith
     private int resourceCount;
     private int resourceDistance;
 
-
     public Blacksmith(Point position, String name, int rate, int resourceLimit, int resourceDistance) {
         super(position, name);
         this.rate = rate;
