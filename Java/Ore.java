@@ -9,7 +9,7 @@ public class Ore
     }
 
     public String entityString(){
-        return String.format("ore %2$ %3$ %4$", super.getName(),
+        return String.format("ore %1$s %2$s %3$s", super.getName(),
                         super.getPosition().toString(),
                         this.rate);
     }

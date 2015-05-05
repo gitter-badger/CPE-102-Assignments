@@ -13,7 +13,7 @@ public class Testing {
 	public void testBackground() {
 		Background b = new Background("A name");
 		
-		assertTrue(b.entitiyString().equals("Background"));
+		assertTrue(b.entityString().equals("Background"));
 		assertTrue(b.getName().equals("A name"));
 	}
 	
@@ -32,27 +32,54 @@ public class Testing {
 	
 	@Test
 	public void testMiner() {
-		fail("Not yet implemented");
+		Miner m = new Miner(new Point(1,2), "name", 3, 4, 5, 6);
+		
+		assertEquals(m.getRate(), 4);
+		assertEquals(m.getAnimationRate(), 3, .001);
+		
+		//TODO canMove(WorldModel world, Point pt)		
 	}
 
 	@Test
 	public void testObstacle() {
-		fail("Not yet implemented");
+		Obstacle ob = new Obstacle(new Point(1,2), "name");
+		
+		assertEquals(ob.entityString(), "obstacle name Point{x=1, y=2}");
 	}
 	
 	@Test
 	public void testOre() {
-		fail("Not yet implemented");
+		Ore ore = new Ore(new Point(1,2), "name", 3);
+		
+		assertEquals(ore.entityString(), "ore name Point{x=1, y=2} 3");
 	}
 	
 	@Test
 	public void testOreBlob() {
-		fail("Not yet implemented");
+		OreBlob ob = new OreBlob(new Point(1, 2), "name", 1, 2);
+		
+		//TODO toVein(WorldModel world, Vein vein)
+		
+		//TODO canMove(WorldModel world, Pointpt)
 	}
 	
 	@Test
 	public void testPoint() {
-		fail("Not yet implemented");
+		Point pt = new Point(1,2);
+		
+		assertEquals(pt.getX(), 1);
+		assertEquals(pt.getY(), 2);
+		
+		pt.setX(3);
+		pt.setY(4);;
+		
+		assertEquals(pt.getX(), 3);
+		assertEquals(pt.getY(), 4);
+		
+		assertTrue(pt.equals(new Point(3, 4)));
+		assertFalse(pt.equals(new Point(1, 2)));
+		
+		assertEquals(pt.toString(), "Point{x=3, y=4}");
 	}
 	
 	@Test

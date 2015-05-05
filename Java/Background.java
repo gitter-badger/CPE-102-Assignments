@@ -7,7 +7,7 @@ public class Background
 		super(name);
 	}
 	
-	public String entitiyString(){
+	public String entityString(){
 		return "Background";		
 	}
 
