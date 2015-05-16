@@ -7,4 +7,6 @@ Assignment3.iml
 .classpath
 .metadata/
 .project
+*.jar
+.DS_Store
 bin/*
