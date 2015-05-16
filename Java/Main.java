@@ -2,12 +2,15 @@ import processing.core.*;
 
 public class Main extends PApplet
 {
-
-   private final int windowWidth = 640;
-   private final int windowHeight = 480;
-   private final int viewWidth = 20;
-   private final int viewHeight = 15;
-   private final int tileWidth = windowWidth/viewWidth;
+	// @Andrew
+	// going to make these public for simplicity
+	// as they are kind of like global variables
+   public final int windowWidth = 640;
+   public final int windowHeight = 480;
+   public final int viewWidth = 20;
+   public final int viewHeight = 15;
+   public final int tileWidth = windowWidth/viewWidth;
+   public final int tileHeight = windowHeight/viewHeight;
 
    private final int worldScale = 2;
 
@@ -20,7 +23,7 @@ public class Main extends PApplet
       size(windowWidth, windowHeight);
       iStore = new ImageStore(this, "Filename", tileWidth, tileWidth);
 
-      defaultBgnd = Background("DefaultImageName",
+      defaultBgnd = new Background("DefaultImageName",
               iStore.getImages("DefaultImageName"));
 
       world = new WorldModel(viewHeight*worldScale, viewWidth*worldScale,
