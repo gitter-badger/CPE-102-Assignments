@@ -1,8 +1,12 @@
+import java.util.List;
+import processing.core.PImage;
+
 public class AnimatedActor extends Actor {
 	private double animationRate;
 
-	public AnimatedActor(Point position, String name, double animationRate) {
-		super(position, name);
+	public AnimatedActor(Point position, String name, double animationRate,
+      List<PImage> images) {
+		super(position, name, images);
 		this.animationRate = animationRate;
 	}
 

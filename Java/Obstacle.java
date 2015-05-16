@@ -1,7 +1,10 @@
+import java.util.List;
+import processing.core.PImage;
+
 public class Obstacle extends Positionable {
 
-	public Obstacle(Point position, String name) {
-		super(position, name);
+	public Obstacle(Point position, String name, List<PImage> images) {
+		super(position, name, images);
 	}
 
 	public String entityString() {

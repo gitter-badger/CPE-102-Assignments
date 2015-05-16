@@ -1,3 +1,6 @@
+import java.util.List;
+import processing.core.PImage;
+
 public class Blacksmith extends Actor {
 
 	private int rate;
@@ -6,8 +9,8 @@ public class Blacksmith extends Actor {
 	private int resourceDistance;
 
 	public Blacksmith(Point position, String name, int rate, int resourceLimit,
-			int resourceDistance) {
-		super(position, name);
+		int resourceDistance, List<PImage> images) {
+		super(position, name, images);
 		this.rate = rate;
 		this.resourceLimit = resourceLimit;
 		this.resourceCount = 0;

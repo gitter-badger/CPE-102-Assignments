@@ -1,9 +1,13 @@
+import java.util.List;
+import processing.core.PImage;
+
 public abstract class Mover extends Quake {
 
 	public int rate;
 
-	public Mover(Point position, String name, int animationRate, int rate) {
-		super(position, name, animationRate);
+	public Mover(Point position, String name, int animationRate, int rate,
+      List<PImage> images) {
+		super(position, name, animationRate, images);
 		this.rate = rate;
 	}
 

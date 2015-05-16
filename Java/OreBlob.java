@@ -1,7 +1,11 @@
+import java.util.List;
+import processing.core.PImage;
+
 public class OreBlob extends Mover {
 
-	public OreBlob(Point position, String name, int animationRate, int rate) {
-		super(position, name, animationRate, rate);
+	public OreBlob(Point position, String name, int animationRate, int rate,
+      List<PImage> images) {
+		super(position, name, animationRate, rate, images);
 	}
 
 	public boolean toVein(WorldModel world, Vein vein) {
