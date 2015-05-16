@@ -18,7 +18,7 @@ public class Main extends PApplet
    public void setup()
    {
       size(windowWidth, windowHeight);
-      iStore = new iStore("Filename", tileWidth, tileWidth);
+      iStore = new ImageStore(this, "Filename", tileWidth, tileWidth);
 
       defaultBgnd = Background("DefaultImageName",
               iStore.getImages("DefaultImageName"));
@@ -28,7 +28,7 @@ public class Main extends PApplet
 
       viewPort = new WorldView("MOAR", args);
 
-      world.loadFromSave(iStore, SAVEFILE);
+      world.loadFromSave(iStore, "savefile");
    }
 
    public void draw()
