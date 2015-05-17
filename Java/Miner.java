@@ -27,11 +27,13 @@ public class Miner extends Mover {
 
 	public static Positionable createFromProperties(String[] prop,
 			ImageStore iStore) {
-		Point pos = new Point(Integer.parseInt(prop[COL]), Integer.parseInt(prop[ROW]));
+		Point pos = new Point(Integer.parseInt(prop[COL]),
+				Integer.parseInt(prop[ROW]));
 		int aRate = Integer.parseInt(prop[ANIMATION_RATE]);
 		int rate = Integer.parseInt(prop[RATE]);
 		int limit = Integer.parseInt(prop[LIMIT]);
-		return new Miner(pos, prop[NAME], aRate, rate, limit, 0, iStore.getImages("miner"));
+		return new Miner(pos, prop[NAME], aRate, rate, limit, 0,
+				iStore.getImages("miner"));
 	}
 
 }

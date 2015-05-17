@@ -4,7 +4,7 @@ import processing.core.PImage;
 public class OreBlob extends Mover {
 
 	public OreBlob(Point position, String name, int animationRate, int rate,
-      List<PImage> images) {
+			List<PImage> images) {
 		super(position, name, animationRate, rate, images);
 	}
 

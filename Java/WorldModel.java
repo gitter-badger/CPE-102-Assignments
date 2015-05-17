@@ -4,16 +4,17 @@ import java.io.*;
 import java.util.Scanner;
 
 public class WorldModel {
+	public static final int typeKey = 0; // Seriously Java why you no enum
+											// properly?
+	public static final int nameKey = 1;
+	public static final int columnKey = 2;
+	public static final int rowKey = 3;
 
 	private int rows;
 	private int columns;
 	private Grid background;
 	private Grid occupancy;
 	private List<Positionable> entities;
-   public static final int typeKey = 0; //Seriously Java why you no enum properly?
-   public static final int nameKey = 1;
-   public static final int columnKey = 2;
-   public static final int rowKey = 3;
 
 	public WorldModel(int rows, int columns, Background background) {
 		this.rows = rows;
@@ -81,7 +82,7 @@ public class WorldModel {
 		if (isOccupied(pt)) {
 			Positionable entity = (Positionable) getTileOccupant(pt);
 			entity.setPosition(new Point(-1, -1)); // WAT Let's change this at
-												         	// some point.
+													// some point.
 			entities.remove(entity);
 			occupancy.setCell(pt, null);
 		}
@@ -142,66 +143,61 @@ public class WorldModel {
 		return nearest(pt, candidates);
 	}
 
-   public void loadFromSave(ImageStore iStore, String filename) {
-      try {
-         Scanner in = new Scanner(new FileInputStream(filename));
-         while(in.hasNextLine()) {
-            String[] properties = in.nextLine().split("\\s+");
-            if(properties.length > 0) {
-               if(properties[typeKey].equals("background")) {
-                  addBackground(properties, iStore);
-               }
-               else {
-                  createAddEntity(properties, iStore);
-               }
-            }
-         }
-         in.close();
-      }
-      catch(FileNotFoundException e) {
-         System.out.println(e.getMessage());
-      }
-   }
+	public void loadFromSave(ImageStore iStore, String filename) {
+		try {
+			Scanner in = new Scanner(new FileInputStream(filename));
+			while (in.hasNextLine()) {
+				String[] properties = in.nextLine().split("\\s+");
+				if (properties.length > 0) {
+					if (properties[typeKey].equals("background")) {
+						addBackground(properties, iStore);
+					} else {
+						createAddEntity(properties, iStore);
+					}
+				}
+			}
+			in.close();
+		} catch (FileNotFoundException e) {
+			System.out.println(e.getMessage());
+		}
+	}
 
-   public void addBackground(String[] properties, ImageStore iStore) {
-      String name = properties[nameKey];
-      Point pt = new Point(Integer.parseInt(properties[columnKey]),
-         Integer.parseInt(properties[rowKey]));
-      setBackground(pt, new Background(name, iStore.getImages(name)));
-   }
+	public void addBackground(String[] properties, ImageStore iStore) {
+		String name = properties[nameKey];
+		Point pt = new Point(Integer.parseInt(properties[columnKey]),
+				Integer.parseInt(properties[rowKey]));
+		setBackground(pt, new Background(name, iStore.getImages(name)));
+	}
 
-   public void createAddEntity(String[] properties, ImageStore iStore) {
-      Positionable newEntity = createFromProperties(properties, iStore);
-      addEntity(newEntity);
-      if(newEntity instanceof Actor) {
-         //TODO define schedule for all Actors then uncomment these lines
+	public void createAddEntity(String[] properties, ImageStore iStore) {
+		Positionable newEntity = createFromProperties(properties, iStore);
+		addEntity(newEntity);
+		if (newEntity instanceof Actor) {
+			// TODO define schedule for all Actors then uncomment these lines
 
-         //Actor actingEntity = (Actor)newEntity;
-         //actingEntity.schedule();
-      }
-   }
+			// Actor actingEntity = (Actor)newEntity;
+			// actingEntity.schedule();
+		}
+	}
 
-   public Positionable createFromProperties(String[] properties, ImageStore iStore) {
-      //TODO define createFromProperties for the following.
+	public Positionable createFromProperties(String[] properties,
+			ImageStore iStore) {
+		// TODO define createFromProperties for the following.
 
-      String key = properties[typeKey];
-      if(key.equals("miner")) {
-         return Miner.createFromProperties(properties, iStore);
-      }
-      else if(key.equals("vein")) {
-         return Vein.createFromProperties(properties, iStore);
-      }
-      else if(key.equals("ore")) {
-         return Ore.createFromProperties(properties, iStore);
-      }
-      else if(key.equals("blacksmith")) {
-         return Blacksmith.createFromProperties(properties, iStore);
-      }
-      else if(key.equals("obstacle")) {
-         return Obstacle.createFromProperties(properties, iStore);
-      }
-      return null;
-   }
+		String key = properties[typeKey];
+		if (key.equals("miner")) {
+			return Miner.createFromProperties(properties, iStore);
+		} else if (key.equals("vein")) {
+			return Vein.createFromProperties(properties, iStore);
+		} else if (key.equals("ore")) {
+			return Ore.createFromProperties(properties, iStore);
+		} else if (key.equals("blacksmith")) {
+			return Blacksmith.createFromProperties(properties, iStore);
+		} else if (key.equals("obstacle")) {
+			return Obstacle.createFromProperties(properties, iStore);
+		}
+		return null;
+	}
 
 	private boolean withinBounds(Point pt) {
 		return (pt.getX() >= 0 && pt.getX() < columns)

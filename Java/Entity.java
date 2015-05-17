@@ -4,13 +4,13 @@ import processing.core.PImage;
 public class Entity {
 
 	private String name;
-   private List<PImage> images;
-   private int currentImage;
+	private List<PImage> images;
+	private int currentImage;
 
 	public Entity(String name, List<PImage> images) {
 		this.name = name;
-      this.images = images;
-      this.currentImage = 0;
+		this.images = images;
+		this.currentImage = 0;
 	}
 
 	public String getName() {
@@ -21,15 +21,15 @@ public class Entity {
 		return "unknown";
 	}
 
-   public List<PImage> getImages() {
-      return images;
-   }
+	public List<PImage> getImages() {
+		return images;
+	}
 
-   public PImage getImage() {
-      return images.get(currentImage);
-   }
+	public PImage getImage() {
+		return images.get(currentImage);
+	}
 
-   public void nextImage() {
-      currentImage = (currentImage + 1) % images.size();
-   }
+	public void nextImage() {
+		currentImage = (currentImage + 1) % images.size();
+	}
 }

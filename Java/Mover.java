@@ -6,7 +6,7 @@ public abstract class Mover extends Quake {
 	public int rate;
 
 	public Mover(Point position, String name, int animationRate, int rate,
-      List<PImage> images) {
+			List<PImage> images) {
 		super(position, name, animationRate, images);
 		this.rate = rate;
 	}

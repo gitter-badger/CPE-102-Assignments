@@ -18,7 +18,8 @@ public class Obstacle extends Positionable {
 
 	public static Positionable createFromProperties(String[] prop,
 			ImageStore iStore) {
-		Point pos = new Point(Integer.parseInt(prop[COL]), Integer.parseInt(prop[ROW]));
+		Point pos = new Point(Integer.parseInt(prop[COL]),
+				Integer.parseInt(prop[ROW]));
 		return new Obstacle(pos, prop[NAME], iStore.getImages("obstacle"));
 
 	}

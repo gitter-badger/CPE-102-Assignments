@@ -5,7 +5,7 @@ public class AnimatedActor extends Actor {
 	private double animationRate;
 
 	public AnimatedActor(Point position, String name, double animationRate,
-      List<PImage> images) {
+			List<PImage> images) {
 		super(position, name, images);
 		this.animationRate = animationRate;
 	}

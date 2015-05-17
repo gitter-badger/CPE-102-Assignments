@@ -16,7 +16,7 @@ public class Blacksmith extends Actor {
 	private int resourceDistance;
 
 	public Blacksmith(Point position, String name, int rate, int resourceLimit,
-		int resourceDistance, List<PImage> images) {
+			int resourceDistance, List<PImage> images) {
 		super(position, name, images);
 		this.rate = rate;
 		this.resourceLimit = resourceLimit;
@@ -48,11 +48,13 @@ public class Blacksmith extends Actor {
 
 	public static Positionable createFromProperties(String[] prop,
 			ImageStore iStore) {
-		Point pos = new Point(Integer.parseInt(prop[COL]), Integer.parseInt(prop[ROW]));
+		Point pos = new Point(Integer.parseInt(prop[COL]),
+				Integer.parseInt(prop[ROW]));
 		int reach = Integer.parseInt(prop[REACH]);
 		int rate = Integer.parseInt(prop[RATE]);
 		int limit = Integer.parseInt(prop[LIMIT]);
-		return new Blacksmith(pos, prop[NAME], rate, limit, reach, iStore.getImages("blacksmith"));
+		return new Blacksmith(pos, prop[NAME], rate, limit, reach,
+				iStore.getImages("blacksmith"));
 
 	}
 }
