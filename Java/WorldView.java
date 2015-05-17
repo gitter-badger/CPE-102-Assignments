@@ -12,7 +12,7 @@ public class WorldView {
 			int viewGridHeight, int windowWidth, int windowHeight) {
 		topLeft = new Point(0,0);
 		dimensions = new Point(windowWidth, windowHeight);
-		bottomRight = new Point(dimensions.getX(), dimensions.getY());
+		bottomRight = new Point(viewGridWidth, viewGridHeight);
 		tileWidth =  windowWidth/viewGridWidth;
 		tileHeight = windowHeight/viewGridHeight;
 	}

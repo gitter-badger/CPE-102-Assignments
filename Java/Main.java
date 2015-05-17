@@ -18,17 +18,18 @@ public class Main extends PApplet
    public void setup()
    {
       size(windowWidth, windowHeight);
-      iStore = new ImageStore(this, "Filename", tileWidth, tileWidth);
+      iStore = new ImageStore(this, "imagelist", tileWidth, tileWidth);
 
       defaultBgnd = new Background("DefaultImageName",
-              iStore.getImages("DefaultImageName"));
+              iStore.getImages("background_default"));
 
       world = new WorldModel(viewHeight*worldScale, viewWidth*worldScale,
          defaultBgnd);
 
-      viewPort = new WorldView("MOAR", args);
+      viewPort = new WorldView("What is this for???", 
+    		  viewWidth, viewHeight, windowWidth, windowHeight);
 
-      world.loadFromSave(iStore, "savefile");
+      world.loadFromSave(iStore, "gaia.sav");
    }
 
    public void draw()

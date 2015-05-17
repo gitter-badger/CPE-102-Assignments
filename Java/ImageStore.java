@@ -15,6 +15,7 @@ public class ImageStore
    // All the real work happens in this constructor and the functions it calls.
    public ImageStore(PApplet app, String filename, int tileWidth, int tileHeight)
    {
+	   images = new HashMap<String, List<PImage>>();
       try
       {
             Scanner in = new Scanner(new FileInputStream(filename));
