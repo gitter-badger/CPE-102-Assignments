@@ -19,7 +19,6 @@ public class ScheduledAction
 		return timeToExecute;
 	}
 
-
 	public int compare(ScheduledAction o1, ScheduledAction o2) {
 		return Long.compare(o1.timeToExecute, o2.timeToExecute);
 	}

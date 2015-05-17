@@ -57,4 +57,9 @@ public class Blacksmith extends Actor {
 				iStore.getImages("blacksmith"));
 
 	}
+
+	protected Action createAction(WorldModel world, ImageStore iStore) {
+		// TODO: Add action generating code
+		return null;
+	}
 }

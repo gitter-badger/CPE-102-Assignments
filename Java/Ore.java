@@ -28,4 +28,9 @@ public class Ore extends Actor {
 
 		return new Ore(pos, prop[NAME], rate, iStore.getImages("ore"));
 	}
+	
+	protected Action createAction(WorldModel world, ImageStore iStore) {
+		// TODO: Add action generating code
+		return null;
+	}
 }

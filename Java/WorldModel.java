@@ -15,6 +15,8 @@ public class WorldModel {
 	private Grid background;
 	private Grid occupancy;
 	private List<Positionable> entities;
+	
+	private List<ScheduledAction> actionQueue;
 
 	public WorldModel(int rows, int columns, Background background) {
 		this.rows = rows;
@@ -22,8 +24,27 @@ public class WorldModel {
 		this.background = new Grid(columns, rows, background);
 		this.occupancy = new Grid(columns, rows, null);
 		this.entities = new ArrayList<Positionable>();
+		actionQueue = new ArrayList<ScheduledAction>();
 	}
 
+	public void updateOnTime(Long ticks){
+		// TODO: loop through actionQueue to decide actions to execute
+	}
+	
+	public void clearPendingAtions(Actor entity){
+		// TODO: clear entity actions from queue and from the entitiy's queue
+	}
+	
+	public void scheduleAction(Actor entity, Action action, Long time){
+		// TODO: add toAdd to entity's pending actions
+		// create a Scheduled action and add to actionQueue
+	}
+	
+	public void unscheduleAction(Action action){
+		// TODO: remove the Scheduled action with the same action from 
+		// actionqueue
+	}
+	
 	public Background getBackground(Point pt) {
 		if (withinBounds(pt)) {
 			return (Background) background.getCell(pt);

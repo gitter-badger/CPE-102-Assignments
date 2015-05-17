@@ -1,7 +1,7 @@
 import java.util.List;
 import processing.core.PImage;
 
-public class AnimatedActor extends Actor {
+public abstract class AnimatedActor extends Actor {
 	private double animationRate;
 
 	public AnimatedActor(Point position, String name, double animationRate,
@@ -13,4 +13,6 @@ public class AnimatedActor extends Actor {
 	public double getAnimationRate() {
 		return animationRate;
 	}
+	
+	
 }

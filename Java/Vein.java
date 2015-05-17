@@ -32,4 +32,9 @@ public class Vein extends Actor {
 		int reach = Integer.parseInt(prop[REACH]);
 		return new Vein(pos, prop[NAME], rate, reach, iStore.getImages("vein"));
 	}
+	
+	protected Action createAction(WorldModel world, ImageStore iStore) {
+		// TODO: Add action generating code
+		return null;
+	}
 }

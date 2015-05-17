@@ -19,4 +19,9 @@ public abstract class Actor extends Positionable {
 		pendingActions.add(toAdd);
 	}
 
+	public void scheduleAction(WorldModel world, long ticks, ImageStore iStore, long scheduleRate){
+		
+	}
+	
+	protected abstract Action createAction(WorldModel world, ImageStore iStore);
 }
