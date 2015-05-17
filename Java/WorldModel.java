@@ -190,10 +190,10 @@ public class WorldModel {
       }
       else if(key == "vein") {
          return Vein.createFromProperties(properties, iStore);
-      }/*
+      }
       else if(key == "ore") {
          return Ore.createFromProperties(properties, iStore);
-      }
+      }/*
       else if(key == "blacksmith") {
          return Blacksmith.createFromProperties(properties, iStore);
       }
