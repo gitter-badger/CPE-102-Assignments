@@ -188,9 +188,9 @@ public class WorldModel {
       if(key == "miner") {
          return Miner.createFromProperties(properties, iStore);
       }
-      /*else if(key == "vein") {
+      else if(key == "vein") {
          return Vein.createFromProperties(properties, iStore);
-      }
+      }/*
       else if(key == "ore") {
          return Ore.createFromProperties(properties, iStore);
       }
