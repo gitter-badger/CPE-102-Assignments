@@ -28,8 +28,8 @@ public class WorldView {
 	 for (Positionable a : entities){
 		 if (inView(a)){
 			 main.image(a.getImage(), 
-					 (topLeft.getX() - a.getPosition().getX()) * tileWidth,
-					 (topLeft.getY() - a.getPosition().getY()) * tileHeight, 
+					 (a.getPosition().getX() - topLeft.getX()) * tileWidth,
+					 (a.getPosition().getY() - topLeft.getY()) * tileHeight, 
 					 tileWidth, tileHeight);
 		 }
 	 }
