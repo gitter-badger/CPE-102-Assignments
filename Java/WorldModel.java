@@ -10,10 +10,10 @@ public class WorldModel {
 	private Grid background;
 	private Grid occupancy;
 	private List<Positionable> entities;
-   private static final int typeKey = 0; //Seriously Java why you no enum properly?
-   private static final int nameKey = 1;
-   private static final int columnKey = 2;
-   private static final int rowKey = 3;
+   public static final int typeKey = 0; //Seriously Java why you no enum properly?
+   public static final int nameKey = 1;
+   public static final int columnKey = 2;
+   public static final int rowKey = 3;
 
 	public WorldModel(int rows, int columns, Background background) {
 		this.rows = rows;
@@ -184,11 +184,11 @@ public class WorldModel {
    public Positionable createFromProperties(String[] properties, ImageStore iStore) {
       //TODO define createFromProperties for the following.
 
-      /* key = properties[nameKey];
+      String key = properties[nameKey];
       if(key == "miner") {
          return Miner.createFromProperties(properties, iStore);
       }
-      else if(key == "vein") {
+      /*else if(key == "vein") {
          return Vein.createFromProperties(properties, iStore);
       }
       else if(key == "ore") {
