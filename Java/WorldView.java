@@ -4,17 +4,16 @@ import processing.core.*;
 public class WorldView {
 	private Point topLeft;
 	private Point bottomRight;
-	private Point dimensions;
+	private Point worldSize;
 	private float tileWidth;
 	private float tileHeight;
 
-	public WorldView(String string, int viewGridWidth, 
-			int viewGridHeight, int windowWidth, int windowHeight) {
+	public WorldView(String string, Point viewGrid, Point window, Point worldSize) {
 		topLeft = new Point(0,0);
-		dimensions = new Point(windowWidth, windowHeight);
-		bottomRight = new Point(viewGridWidth, viewGridHeight);
-		tileWidth =  windowWidth/viewGridWidth;
-		tileHeight = windowHeight/viewGridHeight;
+		this.worldSize = new Point(worldSize.getX(), worldSize.getY());
+		bottomRight = new Point(viewGrid.getX(), viewGrid.getY());
+		tileWidth =  window.getX()/viewGrid.getX();
+		tileHeight = window.getY()/viewGrid.getY();
 	}
 
 	public void draw(Main main, WorldModel world) {
@@ -23,10 +22,14 @@ public class WorldView {
 	}
 	
 	public void move(Point delta){
-		topLeft.setX(topLeft.getX() + delta.getX());
-		bottomRight.setX(bottomRight.getX() + delta.getX());
-		topLeft.setY(topLeft.getY() + delta.getY());
-		bottomRight.setY(bottomRight.getY() + delta.getY());
+		if (topLeft.getX() + delta.getX() >= 0 && bottomRight.getX() + delta.getX() < worldSize.getX() &&
+			topLeft.getY() + delta.getY() >= 0 && bottomRight.getY() + delta.getY() < worldSize.getY()) {	
+			
+			topLeft.setX(topLeft.getX() + delta.getX());
+			bottomRight.setX(bottomRight.getX() + delta.getX());
+			topLeft.setY(topLeft.getY() + delta.getY());
+			bottomRight.setY(bottomRight.getY() + delta.getY());
+		}
 	}
 	
 	private void drawEntities(Main main, WorldModel world) {
@@ -47,7 +50,7 @@ public class WorldView {
 		for (int i = topLeft.getY(); i < bottomRight.getY(); i++){
 			for (int j = topLeft.getX(); j < bottomRight.getX(); j++){
 				main.image(world.getBackground(new Point(j, i)).getImage(),
-						j * tileWidth, i * tileHeight,
+						(j - topLeft.getX()) * tileWidth, (i - topLeft.getY()) * tileHeight,
 						tileWidth, tileHeight);
 			}
 		}

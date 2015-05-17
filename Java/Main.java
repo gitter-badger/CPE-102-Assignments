@@ -27,7 +27,9 @@ public class Main extends PApplet
          defaultBgnd);
 
       viewPort = new WorldView("What is this for???", 
-    		  viewWidth, viewHeight, windowWidth, windowHeight);
+    		  new Point(viewWidth, viewHeight), 
+    		  new Point(windowWidth, windowHeight), 
+    		  new Point(viewWidth*worldScale, viewHeight*worldScale));
 
       world.loadFromSave(iStore, "gaia.sav");
    }
@@ -38,6 +40,23 @@ public class Main extends PApplet
       viewPort.draw(this, world);
    }
 
+   public void keyPressed(){
+	   switch (key){
+		   case 'w':
+			   viewPort.move(new Point(0,-1));
+			   break;
+		   case 'd':
+			   viewPort.move(new Point(1,0));
+			   break;
+		   case 's':
+			   viewPort.move(new Point(0, 1));
+			   break;
+		   case 'a':
+			   viewPort.move(new Point(-1, 0));
+			   break;
+	   }
+	   
+   }
    public static void main(String[] args)
    {
       PApplet.main("Main");
