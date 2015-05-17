@@ -13,6 +13,6 @@ public abstract class AnimatedActor extends Actor {
 	public double getAnimationRate() {
 		return animationRate;
 	}
-	
-	
+
+
 }

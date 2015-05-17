@@ -1,17 +1,17 @@
 import java.util.Comparator;
 
 
-public class ScheduledAction 
+public class ScheduledAction
 	implements Comparator<ScheduledAction>{
-	
+
 	private Action toExecute;
 	private long timeToExecute;
-	
+
 	public ScheduledAction(Action toDo, long whenToDoIt) {
 		this.toExecute = toDo;
 		this.timeToExecute = whenToDoIt;
 	}
-	
+
 	public Action getAction(){
 		return toExecute;
 	}

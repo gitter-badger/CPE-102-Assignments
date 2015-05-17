@@ -22,6 +22,6 @@ public abstract class Actor extends Positionable {
 	public void scheduleAction(WorldModel world, long ticks, ImageStore iStore, long scheduleRate){
 		world.scheduleAction(this, this.createAction(world, iStore), ticks + scheduleRate);
 	}
-	
+
 	protected abstract Action createAction(WorldModel world, ImageStore iStore);
 }
