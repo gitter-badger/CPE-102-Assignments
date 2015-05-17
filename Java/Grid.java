@@ -11,7 +11,7 @@ public class Grid {
 
 		for (int row = 0; row < height; row++) {
 			for (int col = 0; col < width; col++) {
-				this.cells[row][col] = (occupants);
+				//this.cells[row][col] = (occupants);
 			}
 		}
 	}

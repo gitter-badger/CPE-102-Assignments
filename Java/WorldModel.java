@@ -18,8 +18,8 @@ public class WorldModel {
 	public WorldModel(int rows, int columns, Background background) {
 		this.rows = rows;
 		this.columns = columns;
-		this.background = new Grid(rows, columns, background);
-		this.occupancy = new Grid(rows, columns, null);
+		this.background = new Grid(columns, rows, background);
+		this.occupancy = new Grid(columns, rows, null);
 		this.entities = new ArrayList<Positionable>();
 	}
 
@@ -148,7 +148,7 @@ public class WorldModel {
          while(in.hasNextLine()) {
             String[] properties = in.nextLine().split("\\s+");
             if(properties.length > 0) {
-               if(properties[typeKey] == "background") {
+               if(properties[typeKey].equals("background")) {
                   addBackground(properties, iStore);
                }
                else {
@@ -184,20 +184,20 @@ public class WorldModel {
    public Positionable createFromProperties(String[] properties, ImageStore iStore) {
       //TODO define createFromProperties for the following.
 
-      String key = properties[nameKey];
-      if(key == "miner") {
+      String key = properties[typeKey];
+      if(key.equals("miner")) {
          return Miner.createFromProperties(properties, iStore);
       }
-      else if(key == "vein") {
+      else if(key.equals("vein")) {
          return Vein.createFromProperties(properties, iStore);
       }
-      else if(key == "ore") {
+      else if(key.equals("ore")) {
          return Ore.createFromProperties(properties, iStore);
       }
-      else if(key == "blacksmith") {
+      else if(key.equals("blacksmith")) {
          return Blacksmith.createFromProperties(properties, iStore);
       }
-      else if(key == "obstacle") {
+      else if(key.equals("obstacle")) {
          return Obstacle.createFromProperties(properties, iStore);
       }
       return null;
