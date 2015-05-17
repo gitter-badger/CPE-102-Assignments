@@ -1,4 +1,5 @@
 import java.util.List;
+
 import processing.core.PImage;
 
 public class OreBlob extends Mover {
@@ -20,4 +21,8 @@ public class OreBlob extends Mover {
 		return (!world.isOccupied(pt) || world.getTileOccupant(pt) instanceof Ore);
 	}
 
+	protected Action createAction(WorldModel world, ImageStore iStore) {
+		// TODO: Add action generating code
+		return null;
+	}
 }

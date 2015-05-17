@@ -36,4 +36,8 @@ public class Miner extends Mover {
 				iStore.getImages("miner"));
 	}
 
+	protected Action createAction(WorldModel world, ImageStore iStore) {
+		// TODO: Add action generating code
+		return null;
+	}
 }
