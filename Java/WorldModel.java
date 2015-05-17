@@ -193,13 +193,13 @@ public class WorldModel {
       }
       else if(key == "ore") {
          return Ore.createFromProperties(properties, iStore);
-      }/*
+      }
       else if(key == "blacksmith") {
          return Blacksmith.createFromProperties(properties, iStore);
       }
       else if(key == "obstacle") {
          return Obstacle.createFromProperties(properties, iStore);
-      }*/
+      }
       return null;
    }
 
