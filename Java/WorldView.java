@@ -22,6 +22,13 @@ public class WorldView {
 		drawEntities(main, world);		
 	}
 	
+	public void move(Point delta){
+		topLeft.setX(topLeft.getX() + delta.getX());
+		bottomRight.setX(bottomRight.getX() + delta.getX());
+		topLeft.setY(topLeft.getY() + delta.getY());
+		bottomRight.setY(bottomRight.getY() + delta.getY());
+	}
+	
 	private void drawEntities(Main main, WorldModel world) {
 	 List<Positionable> entities = world.getEntities();
 	 
