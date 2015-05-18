@@ -23,8 +23,10 @@ public class Quake extends AnimatedActor {
 
 	public static Quake createQuake(WorldModel world, Point position,
 			long ticks, ImageStore iStore) {
-		// TODO Auto-generated method stub
-		return null;
+		Quake quake = new Quake(position, "quake", iStore.getImages("quake"), 100);
+		quake.schedule(world, ticks, iStore);
+		
+		return quake;
 	}
 
 	@Override
