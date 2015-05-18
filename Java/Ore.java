@@ -36,7 +36,7 @@ public class Ore extends Actor {
 		Action[] actions = { null };
 		actions[0] = (long ticks)-> {
 			removePendingAction(actions[0]);
-			OreBlob blob = OreBlob.createBlob(world, getName(), getPosition(), this.rate, ticks, iStore);
+			OreBlob blob = OreBlob.createBlob(world, getName(), getPosition(), 1000, ticks, iStore);
 			world.removeEntity(this);
 			world.addEntity(blob);
 			return blob.getPosition();

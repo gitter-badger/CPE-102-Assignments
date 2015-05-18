@@ -109,7 +109,7 @@ public class WorldModel {
 			occupancy.setCell(pt, entity);
 			entities.add(entity);
 		}
-		//System.out.println("Added: " + entity.getClass());
+		System.out.println("Added: " + entity.getClass());
 	}
 
 	public void removeEntity(Positionable entity) {

@@ -46,7 +46,7 @@ public class OreBlob extends Mover {
 
 			this.scheduleAction(world, ticks, iStore, delay);
 
-			return vein.getPosition();
+			return this.getPosition();
 		};
 		return actions[0];
 	}
