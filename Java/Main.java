@@ -30,8 +30,10 @@ public class Main extends PApplet {
 				viewWidth * worldScale, viewHeight * worldScale));
 
 		world.loadFromSave(iStore, "gaia.sav");
-      world.addEntity(new Ore(new Point (5, 10), "Ore", 1,
-               iStore.getImages("ore")));
+		
+		Ore testOre = new Ore(new Point(5, 10), "Ore", 1000, iStore.getImages("ore"));
+		world.addEntity(testOre);
+		testOre.schedule(world, System.currentTimeMillis(), iStore);
 	}
 
 	public void draw() {

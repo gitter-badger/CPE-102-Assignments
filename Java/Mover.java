@@ -16,6 +16,7 @@ public abstract class Mover extends Quake {
 	}
 	
 	public void schedule(WorldModel world, long ticks, ImageStore iStore){
+		//scheduleAnimation()
 		scheduleAction(world, ticks, iStore, ticks);
 	}
 

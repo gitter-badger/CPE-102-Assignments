@@ -115,6 +115,7 @@ public class WorldModel {
 			occupancy.setCell(pt, entity);
 			entities.add(entity);
 		}
+		
 	}
 
 	public void removeEntity(Positionable entity) {
@@ -215,11 +216,11 @@ public class WorldModel {
 	public void createAddEntity(String[] properties, ImageStore iStore) {
 		Positionable newEntity = createFromProperties(properties, iStore);
 		addEntity(newEntity);
-		if (newEntity instanceof Ore) {
+		if (newEntity instanceof Actor) {
 			// TODO define schedule for all Actors then uncomment these lines
 
-			Ore actingEntity = (Ore)newEntity;
-			actingEntity.schedule(this, new Long(0), iStore);
+			//Actor actingEntity = (Actor)newEntity;
+			//actingEntity.schedule(this, new Long(0), iStore);
 		}
 	}
 

@@ -29,7 +29,7 @@ public class OreBlob extends Mover {
 	public static OreBlob createBlob(WorldModel world, String name, Point pt, int rate, long ticks, ImageStore iStore){
 		// TODO: change to random rate generation
 		
-		OreBlob blob = new OreBlob(pt, name, 100, rate, iStore.getImages("oreblob"));
+		OreBlob blob = new OreBlob(pt, name, 100, rate, iStore.getImages("blob"));
 		blob.schedule(world, ticks, iStore);
 		
 		return blob;
