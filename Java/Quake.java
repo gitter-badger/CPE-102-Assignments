@@ -9,7 +9,15 @@ public class Quake extends AnimatedActor {
 	}
 
 	protected Action createAction(WorldModel world, ImageStore iStore) {
-		// TODO: Add action generating code
-		return null;
+		Action[] actions = {null};
+		
+		actions[0] = (long ticks) -> {
+			removePendingAction(actions[0]);
+			Point pt = getPosition();
+			world.removeEntity(this);
+			return pt;
+		};
+		
+		return actions[0];
 	}
 }

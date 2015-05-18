@@ -44,4 +44,11 @@ public class Ore extends Actor {
 
 		return actions[0];
 	}
+
+	public static Ore createOre(WorldModel world, String name, Point pos, long ticks, ImageStore iStore) {
+		// TODO: make rate random
+		Ore ore = new Ore(pos, name, 15000, iStore.getImages("ore"));
+		ore.schedule(world, ticks, iStore);
+		return null;
+	}
 }

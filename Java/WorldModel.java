@@ -226,7 +226,6 @@ public class WorldModel {
 
 	public Positionable createFromProperties(String[] properties,
 			ImageStore iStore) {
-		// TODO define createFromProperties for the following.
 
 		String key = properties[typeKey];
 		if (key.equals("miner")) {

@@ -21,7 +21,7 @@ public abstract class AnimatedActor extends Actor {
 			nextImage();
 			
 			if (repeatCount != 1){
-				world.scheduleAction(this,createAnimatedAction(world, repeatCount-1), ticks + (long)animationRate);
+				world.scheduleAction(this,createAnimationAction(world, repeatCount-1), ticks + (long)animationRate);
 			}
 			
 			return getPosition();
@@ -29,11 +29,6 @@ public abstract class AnimatedActor extends Actor {
 		
 		return actions[0];
 		
-	}
-
-	private Action createAnimatedAction(WorldModel world, int i) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }
