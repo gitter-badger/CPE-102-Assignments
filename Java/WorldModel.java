@@ -152,7 +152,7 @@ public class WorldModel {
 		return tiles;
 	}
 
-	public Positionable findNearestVein(Point pt) {
+	public Vein findNearestVein(Point pt) {
 		List<Positionable> candidates = new ArrayList<Positionable>();
 		for (Positionable e : entities) {
 			if (e instanceof Vein) {
@@ -160,10 +160,10 @@ public class WorldModel {
 			}
 		}
 
-		return nearest(pt, candidates);
+		return (Vein)nearest(pt, candidates);
 	}
 
-	public Positionable findNearestOre(Point pt) {
+	public Ore findNearestOre(Point pt) {
 		List<Positionable> candidates = new ArrayList<Positionable>();
 		;
 		for (Positionable e : entities) {
@@ -172,10 +172,10 @@ public class WorldModel {
 			}
 		}
 
-		return nearest(pt, candidates);
+		return (Ore)nearest(pt, candidates);
 	}
 
-	public Positionable findNearestBlacksmith(Point pt) {
+	public Blacksmith findNearestBlacksmith(Point pt) {
 		List<Positionable> candidates = new ArrayList<Positionable>();
 		;
 		for (Positionable e : entities) {
@@ -184,7 +184,7 @@ public class WorldModel {
 			}
 		}
 
-		return nearest(pt, candidates);
+		return (Blacksmith)nearest(pt, candidates);
 	}
 
 	public void loadFromSave(ImageStore iStore, String filename) {

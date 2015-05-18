@@ -3,7 +3,7 @@ import java.util.List;
 import processing.core.PImage;
 
 public class Quake extends AnimatedActor {
-	public Quake(Point position, String name, double animationRate,
+	public Quake(Point position, String name, long animationRate,
 			List<PImage> images) {
 		super(position, name, animationRate, images);
 	}
@@ -19,5 +19,11 @@ public class Quake extends AnimatedActor {
 		};
 		
 		return actions[0];
+	}
+
+	public static Quake createQuake(WorldModel world, Point position,
+			long ticks, ImageStore iStore) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

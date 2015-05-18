@@ -21,12 +21,28 @@ public class OreBlob extends Mover {
 		return (!world.isOccupied(pt) || world.getTileOccupant(pt) instanceof Ore);
 	}
 
-   public void schedule(WorldModel world, Long ticks, ImageStore iStore) {
-      this.
-   }
 	protected Action createAction(WorldModel world, ImageStore iStore) {
-		// TODO: Add action generating code
-		return null;
+		Action[] actions = { null };
+		actions[0] = (long ticks) -> {
+			removePendingAction(actions[0]);
+			
+			Vein vein = world.findNearestVein(getPosition());
+			boolean atVein = toVein(world, vein);
+			
+			long delay = this.rate;
+			if (atVein){
+				world.removeEntity(vein);
+				Quake quake = Quake.createQuake(world, 
+						vein.getPosition(), ticks, iStore);
+				world.addEntity(quake);
+				delay *= 2;
+			}
+			
+			this.scheduleAction(world, ticks, iStore, delay);
+			
+			return vein.getPosition();
+		};
+		return actions[0];
 	}
 
 	public static OreBlob createBlob(WorldModel world, String name, Point pt, int rate, long ticks, ImageStore iStore) {
