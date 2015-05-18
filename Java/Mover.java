@@ -14,6 +14,10 @@ public abstract class Mover extends Quake {
 	public int getRate() {
 		return rate;
 	}
+	
+	public void schedule(WorldModel world, long ticks, ImageStore iStore){
+		scheduleAction(world, ticks, iStore, ticks);
+	}
 
 	public Point nextPosition(WorldModel world, Point destination) {
 		int horizontal = Mover.sign(destination.getX()

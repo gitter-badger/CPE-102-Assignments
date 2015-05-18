@@ -30,7 +30,15 @@ public class Ore extends Actor {
 	}
 
 	protected Action createAction(WorldModel world, ImageStore iStore) {
-		// TODO: Add action generating code
-		return null;
+		Action[] actions = { null };
+		actions[0] = (long ticks) -> {
+			super.removePendingAction(actions[0]);
+			OreBlob blob = OreBlob.createBlob(world, getName(), getPosition(), this.rate, ticks, iStore);
+			world.removeEntity(this);
+			world.addEntity(blob);
+			return blob.getPosition();
+		};		
+		
+		return actions[0];
 	}
 }

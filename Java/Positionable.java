@@ -3,7 +3,7 @@ import processing.core.PImage;
 
 public abstract class Positionable extends Entity {
 
-	Point position;
+	private Point position;
 
 	public Positionable(Point position, String name, List<PImage> images) {
 		super(name, images);

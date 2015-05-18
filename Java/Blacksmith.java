@@ -2,7 +2,7 @@ import java.util.List;
 
 import processing.core.PImage;
 
-public class Blacksmith extends Actor {
+public class Blacksmith extends Positionable {
 	private static final int NAME = 1;
 	private static final int COL = 2;
 	private static final int ROW = 3;
@@ -56,10 +56,5 @@ public class Blacksmith extends Actor {
 		return new Blacksmith(pos, prop[NAME], rate, limit, reach,
 				iStore.getImages("blacksmith"));
 
-	}
-
-	protected Action createAction(WorldModel world, ImageStore iStore) {
-		// TODO: Add action generating code
-		return null;
 	}
 }
