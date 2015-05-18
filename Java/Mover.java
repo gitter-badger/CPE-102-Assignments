@@ -16,7 +16,7 @@ public abstract class Mover extends AnimatedActor {
 	}
 
 	public void schedule(WorldModel world, long ticks, ImageStore iStore){
-		scheduleAction(world, ticks, iStore, ticks);
+		scheduleAction(world, ticks, iStore, rate);
 		scheduleAnimation(world, ticks, /*repeatCount=*/ 0);
 	}
 

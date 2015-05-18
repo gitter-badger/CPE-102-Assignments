@@ -20,7 +20,7 @@ public class Ore extends Actor {
 				.getPosition().toString(), this.rate);
 	}
 
-   public void schedule(WorldModel world, Long ticks, ImageStore iStore) {
+   public void schedule(WorldModel world, long ticks, ImageStore iStore) {
       scheduleAction(world, ticks, iStore, rate);
    }
 	public static Positionable createFromProperties(String[] prop,
@@ -49,6 +49,6 @@ public class Ore extends Actor {
 		// TODO: make rate random
 		Ore ore = new Ore(pos, name, 15000, iStore.getImages("ore"));
 		ore.schedule(world, ticks, iStore);
-		return null;
+		return ore;
 	}
 }

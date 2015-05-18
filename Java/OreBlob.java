@@ -23,7 +23,7 @@ public class OreBlob extends Mover {
 
 	protected Action createAction(WorldModel world, ImageStore iStore) {
 		Action[] actions = { null };
-		actions[0] = (long ticks) -> {
+		actions[0] = (long ticks)-> {
 			removePendingAction(actions[0]);
 			
 			Vein vein = world.findNearestVein(getPosition());

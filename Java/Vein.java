@@ -42,7 +42,7 @@ public class Vein extends Actor {
 			Point openPt = world.findOpenNear(getPosition(), resourceDistance);
 			
 			if (openPt != null){
-				Ore ore = Ore.createOre(world, getName(), getPosition(), ticks, iStore);
+				Ore ore = Ore.createOre(world, getName(), openPt, ticks, iStore);
 				world.addEntity(ore);
 			}
 			
@@ -52,5 +52,11 @@ public class Vein extends Actor {
 		};
 		
 		return actions[0];
+	}
+
+	@Override
+	public void schedule(WorldModel world, long ticks, ImageStore iStore) {
+		scheduleAction(world, ticks, iStore, rate);
+		
 	}
 }

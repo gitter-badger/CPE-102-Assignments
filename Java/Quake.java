@@ -26,4 +26,10 @@ public class Quake extends AnimatedActor {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public void schedule(WorldModel world, long ticks, ImageStore iStore) {
+		scheduleAction(world, ticks, iStore, ticks);
+		scheduleAnimation(world, ticks, /*repeatCount=*/ 4);
+	}
 }

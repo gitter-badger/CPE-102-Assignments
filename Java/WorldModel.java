@@ -219,8 +219,8 @@ public class WorldModel {
 		if (newEntity instanceof Actor) {
 			// TODO define schedule for all Actors then uncomment these lines
 
-			//Actor actingEntity = (Actor)newEntity;
-			//actingEntity.schedule(this, new Long(0), iStore);
+			Actor actingEntity = (Actor)newEntity;
+			actingEntity.schedule(this, new Long(0), iStore);
 		}
 	}
 

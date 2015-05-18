@@ -25,6 +25,8 @@ public abstract class Actor extends Positionable {
       pendingActions = new ArrayList<Action>();
    }
 
+   public abstract void schedule(WorldModel world, long ticks, ImageStore iStore);
+   
 	public void scheduleAction(WorldModel world, long ticks, ImageStore iStore,
       long scheduleRate){
 		world.scheduleAction(this, this.createAction(world, iStore),
