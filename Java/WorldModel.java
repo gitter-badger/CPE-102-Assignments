@@ -2,10 +2,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.io.*;
 import java.util.Scanner;
+import java.util.Iterator;
+import java.util.PriorityQueue;
 
 public class WorldModel {
-	public static final int typeKey = 0; // Seriously Java why you no enum
-											// properly?
+	public static final int typeKey = 0;
 	public static final int nameKey = 1;
 	public static final int columnKey = 2;
 	public static final int rowKey = 3;
@@ -16,7 +17,7 @@ public class WorldModel {
 	private Grid occupancy;
 	private List<Positionable> entities;
 
-	private List<ScheduledAction> actionQueue;
+	private PriorityQueue<ScheduledAction> actionQueue;
 
 	public WorldModel(int rows, int columns, Background background) {
 		this.rows = rows;
@@ -24,25 +25,46 @@ public class WorldModel {
 		this.background = new Grid(columns, rows, background);
 		this.occupancy = new Grid(columns, rows, null);
 		this.entities = new ArrayList<Positionable>();
-		actionQueue = new ArrayList<ScheduledAction>();
+		actionQueue = new PriorityQueue<ScheduledAction>();
 	}
 
-	public void updateOnTime(Long ticks){
-		// TODO: loop through actionQueue to decide actions to execute
+	public List<Point> updateOnTime(Long ticks){
+      List<Point> tiles = new ArrayList<Point>();
+
+      ScheduledAction next = actionQueue.peek();
+      if(next != null) {
+         while(next.getTime() < ticks)
+         {
+            actionQueue.poll();
+            tiles.add(next.getAction().AnAction(ticks));
+            next = actionQueue.peek();
+         }
+      }
+
+      return tiles;
 	}
 
 	public void clearPendingAtions(Actor entity){
-		// TODO: clear entity actions from queue and from the entitiy's queue
+      for(Action a : entity.getPendingActions()) {
+         unscheduleAction(a);
+      }
+      entity.clearPendingActions();
 	}
 
 	public void scheduleAction(Actor entity, Action action, Long time){
-		// TODO: add toAdd to entity's pending actions
-		// create a Scheduled action and add to actionQueue
+      entity.addPendingAction(action);
+      actionQueue.add(new ScheduledAction(action, time));
 	}
 
 	public void unscheduleAction(Action action){
-		// TODO: remove the Scheduled action with the same action from
-		// actionqueue
+      Iterator<ScheduledAction> it = actionQueue.iterator();
+      while(it.hasNext()) {
+         ScheduledAction next = it.next();
+         // They *should* have the same reference...hopefully.
+         if(next.getAction() == (action)) {
+            actionQueue.remove(next);
+         }
+      }
 	}
 
 	public Background getBackground(Point pt) {
