@@ -57,15 +57,8 @@ public class WorldModel {
 	}
 
 	public void unscheduleAction(Action action){
-      Iterator<ScheduledAction> it = actionQueue.iterator();
-      while(it.hasNext()) {
-         ScheduledAction next = it.next();
-         // They *should* have the same reference...hopefully.
-         if(next.getAction() == (action)) {
-            actionQueue.remove(next);
-         }
-      }
-	}
+	   actionQueue.remove(action);
+   }
 
 	public Background getBackground(Point pt) {
 		if (withinBounds(pt)) {
@@ -119,7 +112,10 @@ public class WorldModel {
 	}
 
 	public void removeEntity(Positionable entity) {
-		removeEntityAt(entity.getPosition());
+		if(entity instanceof Actor) {
+         clearPendingAtions((Actor)entity);
+      }
+      removeEntityAt(entity.getPosition());
 	}
 
 	public void removeEntityAt(Point pt) {
@@ -220,7 +216,7 @@ public class WorldModel {
 			// TODO define schedule for all Actors then uncomment these lines
 
 			Actor actingEntity = (Actor)newEntity;
-			actingEntity.schedule(this, new Long(0), iStore);
+			actingEntity.schedule(this, (long)0, iStore);
 		}
 	}
 
