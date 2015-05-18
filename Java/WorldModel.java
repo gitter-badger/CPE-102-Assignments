@@ -36,7 +36,7 @@ public class WorldModel {
          while(next.getTime() < ticks)
          {
             actionQueue.poll();
-            tiles.add(next.getAction().AnAction(ticks));
+            tiles.add(next.getAction().AnAction(System.currentTimeMillis()));
             next = actionQueue.peek();
          }
       }
@@ -57,7 +57,8 @@ public class WorldModel {
 	}
 
 	public void unscheduleAction(Action action){
-	   actionQueue.remove(action);
+		// just needed to wrap the action in a scheduled action 
+	   actionQueue.remove(new ScheduledAction(action, 0));
    }
 
 	public Background getBackground(Point pt) {
@@ -108,12 +109,13 @@ public class WorldModel {
 			occupancy.setCell(pt, entity);
 			entities.add(entity);
 		}
-
+		//System.out.println("Added: " + entity.getClass());
 	}
 
 	public void removeEntity(Positionable entity) {
 		if(entity instanceof Actor) {
          clearPendingAtions((Actor)entity);
+         
       }
       removeEntityAt(entity.getPosition());
 	}
@@ -121,10 +123,12 @@ public class WorldModel {
 	public void removeEntityAt(Point pt) {
 		if (isOccupied(pt)) {
 			Positionable entity = (Positionable) getTileOccupant(pt);
-			entity.setPosition(new Point(-1, -1)); // WAT Let's change this at
+			//entity.setPosition(new Point(0, 0)); // WAT Let's change this at
 													// some point.
 			entities.remove(entity);
 			occupancy.setCell(pt, null);
+			
+			//System.out.println("Removed: " + entity.getClass());
 		}
 	}
 
