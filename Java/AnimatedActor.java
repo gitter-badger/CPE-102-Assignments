@@ -2,7 +2,7 @@ import java.util.List;
 import processing.core.PImage;
 
 public abstract class AnimatedActor extends Actor {
-	private long animationRate;
+	protected long animationRate;
 
 	public AnimatedActor(Point position, String name, long animationRate,
 			List<PImage> images) {
