@@ -9,12 +9,18 @@ public class OreBlob extends Mover {
 		super(position, name, animationRate, rate, images);
 	}
 
-	public boolean toVein(WorldModel world, Vein vein) {
-		boolean found = this.toTarget(world, vein);
 
-		// TODO check and remove any ores in the surrounding area
-
-		return found;
+	public boolean toTarget(WorldModel world, Positionable destination) {
+		if (destination == null) {
+			return false;
+		} else if (adjacent(this.getPosition(), destination.getPosition())) {
+			return true;
+		} else {
+         Point nextpt = this.nextPosition(world, destination.getPosition());
+         world.removeEntityAt(nextpt);
+			world.moveEntity(this, nextpt);
+			return false;
+		}
 	}
 
 	public boolean canMove(WorldModel world, Point pt) {
@@ -25,21 +31,21 @@ public class OreBlob extends Mover {
 		Action[] actions = { null };
 		actions[0] = (long ticks)-> {
 			removePendingAction(actions[0]);
-			
+
 			Vein vein = world.findNearestVein(getPosition());
-			boolean atVein = toVein(world, vein);
-			
+			boolean atVein = toTarget(world, vein);
+
 			long delay = this.rate;
 			if (atVein){
 				world.removeEntity(vein);
-				Quake quake = Quake.createQuake(world, 
+				Quake quake = Quake.createQuake(world,
 						vein.getPosition(), ticks, iStore);
 				world.addEntity(quake);
 				delay *= 2;
 			}
-			
+
 			this.scheduleAction(world, ticks, iStore, delay);
-			
+
 			return vein.getPosition();
 		};
 		return actions[0];

@@ -115,7 +115,7 @@ public class WorldModel {
 			occupancy.setCell(pt, entity);
 			entities.add(entity);
 		}
-		
+
 	}
 
 	public void removeEntity(Positionable entity) {

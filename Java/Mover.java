@@ -63,7 +63,7 @@ public abstract class Mover extends AnimatedActor {
 			return 0;
 	}
 
-	private static boolean adjacent(Point one, Point two) {
+	protected static boolean adjacent(Point one, Point two) {
 		return (one.getX() == two.getX() && Math.abs(one.getY() - two.getY()) == 1)
 				|| (one.getY() == two.getY() && Math.abs(one.getX()
 						- two.getX()) == 1);
