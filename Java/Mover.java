@@ -1,7 +1,7 @@
 import java.util.List;
 import processing.core.PImage;
 
-public abstract class Mover extends Quake {
+public abstract class Mover extends AnimatedActor {
 
 	public int rate;
 
@@ -14,10 +14,10 @@ public abstract class Mover extends Quake {
 	public int getRate() {
 		return rate;
 	}
-	
+
 	public void schedule(WorldModel world, long ticks, ImageStore iStore){
-		//scheduleAnimation()
 		scheduleAction(world, ticks, iStore, ticks);
+		scheduleAnimation(world, ticks, /*repeatCount=*/ 0);
 	}
 
 	public Point nextPosition(WorldModel world, Point destination) {

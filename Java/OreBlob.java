@@ -21,17 +21,20 @@ public class OreBlob extends Mover {
 		return (!world.isOccupied(pt) || world.getTileOccupant(pt) instanceof Ore);
 	}
 
+   public void schedule(WorldModel world, Long ticks, ImageStore iStore) {
+      this.
+   }
 	protected Action createAction(WorldModel world, ImageStore iStore) {
 		// TODO: Add action generating code
 		return null;
 	}
-	
-	public static OreBlob createBlob(WorldModel world, String name, Point pt, int rate, long ticks, ImageStore iStore){
+
+	public static OreBlob createBlob(WorldModel world, String name, Point pt, int rate, long ticks, ImageStore iStore) {
 		// TODO: change to random rate generation
-		
+
 		OreBlob blob = new OreBlob(pt, name, 100, rate, iStore.getImages("blob"));
 		blob.schedule(world, ticks, iStore);
-		
+
 		return blob;
 	}
 }
