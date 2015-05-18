@@ -20,6 +20,9 @@ public class Ore extends Actor {
 				.getPosition().toString(), this.rate);
 	}
 
+   public void schedule(WorldModel world, Long ticks, ImageStore iStore) {
+      scheduleAction(world, ticks, iStore, rate);
+   }
 	public static Positionable createFromProperties(String[] prop,
 			ImageStore iStore) {
 		Point pos = new Point(Integer.parseInt(prop[COL]),
@@ -31,14 +34,14 @@ public class Ore extends Actor {
 
 	protected Action createAction(WorldModel world, ImageStore iStore) {
 		Action[] actions = { null };
-		actions[0] = (long ticks) -> {
+		actions[0] = (long ticks)-> {
 			super.removePendingAction(actions[0]);
 			OreBlob blob = OreBlob.createBlob(world, getName(), getPosition(), this.rate, ticks, iStore);
 			world.removeEntity(this);
 			world.addEntity(blob);
 			return blob.getPosition();
-		};		
-		
+		};
+
 		return actions[0];
 	}
 }

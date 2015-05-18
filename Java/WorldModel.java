@@ -215,11 +215,11 @@ public class WorldModel {
 	public void createAddEntity(String[] properties, ImageStore iStore) {
 		Positionable newEntity = createFromProperties(properties, iStore);
 		addEntity(newEntity);
-		if (newEntity instanceof Actor) {
+		if (newEntity instanceof Ore) {
 			// TODO define schedule for all Actors then uncomment these lines
 
-			// Actor actingEntity = (Actor)newEntity;
-			// actingEntity.schedule();
+			Ore actingEntity = (Ore)newEntity;
+			actingEntity.schedule(this, new Long(0), iStore);
 		}
 	}
 
