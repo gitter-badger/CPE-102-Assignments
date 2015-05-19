@@ -35,28 +35,28 @@ public class Vein extends Actor {
 
 	protected Action createAction(WorldModel world, ImageStore iStore) {
 		Action[] actions = {null};
-		
+
 		actions[0] = (long ticks) -> {
 			removePendingAction(actions[0]);
-			
+
 			Point openPt = world.findOpenNear(getPosition(), resourceDistance);
-			
+
 			if (openPt != null){
 				Ore ore = Ore.createOre(world, getName(), openPt, ticks, iStore);
 				world.addEntity(ore);
 			}
-			
+
 			this.scheduleAction(world, ticks, iStore, rate);
-			
+
 			return openPt;
 		};
-		
+
 		return actions[0];
 	}
 
 	@Override
 	public void schedule(WorldModel world, long ticks, ImageStore iStore) {
 		scheduleAction(world, ticks, iStore, rate);
-		
+
 	}
 }
