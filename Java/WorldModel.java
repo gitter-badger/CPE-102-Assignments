@@ -57,7 +57,7 @@ public class WorldModel {
 	}
 
 	public void unscheduleAction(Action action){
-		// just needed to wrap the action in a scheduled action 
+		// just needed to wrap the action in a scheduled action
 	   actionQueue.remove(new ScheduledAction(action, 0));
    }
 
@@ -109,13 +109,12 @@ public class WorldModel {
 			occupancy.setCell(pt, entity);
 			entities.add(entity);
 		}
-		System.out.println("Added: " + entity.getClass());
 	}
 
 	public void removeEntity(Positionable entity) {
 		if(entity instanceof Actor) {
          clearPendingAtions((Actor)entity);
-         
+
       }
       removeEntityAt(entity.getPosition());
 	}
@@ -123,12 +122,8 @@ public class WorldModel {
 	public void removeEntityAt(Point pt) {
 		if (isOccupied(pt)) {
 			Positionable entity = (Positionable) getTileOccupant(pt);
-			//entity.setPosition(new Point(0, 0)); // WAT Let's change this at
-													// some point.
 			entities.remove(entity);
 			occupancy.setCell(pt, null);
-			
-			//System.out.println("Removed: " + entity.getClass());
 		}
 	}
 
@@ -217,8 +212,6 @@ public class WorldModel {
 		Positionable newEntity = createFromProperties(properties, iStore);
 		addEntity(newEntity);
 		if (newEntity instanceof Actor) {
-			// TODO define schedule for all Actors then uncomment these lines
-
 			Actor actingEntity = (Actor)newEntity;
 			actingEntity.schedule(this, (long)0, iStore);
 		}
