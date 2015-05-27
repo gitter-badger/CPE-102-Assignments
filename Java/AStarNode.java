@@ -1,29 +1,42 @@
 
 public class AStarNode {
+	private AStarNode cameFrom;
 	private Point loc;
 	private int gScore;
 	private int fScore;
 	
-	public AStarNode(Point location, int gScore, Point goal){
+	public AStarNode(Point location, int gScore, Point goal, AStarNode cameFrom){
 		this.loc = location;
 		this.gScore = gScore;
 		this.fScore = gScore + calculateHeuristic(goal);
+		this.cameFrom = cameFrom;
 	}
 
 	public Point getLoc() {
 		return loc;
 	}
 
-	public int getgScore() {
+	public int getGScore() {
 		return gScore;
 	}
 
-	public int getfScore() {
+	public int getFScore() {
 		return fScore;
 	}
 	
 	private int calculateHeuristic(Point goal){
-		// TODO: compute estimate of distance to goal)
-		return Math.abs(loc.getX() - goal.getX()) + Math.abs(loc.getY() - goal.getY());
+		return AStarNode.calculateHeuristic(loc, goal);
+	}
+
+	public static int calculateHeuristic(Point from, Point to){
+		return Math.abs(from.getX() - to.getX()) + Math.abs(from.getY() - to.getY());
+	}
+	
+	public AStarNode getCameFrom() {
+		return cameFrom;
+	}
+	
+	public boolean equals(AStarNode other){
+		return loc.equals(other.getLoc());
 	}
 }

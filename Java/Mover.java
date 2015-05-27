@@ -1,4 +1,8 @@
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.LinkedList;
 import java.util.List;
+
 import processing.core.PImage;
 
 public abstract class Mover extends AnimatedActor {
@@ -22,7 +26,67 @@ public abstract class Mover extends AnimatedActor {
 	
 
 	public List<Point> aStar(Point goal){
+		List<AStarNode> openSet = new ArrayList<AStarNode>();
+		openSet.add(new AStarNode(this.getPosition(), 0, goal, null));
+		List<AStarNode> closeSet = new ArrayList<AStarNode>();
+
+		Comparator<AStarNode> byFVal = (AStarNode one, AStarNode two) -> {
+			return Integer.compare(one.getFScore(),  two.getFScore());
+		};
+
+		while (openSet.size() > 0){
+			openSet.sort(byFVal);
+			AStarNode cur = openSet.get(0);
+
+			if (cur.getLoc().equals(goal)){
+				return reconstructPath(cur);
+			}
+
+			closeSet.add(cur);
+			openSet.remove(cur);
+
+			List<Point> neighbors = getNeighbors(cur.getLoc());
+
+			for (Point neighbor : neighbors){
+				if (closeSet.contains(neighbor))
+					continue;
+
+				AStarNode neighborNode = new AStarNode(neighbor, 
+						cur.getGScore() + 1, goal, cur);
+
+				int index = openSet.indexOf(neighborNode);
+				if (index != -1 && 
+						openSet.get(index).getGScore() > neighborNode.getGScore()){
+					openSet.remove(index);
+				}
+
+				if (!openSet.contains(neighborNode)) {
+					openSet.add(neighborNode);
+				}
+			}
+		}
+
 		return null;
+	}
+
+	private List<Point> reconstructPath(AStarNode current){
+		List<Point> path = new LinkedList<Point>();
+		Point toAdd = current.getLoc();
+		while (toAdd != this.getPosition()){
+			path.add(0, toAdd);
+			current = current.getCameFrom();
+			toAdd = current.getLoc();
+		}
+		return path;
+	}
+
+	private List<Point> getNeighbors(Point cur){
+		List<Point> toReturn = new ArrayList<Point>(4);
+		toReturn.add(new Point(cur.getX() - 1, cur.getY()));
+		toReturn.add(new Point(cur.getX() + 1, cur.getY()));
+		toReturn.add(new Point(cur.getX(), cur.getY() - 1));
+		toReturn.add(new Point(cur.getX(), cur.getY() + 1));
+		return toReturn;
 	}
 	
 	public Point nextPosition(WorldModel world, Point destination) {
