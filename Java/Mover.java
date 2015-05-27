@@ -26,10 +26,12 @@ public abstract class Mover extends AnimatedActor {
 	
 
 	public List<Point> aStar(Point goal){
+		// Set up open set and closed set with the first open node as the start
 		List<AStarNode> openSet = new ArrayList<AStarNode>();
 		openSet.add(new AStarNode(this.getPosition(), 0, goal, null));
 		List<AStarNode> closeSet = new ArrayList<AStarNode>();
 
+		// define a comparator for sorting nodes by their f values
 		Comparator<AStarNode> byFVal = (AStarNode one, AStarNode two) -> {
 			return Integer.compare(one.getFScore(),  two.getFScore());
 		};
@@ -38,18 +40,19 @@ public abstract class Mover extends AnimatedActor {
 			openSet.sort(byFVal);
 			AStarNode cur = openSet.get(0);
 
-			if (cur.getLoc().equals(goal)){
+			if (cur.getLoc().equals(goal)){	// goal reached
 				return reconstructPath(cur);
 			}
 
+			// remove cur from openset and add to close set
 			closeSet.add(cur);
 			openSet.remove(cur);
 
 			List<Point> neighbors = getNeighbors(cur.getLoc());
 
 			for (Point neighbor : neighbors){
-				if (closeSet.contains(neighbor))
-					continue;
+				if (closeSet.contains(neighbor)) // node has already been visited
+					continue;					 // and deemed not best path
 
 				AStarNode neighborNode = new AStarNode(neighbor, 
 						cur.getGScore() + 1, goal, cur);
@@ -57,8 +60,8 @@ public abstract class Mover extends AnimatedActor {
 				int index = openSet.indexOf(neighborNode);
 				if (index != -1 && 
 						openSet.get(index).getGScore() > neighborNode.getGScore()){
-					openSet.remove(index);
-				}
+					openSet.remove(index);	// a better way to get to this point has been discovered
+				}							// remove old way from openSet (new way will be added below)
 
 				if (!openSet.contains(neighborNode)) {
 					openSet.add(neighborNode);
@@ -66,6 +69,7 @@ public abstract class Mover extends AnimatedActor {
 			}
 		}
 
+		// no path found
 		return null;
 	}
 
