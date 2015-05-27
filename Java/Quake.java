@@ -9,9 +9,9 @@ public class Quake extends AnimatedActor {
 	}
 
 	protected Action createAction(WorldModel world, ImageStore iStore) {
-		Action[] actions = {null};
+		Action[] actions = { null };
 
-		actions[0] = (long ticks)-> {
+		actions[0] = (long ticks) -> {
 			removePendingAction(actions[0]);
 			Point pt = getPosition();
 			world.removeEntity(this);
@@ -23,7 +23,8 @@ public class Quake extends AnimatedActor {
 
 	public static Quake createQuake(WorldModel world, Point position,
 			long ticks, ImageStore iStore) {
-		Quake quake = new Quake(position, "quake", 100, iStore.getImages("quake"));
+		Quake quake = new Quake(position, "quake", 100,
+				iStore.getImages("quake"));
 		quake.schedule(world, ticks, iStore);
 
 		return quake;
@@ -31,6 +32,6 @@ public class Quake extends AnimatedActor {
 
 	public void schedule(WorldModel world, long ticks, ImageStore iStore) {
 		scheduleAction(world, ticks, iStore, animationRate * 4);
-		scheduleAnimation(world, ticks, /*repeatCount=*/ 4);
+		scheduleAnimation(world, ticks, /* repeatCount= */4);
 	}
 }

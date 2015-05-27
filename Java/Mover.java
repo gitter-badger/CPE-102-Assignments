@@ -19,13 +19,12 @@ public abstract class Mover extends AnimatedActor {
 		return rate;
 	}
 
-	public void schedule(WorldModel world, long ticks, ImageStore iStore){
+	public void schedule(WorldModel world, long ticks, ImageStore iStore) {
 		scheduleAction(world, ticks, iStore, rate);
-		scheduleAnimation(world, ticks, /*repeatCount=*/ 0);
+		scheduleAnimation(world, ticks, /* repeatCount= */0);
 	}
-	
 
-	public List<Point> aStar(Point goal){
+	public List<Point> aStar(Point goal) {
 		// Set up open set and closed set with the first open node as the start
 		List<AStarNode> openSet = new ArrayList<AStarNode>();
 		openSet.add(new AStarNode(this.getPosition(), 0, goal, null));
@@ -33,14 +32,14 @@ public abstract class Mover extends AnimatedActor {
 
 		// define a comparator for sorting nodes by their f values
 		Comparator<AStarNode> byFVal = (AStarNode one, AStarNode two) -> {
-			return Integer.compare(one.getFScore(),  two.getFScore());
+			return Integer.compare(one.getFScore(), two.getFScore());
 		};
 
-		while (openSet.size() > 0){
+		while (openSet.size() > 0) {
 			openSet.sort(byFVal);
 			AStarNode cur = openSet.get(0);
 
-			if (cur.getLoc().equals(goal)){	// goal reached
+			if (cur.getLoc().equals(goal)) { // goal reached
 				return reconstructPath(cur);
 			}
 
@@ -50,18 +49,21 @@ public abstract class Mover extends AnimatedActor {
 
 			List<Point> neighbors = getNeighbors(cur.getLoc());
 
-			for (Point neighbor : neighbors){
-				if (closeSet.contains(neighbor)) // node has already been visited
-					continue;					 // and deemed not best path
+			for (Point neighbor : neighbors) {
+				if (closeSet.contains(neighbor)) // node has already been
+													// visited
+					continue; // and deemed not best path
 
-				AStarNode neighborNode = new AStarNode(neighbor, 
+				AStarNode neighborNode = new AStarNode(neighbor,
 						cur.getGScore() + 1, goal, cur);
 
 				int index = openSet.indexOf(neighborNode);
-				if (index != -1 && 
-						openSet.get(index).getGScore() > neighborNode.getGScore()){
-					openSet.remove(index);	// a better way to get to this point has been discovered
-				}							// remove old way from openSet (new way will be added below)
+				if (index != -1
+						&& openSet.get(index).getGScore() > neighborNode
+								.getGScore()) {
+					openSet.remove(index); // a better way to get to this point
+											// has been discovered
+				} // remove old way from openSet (new way will be added below)
 
 				if (!openSet.contains(neighborNode)) {
 					openSet.add(neighborNode);
@@ -73,10 +75,10 @@ public abstract class Mover extends AnimatedActor {
 		return null;
 	}
 
-	private List<Point> reconstructPath(AStarNode current){
+	private List<Point> reconstructPath(AStarNode current) {
 		List<Point> path = new LinkedList<Point>();
 		Point toAdd = current.getLoc();
-		while (toAdd != this.getPosition()){
+		while (toAdd != this.getPosition()) {
 			path.add(0, toAdd);
 			current = current.getCameFrom();
 			toAdd = current.getLoc();
@@ -84,7 +86,7 @@ public abstract class Mover extends AnimatedActor {
 		return path;
 	}
 
-	private List<Point> getNeighbors(Point cur){
+	private List<Point> getNeighbors(Point cur) {
 		List<Point> toReturn = new ArrayList<Point>(4);
 		toReturn.add(new Point(cur.getX() - 1, cur.getY()));
 		toReturn.add(new Point(cur.getX() + 1, cur.getY()));
@@ -92,7 +94,7 @@ public abstract class Mover extends AnimatedActor {
 		toReturn.add(new Point(cur.getX(), cur.getY() + 1));
 		return toReturn;
 	}
-	
+
 	public Point nextPosition(WorldModel world, Point destination) {
 		int horizontal = Mover.sign(destination.getX()
 				- this.getPosition().getX());

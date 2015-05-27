@@ -9,18 +9,16 @@ public class OreBlob extends Mover {
 		super(position, name, animationRate, rate, images);
 	}
 
-
 	public boolean toTarget(WorldModel world, Positionable destination) {
 		if (destination == null) {
 			return false;
 		} else if (adjacent(this.getPosition(), destination.getPosition())) {
 			return true;
 		} else {
-         Point nextpt = this.nextPosition(world, destination.getPosition());
-         if(!nextpt.equals(getPosition()))
-         {
-            world.removeEntityAt(nextpt);
-         }
+			Point nextpt = this.nextPosition(world, destination.getPosition());
+			if (!nextpt.equals(getPosition())) {
+				world.removeEntityAt(nextpt);
+			}
 			world.moveEntity(this, nextpt);
 			return false;
 		}
@@ -32,17 +30,17 @@ public class OreBlob extends Mover {
 
 	protected Action createAction(WorldModel world, ImageStore iStore) {
 		Action[] actions = { null };
-		actions[0] = (long ticks)-> {
+		actions[0] = (long ticks) -> {
 			removePendingAction(actions[0]);
 
 			Vein vein = world.findNearestVein(getPosition());
 			boolean atVein = toTarget(world, vein);
 
 			long delay = this.rate;
-			if (atVein){
+			if (atVein) {
 				world.removeEntity(vein);
-				Quake quake = Quake.createQuake(world,
-						vein.getPosition(), ticks, iStore);
+				Quake quake = Quake.createQuake(world, vein.getPosition(),
+						ticks, iStore);
 				world.addEntity(quake);
 				delay *= 2;
 			}
@@ -54,10 +52,12 @@ public class OreBlob extends Mover {
 		return actions[0];
 	}
 
-	public static OreBlob createBlob(WorldModel world, String name, Point pt, int rate, long ticks, ImageStore iStore) {
+	public static OreBlob createBlob(WorldModel world, String name, Point pt,
+			int rate, long ticks, ImageStore iStore) {
 		// TODO: change to random rate generation
 
-		OreBlob blob = new OreBlob(pt, name, 100, rate, iStore.getImages("blob"));
+		OreBlob blob = new OreBlob(pt, name, 100, rate,
+				iStore.getImages("blob"));
 		blob.schedule(world, ticks, iStore);
 
 		return blob;

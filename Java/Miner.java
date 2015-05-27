@@ -37,38 +37,36 @@ public class Miner extends Mover {
 	}
 
 	protected Action createAction(WorldModel world, ImageStore iStore) {
-      Action[] actions = {null};
-      actions[0] = (long ticks)-> {
-         removePendingAction(actions[0]);
-         Point entityPt = getPosition();
-         Positionable target = null;
-         if(resource < resourceLimit) {
-            target = world.findNearestOre(entityPt);
-         }
-         else {
-            target = world.findNearestBlacksmith(entityPt);
-         }
+		Action[] actions = { null };
+		actions[0] = (long ticks) -> {
+			removePendingAction(actions[0]);
+			Point entityPt = getPosition();
+			Positionable target = null;
+			if (resource < resourceLimit) {
+				target = world.findNearestOre(entityPt);
+			} else {
+				target = world.findNearestBlacksmith(entityPt);
+			}
 
-         boolean found = toTarget(world, target);
-         if(found) {
-            updateResourceCount(world, target);
-         }
-         scheduleAction(world, ticks, iStore, rate);
+			boolean found = toTarget(world, target);
+			if (found) {
+				updateResourceCount(world, target);
+			}
+			scheduleAction(world, ticks, iStore, rate);
 
-         return getPosition();
-      };
-      return actions[0];
+			return getPosition();
+		};
+		return actions[0];
 	}
 
-   protected void updateResourceCount(WorldModel world, Positionable target) {
-      if(resource < resourceLimit) {
-         world.removeEntity(target);
-         resource++;
-      }
-      else {
-         Blacksmith smith = (Blacksmith)target;
-         smith.setResourceCount(smith.getResourceCount() + resource);
-         resource = 0;
-      }
-   }
+	protected void updateResourceCount(WorldModel world, Positionable target) {
+		if (resource < resourceLimit) {
+			world.removeEntity(target);
+			resource++;
+		} else {
+			Blacksmith smith = (Blacksmith) target;
+			smith.setResourceCount(smith.getResourceCount() + resource);
+			resource = 0;
+		}
+	}
 }

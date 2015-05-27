@@ -20,9 +20,10 @@ public class Ore extends Actor {
 				.getPosition().toString(), this.rate);
 	}
 
-   public void schedule(WorldModel world, long ticks, ImageStore iStore) {
-      scheduleAction(world, ticks, iStore, rate);
-   }
+	public void schedule(WorldModel world, long ticks, ImageStore iStore) {
+		scheduleAction(world, ticks, iStore, rate);
+	}
+
 	public static Positionable createFromProperties(String[] prop,
 			ImageStore iStore) {
 		Point pos = new Point(Integer.parseInt(prop[COL]),
@@ -34,9 +35,10 @@ public class Ore extends Actor {
 
 	protected Action createAction(WorldModel world, ImageStore iStore) {
 		Action[] actions = { null };
-		actions[0] = (long ticks)-> {
+		actions[0] = (long ticks) -> {
 			removePendingAction(actions[0]);
-			OreBlob blob = OreBlob.createBlob(world, getName(), getPosition(), 1000, ticks, iStore);
+			OreBlob blob = OreBlob.createBlob(world, getName(), getPosition(),
+					1000, ticks, iStore);
 			world.removeEntity(this);
 			world.addEntity(blob);
 			return blob.getPosition();
@@ -45,7 +47,8 @@ public class Ore extends Actor {
 		return actions[0];
 	}
 
-	public static Ore createOre(WorldModel world, String name, Point pos, long ticks, ImageStore iStore) {
+	public static Ore createOre(WorldModel world, String name, Point pos,
+			long ticks, ImageStore iStore) {
 		// TODO: make rate random
 		Ore ore = new Ore(pos, name, 15000, iStore.getImages("ore"));
 		ore.schedule(world, ticks, iStore);

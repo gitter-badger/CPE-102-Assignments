@@ -34,15 +34,16 @@ public class Vein extends Actor {
 	}
 
 	protected Action createAction(WorldModel world, ImageStore iStore) {
-		Action[] actions = {null};
+		Action[] actions = { null };
 
 		actions[0] = (long ticks) -> {
 			removePendingAction(actions[0]);
 
 			Point openPt = world.findOpenNear(getPosition(), resourceDistance);
 
-			if (openPt != null){
-				Ore ore = Ore.createOre(world, getName(), openPt, ticks, iStore);
+			if (openPt != null) {
+				Ore ore = Ore
+						.createOre(world, getName(), openPt, ticks, iStore);
 				world.addEntity(ore);
 			}
 
