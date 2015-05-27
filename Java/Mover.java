@@ -19,7 +19,12 @@ public abstract class Mover extends AnimatedActor {
 		scheduleAction(world, ticks, iStore, rate);
 		scheduleAnimation(world, ticks, /*repeatCount=*/ 0);
 	}
+	
 
+	public List<Point> aStar(Point goal){
+		return null;
+	}
+	
 	public Point nextPosition(WorldModel world, Point destination) {
 		int horizontal = Mover.sign(destination.getX()
 				- this.getPosition().getX());
