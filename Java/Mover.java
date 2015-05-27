@@ -98,11 +98,32 @@ public abstract class Mover extends AnimatedActor {
 	}
 
 	public Point nextPosition(WorldModel world, Point destination) {
-		path = aStar(world, destination);
-		if (canMove(world, path.get(0)))
-			return path.get(0);
-		else
-			return this.getPosition();
+		// TODO : if destination changes recalculate
+		
+		if (path == null)
+			path = aStar(world, destination);
+
+		Point next = nextOnPath(world);
+		if (next != null){
+			return next;
+		}
+		else {
+			path = aStar(world, destination);
+			next = nextOnPath(world);
+			return next==null ? this.getPosition() : next;			
+		}
+	}
+	
+	private Point nextOnPath(WorldModel world){
+		if (path.isEmpty())
+			return null;
+		Point next = path.get(0);
+		if (canMove(world, next)){
+			path.remove(0);
+			return next;
+		}
+		else 
+			return null;
 	}
 
 	public boolean toTarget(WorldModel world, Positionable destination) {
