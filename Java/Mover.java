@@ -24,7 +24,7 @@ public abstract class Mover extends AnimatedActor {
 		scheduleAnimation(world, ticks, /* repeatCount= */0);
 	}
 
-	public List<Point> aStar(Point goal) {
+	public List<Point> aStar(WorldModel world, Point goal) {
 		// Set up open set and closed set with the first open node as the start
 		List<AStarNode> openSet = new ArrayList<AStarNode>();
 		openSet.add(new AStarNode(this.getPosition(), 0, goal, null));
@@ -49,10 +49,11 @@ public abstract class Mover extends AnimatedActor {
 
 			List<Point> neighbors = getNeighbors(cur.getLoc());
 
-			for (Point neighbor : neighbors) {
-				if (closeSet.contains(neighbor)) // node has already been
-													// visited
+			for (Point neighbor : neighbors) {// node has already been
+				if (closeSet.contains(neighbor)) // visited													
 					continue; // and deemed not best path
+				if (!canMove(world, neighbor))
+					continue; // this point is occupied
 
 				AStarNode neighborNode = new AStarNode(neighbor,
 						cur.getGScore() + 1, goal, cur);
