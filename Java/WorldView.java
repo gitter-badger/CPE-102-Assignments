@@ -24,9 +24,9 @@ public class WorldView {
 
 	public void move(Point delta) {
 		if (topLeft.getX() + delta.getX() >= 0
-				&& bottomRight.getX() + delta.getX() < worldSize.getX()
+				&& bottomRight.getX() + delta.getX() <= worldSize.getX()
 				&& topLeft.getY() + delta.getY() >= 0
-				&& bottomRight.getY() + delta.getY() < worldSize.getY()) {
+				&& bottomRight.getY() + delta.getY() <= worldSize.getY()) {
 
 			topLeft.setX(topLeft.getX() + delta.getX());
 			bottomRight.setX(bottomRight.getX() + delta.getX());
