@@ -118,7 +118,7 @@ public class WorldModel {
 		removeEntityAt(entity.getPosition());
 	}
 
-	public void removeEntityAt(Point pt) {
+	private void removeEntityAt(Point pt) {
 		if (isOccupied(pt)) {
 			Positionable entity = (Positionable) getTileOccupant(pt);
 			entities.remove(entity);

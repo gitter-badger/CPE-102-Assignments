@@ -17,7 +17,9 @@ public class OreBlob extends Mover {
 		} else {
 			Point nextpt = this.nextPosition(world, destination.getPosition());
 			if (!nextpt.equals(getPosition())) {
-				world.removeEntityAt(nextpt);
+				Entity ocupant = world.getTileOccupant(nextpt);
+				if (ocupant != null && ocupant instanceof Positionable)
+					world.removeEntity((Positionable)ocupant);
 			}
 			world.moveEntity(this, nextpt);
 			return false;
