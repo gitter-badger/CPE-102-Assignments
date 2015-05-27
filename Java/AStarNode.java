@@ -10,6 +10,12 @@ public class AStarNode {
 		this.fScore = gScore + calculateHeuristic(goal);
 		this.cameFrom = cameFrom;
 	}
+	public AStarNode(Point location){
+		this.loc = location;
+		gScore = 0;
+		fScore = 0;
+		cameFrom = null;
+	}
 
 	public Point getLoc() {
 		return loc;
@@ -44,8 +50,6 @@ public class AStarNode {
 		if (getClass() != obj.getClass())
 			return false;
 		AStarNode other = (AStarNode) obj;
-		if (gScore != other.gScore)
-			return false;
-		return true;
+		return this.loc.equals(other.loc);
 	}
 }

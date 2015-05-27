@@ -7,7 +7,8 @@ import processing.core.PImage;
 
 public abstract class Mover extends AnimatedActor {
 
-	public int rate;
+	protected int rate;
+	private List<Point> path;
 
 	public Mover(Point position, String name, int animationRate, int rate,
 			List<PImage> images) {
@@ -39,7 +40,7 @@ public abstract class Mover extends AnimatedActor {
 			openSet.sort(byFVal);
 			AStarNode cur = openSet.get(0);
 
-			if (cur.getLoc().equals(goal)) { // goal reached
+			if (adjacent(cur.getLoc(), goal)) { // goal reached
 				return reconstructPath(cur);
 			}
 
@@ -50,7 +51,7 @@ public abstract class Mover extends AnimatedActor {
 			List<Point> neighbors = getNeighbors(cur.getLoc());
 
 			for (Point neighbor : neighbors) {// node has already been
-				if (closeSet.contains(neighbor)) // visited													
+				if (closeSet.indexOf(new AStarNode(neighbor)) != -1) // visited													
 					continue; // and deemed not best path
 				if (!canMove(world, neighbor))
 					continue; // this point is occupied
@@ -97,23 +98,11 @@ public abstract class Mover extends AnimatedActor {
 	}
 
 	public Point nextPosition(WorldModel world, Point destination) {
-		int horizontal = Mover.sign(destination.getX()
-				- this.getPosition().getX());
-		Point newPt = new Point(this.getPosition().getX() + horizontal, this
-				.getPosition().getY());
-
-		if (horizontal == 0 || !this.canMove(world, newPt)) {
-			int vertical = Mover.sign(destination.getY()
-					- this.getPosition().getY());
-			newPt = new Point(this.getPosition().getX(), this.getPosition()
-					.getY() + vertical);
-
-			if (vertical == 0 || !this.canMove(world, newPt)) {
-				newPt = new Point(this.getPosition().getX(), this.getPosition()
-						.getY());
-			}
-		}
-		return newPt;
+		path = aStar(world, destination);
+		if (canMove(world, path.get(0)))
+			return path.get(0);
+		else
+			return this.getPosition();
 	}
 
 	public boolean toTarget(WorldModel world, Positionable destination) {
