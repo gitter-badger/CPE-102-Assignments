@@ -10,3 +10,5 @@ Assignment3.iml
 *.jar
 .DS_Store
 bin/*
+Java/JavaDoc/
+java.policy.applet
