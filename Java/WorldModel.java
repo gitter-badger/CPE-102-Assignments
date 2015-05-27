@@ -28,38 +28,37 @@ public class WorldModel {
 		actionQueue = new PriorityQueue<ScheduledAction>();
 	}
 
-	public List<Point> updateOnTime(Long ticks){
-      List<Point> tiles = new ArrayList<Point>();
+	public List<Point> updateOnTime(Long ticks) {
+		List<Point> tiles = new ArrayList<Point>();
 
-      ScheduledAction next = actionQueue.peek();
-      if(next != null) {
-         while(next.getTime() < ticks)
-         {
-            actionQueue.poll();
-            tiles.add(next.getAction().AnAction(System.currentTimeMillis()));
-            next = actionQueue.peek();
-         }
-      }
+		ScheduledAction next = actionQueue.peek();
+		if (next != null) {
+			while (next.getTime() < ticks) {
+				actionQueue.poll();
+				tiles.add(next.getAction().AnAction(System.currentTimeMillis()));
+				next = actionQueue.peek();
+			}
+		}
 
-      return tiles;
+		return tiles;
 	}
 
-	public void clearPendingAtions(Actor entity){
-      for(Action a : entity.getPendingActions()) {
-         unscheduleAction(a);
-      }
-      entity.clearPendingActions();
+	public void clearPendingAtions(Actor entity) {
+		for (Action a : entity.getPendingActions()) {
+			unscheduleAction(a);
+		}
+		entity.clearPendingActions();
 	}
 
-	public void scheduleAction(Actor entity, Action action, Long time){
-      entity.addPendingAction(action);
-      actionQueue.add(new ScheduledAction(action, time));
+	public void scheduleAction(Actor entity, Action action, Long time) {
+		entity.addPendingAction(action);
+		actionQueue.add(new ScheduledAction(action, time));
 	}
 
-	public void unscheduleAction(Action action){
+	public void unscheduleAction(Action action) {
 		// just needed to wrap the action in a scheduled action
-	   actionQueue.remove(new ScheduledAction(action, 0));
-   }
+		actionQueue.remove(new ScheduledAction(action, 0));
+	}
 
 	public Background getBackground(Point pt) {
 		if (withinBounds(pt)) {
@@ -112,11 +111,11 @@ public class WorldModel {
 	}
 
 	public void removeEntity(Positionable entity) {
-		if(entity instanceof Actor) {
-         clearPendingAtions((Actor)entity);
+		if (entity instanceof Actor) {
+			clearPendingAtions((Actor) entity);
 
-      }
-      removeEntityAt(entity.getPosition());
+		}
+		removeEntityAt(entity.getPosition());
 	}
 
 	public void removeEntityAt(Point pt) {
@@ -155,7 +154,7 @@ public class WorldModel {
 			}
 		}
 
-		return (Vein)nearest(pt, candidates);
+		return (Vein) nearest(pt, candidates);
 	}
 
 	public Ore findNearestOre(Point pt) {
@@ -167,7 +166,7 @@ public class WorldModel {
 			}
 		}
 
-		return (Ore)nearest(pt, candidates);
+		return (Ore) nearest(pt, candidates);
 	}
 
 	public Blacksmith findNearestBlacksmith(Point pt) {
@@ -179,7 +178,7 @@ public class WorldModel {
 			}
 		}
 
-		return (Blacksmith)nearest(pt, candidates);
+		return (Blacksmith) nearest(pt, candidates);
 	}
 
 	public void loadFromSave(ImageStore iStore, String filename) {
@@ -212,8 +211,8 @@ public class WorldModel {
 		Positionable newEntity = createFromProperties(properties, iStore);
 		addEntity(newEntity);
 		if (newEntity instanceof Actor) {
-			Actor actingEntity = (Actor)newEntity;
-			actingEntity.schedule(this, (long)0, iStore);
+			Actor actingEntity = (Actor) newEntity;
+			actingEntity.schedule(this, (long) 0, iStore);
 		}
 	}
 
