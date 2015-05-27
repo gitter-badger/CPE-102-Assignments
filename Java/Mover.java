@@ -8,7 +8,8 @@ import processing.core.PImage;
 public abstract class Mover extends AnimatedActor {
 
 	protected int rate;
-	private List<Point> path;
+	protected List<Point> path;
+	protected Point currentDest;
 
 	public Mover(Point position, String name, int animationRate, int rate,
 			List<PImage> images) {
@@ -97,6 +98,13 @@ public abstract class Mover extends AnimatedActor {
 		return toReturn;
 	}
 
+	protected void updatePath(WorldModel world, Positionable target){
+		if (target != null && !target.getPosition().equals(currentDest)){ 
+			path = aStar(world, target.getPosition());	// destination has
+			currentDest = target.getPosition();			// changed recalc
+		}												// path
+	}
+	
 	public Point nextPosition(WorldModel world, Point destination) {
 		// TODO : if destination changes recalculate
 		

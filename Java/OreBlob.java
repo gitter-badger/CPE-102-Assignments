@@ -36,6 +36,9 @@ public class OreBlob extends Mover {
 			removePendingAction(actions[0]);
 
 			Vein vein = world.findNearestVein(getPosition());
+			
+			super.updatePath(world, vein);
+			
 			boolean atVein = toTarget(world, vein);
 
 			long delay = this.rate;

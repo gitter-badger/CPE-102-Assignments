@@ -47,6 +47,8 @@ public class Miner extends Mover {
 			} else {
 				target = world.findNearestBlacksmith(entityPt);
 			}
+			
+			super.updatePath(world, target);
 
 			boolean found = toTarget(world, target);
 			if (found) {
